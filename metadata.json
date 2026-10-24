@@ -1,0 +1,6 @@
+{
+  "name": "Zynovexa - Free All-in-One Online Tools & Automation",
+  "description": "Free online browser-based tools for image editing, PDF manipulation, text formatting, calculations, unit conversions, code formatting, and developer utilities with 100% client-side privacy.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

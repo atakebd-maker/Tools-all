@@ -1,0 +1,1266 @@
+# MASTER PROMPT: BUILD A COMPLETE ALL-IN-ONE TOOLS WEBSITE
+
+## 1. PROJECT OVERVIEW
+
+Build a complete, modern, professional, responsive, and production-ready All-in-One Online Tools Website.
+
+The website must provide useful tools for image editing, PDF processing, text manipulation, calculations, unit conversion, developer utilities, SEO, color design, social media content creation, date and time calculations, random generators, and file conversion.
+
+The website must work without:
+- API keys.
+- A dedicated backend server.
+- A database.
+- User registration or login.
+- Paid third-party services.
+- Secret environment variables.
+- External AI services.
+
+All tools must process data directly in the user's browser whenever technically possible.
+
+The website will be hosted on Vercel through a GitHub repository import.
+
+IMPORTANT: Do not create a mockup, static demonstration, or incomplete prototype. Build a functional website with working tools and real calculations.
+
+## 2. PROJECT NAME AND BRANDING
+
+Use the following project name:
+
+**TS Tools Hub**
+
+Create a clean, recognizable text-based logo featuring the name "TS Tools Hub".
+
+Design a professional technology-focused visual identity using:
+- Primary color: #2563EB
+- Secondary color: #1D4ED8
+- Background: #FFFFFF
+- Surface: #F8FAFC
+- Main text: #0F172A
+- Secondary text: #64748B
+- Border: #E2E8F0
+- Success: #16A34A
+- Error: #DC2626
+
+Use a modern sans-serif font, balanced spacing, clean cards, subtle shadows, rounded corners, and clear visual hierarchy.
+
+Do not add dark mode.
+
+Do not use unnecessary animations, distracting gradients, excessive decorative elements, or large empty sections.
+
+The website must look professional on both mobile devices and desktop computers.
+
+## 3. REQUIRED TECHNOLOGY STACK
+
+Use the following technologies:
+
+- React.
+- Vite.
+- JavaScript or TypeScript.
+- CSS.
+- Browser-native Web APIs.
+- Lightweight client-side JavaScript libraries when necessary.
+
+Choose compatible, stable library versions.
+
+The application must be a client-side website.
+
+Do not create:
+- Next.js API routes.
+- Server Actions.
+- Express servers.
+- Backend endpoints.
+- Database integrations.
+- Authentication systems.
+- API key configuration screens.
+- Server-side file-processing services.
+- Unnecessary environment variables.
+
+Do not use AI APIs.
+
+Do not use Firebase, Supabase, MongoDB, or other databases.
+
+Do not require Node.js on the deployed website to perform user-facing tool operations. Node.js may be used by Vercel during the build process.
+
+All user-facing tools must execute in the browser.
+
+For advanced image and PDF operations, use appropriate browser-compatible libraries.
+
+Potential libraries include:
+- pdf-lib for PDF creation and modification.
+- PDF.js for rendering and reading supported PDF documents.
+- JSZip for ZIP file creation and extraction.
+- A compatible QR code library for QR generation.
+- A compatible QR decoding library for QR reading.
+- A compatible image compression library where necessary.
+- Browser-native Canvas API for image processing.
+
+Install only the dependencies actually required by implemented features.
+
+Do not load unnecessary large libraries on the initial homepage.
+
+Use lazy loading or dynamic imports for large tool-specific dependencies.
+
+## 4. COMPLETE WEBSITE STRUCTURE
+
+Create the following pages and sections:
+
+1. Home.
+2. All Tools.
+3. Image Tools.
+4. PDF Tools.
+5. Text Tools.
+6. Calculator Tools.
+7. Unit Converter.
+8. Developer Tools.
+9. SEO Tools.
+10. Color and Design Tools.
+11. Social Media Tools.
+12. Date and Time Tools.
+13. Random Generator Tools.
+14. File Tools.
+15. About Us.
+16. Privacy Policy.
+17. Terms and Conditions.
+18. Contact Us.
+19. Individual tool pages.
+20. Custom 404 page.
+
+Every category and tool must have a working navigation path.
+
+Use clean, readable URLs where appropriate.
+
+Example URLs:
+
+/tools
+/tools/image-resizer
+/tools/image-compressor
+/tools/pdf-merger
+/tools/word-counter
+/tools/percentage-calculator
+/tools/json-formatter
+/tools/qr-code-generator
+/categories/image-tools
+/categories/pdf-tools
+
+Do not create links that lead to blank pages or non-existent tools.
+
+If a tool is listed on the homepage, its corresponding page must exist and work.
+
+## 5. HEADER AND NAVIGATION
+
+Create a responsive header containing:
+
+- TS Tools Hub logo.
+- Home link.
+- All Tools link.
+- Categories menu.
+- About link.
+- Contact link.
+- Prominent search button or search field.
+
+On mobile devices, use a compact navigation menu with a clear open and close button.
+
+The header must not occupy excessive screen space.
+
+Make the header accessible and easy to use with touchscreens.
+
+Use appropriate keyboard navigation and focus indicators.
+
+## 6. HOMEPAGE DESIGN
+
+Build an attractive, functional homepage with these sections.
+
+### A. Hero Section
+
+Heading:
+
+"Free Online Tools for Everyday Tasks"
+
+Description:
+
+"Resize images, manage PDF files, calculate numbers, convert units, format code, and use powerful browser-based tools — all in one place."
+
+Add a prominent search field.
+
+Search placeholder:
+
+"Search for a tool..."
+
+Add a button labeled:
+
+"Search Tools"
+
+Add a secondary button:
+
+"Explore All Tools"
+
+Do not include fake statistics, fake user counts, or unsupported claims.
+
+### B. Popular Tools
+
+Display a selection of useful tools, including:
+
+- Image Compressor.
+- Image Resizer.
+- JPG to PNG Converter.
+- PDF Merger.
+- Images to PDF.
+- Word Counter.
+- JSON Formatter.
+- QR Code Generator.
+- Percentage Calculator.
+- Age Calculator.
+- Password Generator.
+- Color Picker.
+
+Each card must have a relevant icon, tool name, short description, and working link.
+
+### C. Browse Categories
+
+Display all tool categories in a responsive card grid.
+
+Each category card must include:
+- A simple icon.
+- Category name.
+- Short description.
+- Number of implemented tools.
+- Working category link.
+
+Calculate category counts from the actual implemented tools instead of using invented numbers.
+
+### D. All Tools Section
+
+Provide a searchable and filterable directory of all implemented tools.
+
+Users must be able to:
+- Search by tool name.
+- Search by relevant keywords.
+- Filter by category.
+- Sort alphabetically.
+- View popular tools.
+- Clear search and filters.
+
+Search results must update immediately without a page reload.
+
+Show a useful empty state when no tools match.
+
+### E. Why Use TS Tools Hub?
+
+Display these benefits:
+
+- Free to use.
+- No account required.
+- No API key required.
+- Browser-based processing.
+- No database required.
+- Mobile-friendly interface.
+- Convenient file downloads.
+- Privacy-conscious design.
+
+Do not claim that every tool guarantees complete privacy if it loads external resources or sends data outside the browser.
+
+### F. Frequently Asked Questions
+
+Include concise FAQs explaining:
+- Whether the tools are free.
+- Whether registration is required.
+- Whether an API key is required.
+- Whether files are uploaded to a server.
+- Which browsers are supported.
+- How processed files can be downloaded.
+- Why certain large files may take longer to process.
+
+### G. Footer
+
+Include:
+- Logo and short description.
+- All Tools.
+- Category links.
+- About Us.
+- Privacy Policy.
+- Terms and Conditions.
+- Contact Us.
+- Copyright notice.
+
+Use the current year dynamically.
+
+Do not invent a physical address, phone number, email address, or social media account.
+
+## 7. TOOL CATEGORIES AND FUNCTIONALITY
+
+Implement the following categories and tools.
+
+Every tool must have a real, working implementation. Do not add decorative buttons that do nothing.
+
+### CATEGORY 1: IMAGE TOOLS
+
+Implement:
+
+1. Image Resizer.
+2. Image Cropper.
+3. Image Compressor.
+4. Image Format Converter.
+5. JPG to PNG Converter.
+6. PNG to JPG Converter.
+7. JPG to WebP Converter.
+8. PNG to WebP Converter.
+9. WebP to JPG Converter.
+10. WebP to PNG Converter.
+11. Image Rotator.
+12. Image Flipper.
+13. Image Blur Tool.
+14. Image Brightness Adjuster.
+15. Image Contrast Adjuster.
+16. Grayscale Converter.
+17. Image Color Inverter.
+18. Image Watermark Adder.
+19. Image Border Maker.
+20. Rounded Image Maker.
+21. Image Pixelate Tool.
+22. Image Dimensions Checker.
+23. Image Color Picker.
+24. Image to Base64 Converter.
+25. Base64 to Image Converter.
+26. Favicon Generator.
+27. Multiple Image Resizer.
+28. Image Splitter.
+29. Image Metadata Viewer.
+30. Social Media Image Resizer.
+
+Functional requirements:
+
+- Support file selection and drag-and-drop where appropriate.
+- Show a preview of the selected image.
+- Display image dimensions and file size.
+- Allow users to adjust relevant settings.
+- Provide a clear Process button.
+- Display the actual processed result.
+- Provide a working Download button.
+- Include Reset and Remove File controls.
+- Handle unsupported formats gracefully.
+- Show meaningful progress or loading indicators for long operations.
+- Preserve aspect ratio when requested.
+- Never silently replace the original file.
+
+Use Canvas API and browser-native image capabilities wherever possible.
+
+Do not claim that every image format is supported unless the browser can decode and encode it successfully.
+
+For transparent images converted to JPEG, allow users to choose a background color.
+
+### CATEGORY 2: PDF TOOLS
+
+Implement:
+
+1. Images to PDF Converter.
+2. JPG to PDF Converter.
+3. PNG to PDF Converter.
+4. PDF Merger.
+5. PDF Splitter.
+6. PDF Page Extractor.
+7. PDF Page Rotator.
+8. PDF Page Reorder Tool.
+9. PDF Page Number Adder.
+10. PDF Watermark Adder.
+11. PDF to JPG Converter.
+12. PDF to PNG Converter.
+13. PDF Metadata Viewer.
+14. PDF Text Extractor.
+15. PDF Page Deleter.
+16. PDF Viewer.
+17. PDF File Information Checker.
+18. PDF Page Counter.
+19. PDF Print Helper.
+20. Text to PDF Converter.
+
+Use pdf-lib and PDF.js where appropriate.
+
+Requirements:
+
+- Support selecting multiple PDF files when required.
+- Show the selected filenames.
+- Display PDF page counts when available.
+- Allow page selection for splitting and extraction.
+- Provide preview functionality when practical.
+- Generate valid downloadable PDF files.
+- Validate file types and handle corrupted files.
+- Explain unsupported encrypted or password-protected files.
+- Handle large files carefully.
+- Never pretend to compress a PDF if the implementation does not actually reduce its size.
+
+For PDF compression, provide a genuine supported optimization method. If meaningful compression cannot be achieved, explain the limitation instead of promising a smaller file.
+
+### CATEGORY 3: TEXT TOOLS
+
+Implement:
+
+1. Word Counter.
+2. Character Counter.
+3. Sentence Counter.
+4. Paragraph Counter.
+5. Reading Time Calculator.
+6. Uppercase Converter.
+7. Lowercase Converter.
+8. Title Case Converter.
+9. Sentence Case Converter.
+10. Remove Extra Spaces.
+11. Remove Duplicate Lines.
+12. Alphabetical Line Sorter.
+13. Reverse Text Generator.
+14. Reverse Words Tool.
+15. Find and Replace.
+16. Text Repeater.
+17. Text to Slug Converter.
+18. Slug to Text Converter.
+19. Text Difference Checker.
+20. Text Cleaner.
+21. Remove Line Breaks.
+22. Remove Blank Lines.
+23. Text to Binary Converter.
+24. Binary to Text Converter.
+25. Text to Hex Converter.
+26. Hex to Text Converter.
+27. Text Formatter.
+28. Duplicate Word Finder.
+29. Keyword Density Checker.
+30. Lorem Ipsum Generator.
+
+Requirements:
+
+- Provide a functional text input area.
+- Show results immediately where appropriate.
+- Add Copy, Clear, and Download buttons when useful.
+- Preserve Unicode text correctly.
+- Handle Bengali and other non-English languages where technically appropriate.
+- Avoid counting spaces as words.
+- Clearly define how words, characters, and sentences are counted.
+- Avoid changing the user's original text unless requested.
+
+### CATEGORY 4: CALCULATOR TOOLS
+
+Implement:
+
+1. Basic Calculator.
+2. Scientific Calculator.
+3. Percentage Calculator.
+4. Discount Calculator.
+5. Profit Calculator.
+6. Loss Calculator.
+7. Age Calculator.
+8. Date Difference Calculator.
+9. BMI Calculator.
+10. BMR Calculator.
+11. Calorie Calculator.
+12. Loan Calculator.
+13. EMI Calculator.
+14. Simple Interest Calculator.
+15. Compound Interest Calculator.
+16. Savings Calculator.
+17. Salary Calculator.
+18. Average Calculator.
+19. Ratio Calculator.
+20. Fraction Calculator.
+21. GPA Calculator.
+22. CGPA Calculator.
+23. Grade Calculator.
+24. Speed Calculator.
+25. Distance Calculator.
+26. Time Calculator.
+27. Fuel Cost Calculator.
+28. Electricity Bill Calculator.
+29. Tip Calculator.
+30. Split Bill Calculator.
+31. Square Root Calculator.
+32. Area Calculator.
+33. Volume Calculator.
+34. Perimeter Calculator.
+35. Triangle Calculator.
+36. Circle Calculator.
+37. Working Days Calculator.
+38. Date of Birth Calculator.
+39. Percentage Increase Calculator.
+40. Percentage Decrease Calculator.
+
+Requirements:
+
+- Validate all numerical inputs.
+- Handle zero values and division by zero correctly.
+- Display understandable results.
+- Include units where appropriate.
+- Use correct mathematical formulas.
+- Avoid arbitrary assumptions.
+- Explain required assumptions for financial calculations.
+- Identify health calculations as estimates, not medical diagnoses.
+
+For EMI calculations, allow users to enter principal, annual interest rate, and loan duration.
+
+For BMI and calorie-related tools, clearly state that results are estimates and may not apply to everyone.
+
+### CATEGORY 5: UNIT CONVERTERS
+
+Implement:
+
+1. Length Converter.
+2. Weight Converter.
+3. Height Converter.
+4. Temperature Converter.
+5. Area Converter.
+6. Volume Converter.
+7. Speed Converter.
+8. Time Converter.
+9. Data Storage Converter.
+10. File Size Converter.
+11. Pressure Converter.
+12. Energy Converter.
+13. Power Converter.
+14. Force Converter.
+15. Frequency Converter.
+16. Angle Converter.
+17. Fuel Economy Converter.
+18. Cooking Measurement Converter.
+19. Inches to Centimeters.
+20. Feet to Meters.
+21. Kilometers to Miles.
+22. Miles to Kilometers.
+23. Kilograms to Pounds.
+24. Pounds to Kilograms.
+25. Celsius to Fahrenheit.
+26. Fahrenheit to Celsius.
+27. Liters to Gallons.
+28. MB to GB Converter.
+29. GB to MB Converter.
+30. Watts to Kilowatts.
+
+Requirements:
+
+- Provide source and target unit selectors.
+- Update results when values or units change.
+- Use accurate conversion factors.
+- Handle temperature conversion separately from simple multiplicative conversions.
+- Explain whether storage units use decimal or binary conventions.
+
+### CATEGORY 6: DEVELOPER TOOLS
+
+Implement:
+
+1. JSON Formatter.
+2. JSON Validator.
+3. JSON Minifier.
+4. JSON Beautifier.
+5. JSON to XML Converter.
+6. XML Formatter.
+7. HTML Formatter.
+8. HTML Minifier.
+9. CSS Formatter.
+10. CSS Minifier.
+11. JavaScript Formatter.
+12. SQL Formatter.
+13. URL Encoder.
+14. URL Decoder.
+15. HTML Entity Encoder.
+16. HTML Entity Decoder.
+17. Base64 Encoder.
+18. Base64 Decoder.
+19. JWT Decoder.
+20. UUID Generator.
+21. SHA-256 Hash Generator.
+22. SHA-512 Hash Generator.
+23. Unix Timestamp Converter.
+24. Timestamp to Date Converter.
+25. Date to Timestamp Converter.
+26. Regex Tester.
+27. Color Code Converter.
+28. HEX to RGB Converter.
+29. RGB to HEX Converter.
+30. CSS Gradient Generator.
+31. CSS Box Shadow Generator.
+32. CSS Border Radius Generator.
+33. HTML Previewer.
+34. Markdown Previewer.
+35. Markdown to HTML Converter.
+36. Code Line Counter.
+37. URL Parser.
+38. JSON to CSV Converter.
+39. CSV to JSON Converter.
+40. CSS Unit Converter.
+
+Requirements:
+
+- Show meaningful validation errors.
+- Provide Copy and Clear buttons.
+- Do not execute arbitrary user-supplied code automatically.
+- Render HTML previews in a sandboxed iframe with appropriate restrictions.
+- Do not allow user HTML previews to access the parent page.
+- Clearly warn users about the risks of running untrusted code.
+- Use Web Crypto API for supported hashing operations.
+- Clearly state that JWT decoding does not verify the token's signature.
+- Do not label ordinary Base64 encoding as encryption.
+- Do not store sensitive input in local storage.
+
+### CATEGORY 7: SEO TOOLS
+
+Implement:
+
+1. Meta Title Length Checker.
+2. Meta Description Length Checker.
+3. SERP Snippet Preview.
+4. Keyword Density Checker.
+5. SEO Word Counter.
+6. Heading Structure Checker for pasted HTML.
+7. Slug Generator.
+8. Robots.txt Generator.
+9. Meta Tag Generator.
+10. Open Graph Meta Tag Generator.
+11. Twitter Card Meta Tag Generator.
+12. Canonical Tag Generator.
+13. Schema Markup Generator.
+14. FAQ Schema Generator.
+15. Article Schema Generator.
+16. Breadcrumb Schema Generator.
+17. JSON-LD Formatter.
+18. Robots Meta Tag Generator.
+19. Hreflang Tag Generator.
+20. Image Alt Text Checklist.
+21. URL Slug Checker.
+22. Keyword List Cleaner.
+23. Internal Link HTML Generator.
+24. Anchor Text Formatter.
+25. SEO Content Checklist.
+26. XML Sitemap Generator from supplied URLs.
+27. Keyword Grouping Helper.
+28. Sitemap URL Formatter.
+29. Favicon HTML Generator.
+30. Basic Meta Tag Previewer.
+
+Requirements:
+
+- Generate valid, copyable HTML or XML.
+- Validate URL formats where appropriate.
+- Escape user-provided content correctly.
+- Provide copy and download options.
+- Generate a sitemap only from URLs provided by the user.
+- Do not claim to crawl a website unless actual crawling is implemented.
+- Do not claim to know live Google rankings, search volume, indexing status, or backlinks.
+- Explain that character-count recommendations are guidelines, not guaranteed Google display limits.
+- Do not generate misleading structured data.
+
+### CATEGORY 8: COLOR AND DESIGN TOOLS
+
+Implement:
+
+1. Color Picker.
+2. HEX Color Picker.
+3. RGB Color Picker.
+4. HSL Color Picker.
+5. Color Palette Generator.
+6. Random Color Generator.
+7. Gradient Generator.
+8. CSS Gradient Generator.
+9. Color Converter.
+10. Complementary Color Finder.
+11. Analogous Color Generator.
+12. Triadic Color Generator.
+13. Color Contrast Checker.
+14. WCAG Contrast Checker.
+15. Text Color Previewer.
+16. Background Color Previewer.
+17. CSS Box Shadow Generator.
+18. CSS Button Generator.
+19. CSS Border Generator.
+20. CSS Glassmorphism Generator.
+21. CSS Neumorphism Generator.
+22. CSS Animation Generator.
+23. CSS Transform Generator.
+24. SVG Shape Generator.
+25. Favicon Generator.
+
+Requirements:
+
+- Show live previews.
+- Update previews as settings change.
+- Provide copyable CSS or SVG output.
+- Allow color selection through appropriate input controls.
+- Validate color formats.
+- Calculate WCAG contrast ratios accurately.
+- Never execute unsafe generated code automatically.
+
+### CATEGORY 9: SOCIAL MEDIA TOOLS
+
+Implement:
+
+1. YouTube Thumbnail Resizer.
+2. YouTube Thumbnail Previewer.
+3. YouTube Title Length Checker.
+4. YouTube Description Formatter.
+5. YouTube Tag Counter.
+6. YouTube Hashtag Formatter.
+7. Instagram Post Resizer.
+8. Instagram Story Resizer.
+9. Instagram Reel Cover Resizer.
+10. Facebook Post Image Resizer.
+11. Facebook Cover Photo Resizer.
+12. X Post Image Resizer.
+13. LinkedIn Banner Resizer.
+14. Pinterest Pin Resizer.
+15. Social Media Image Compressor.
+16. Caption Character Counter.
+17. Bio Character Counter.
+18. Social Media Post Previewer.
+19. Open Graph Preview Generator.
+20. Profile Picture Cropper.
+21. Social Media Image Converter.
+22. Channel Name Idea Generator.
+23. Username Idea Generator.
+24. Hashtag Formatter.
+25. Thumbnail Canvas Maker.
+
+Requirements:
+
+- Allow users to select an image.
+- Provide configurable output dimensions.
+- Maintain aspect ratios when requested.
+- Preview the result before downloading.
+- Avoid cropping faces or important content without user control.
+- Do not require social media account access.
+- Do not scrape or download copyrighted content from external platforms.
+
+### CATEGORY 10: DATE AND TIME TOOLS
+
+Implement:
+
+1. Digital Clock.
+2. Stopwatch.
+3. Countdown Timer.
+4. Pomodoro Timer.
+5. Date Difference Calculator.
+6. Age Calculator.
+7. Birthday Countdown.
+8. Days Until Date Calculator.
+9. Working Days Calculator.
+10. Leap Year Checker.
+11. Calendar Generator.
+12. Monthly Calendar.
+13. Yearly Calendar.
+14. Time Duration Calculator.
+15. Time Zone Converter.
+16. Unix Timestamp Converter.
+17. Date Formatter.
+18. Time Formatter.
+19. Week Number Calculator.
+20. Hours to Minutes Converter.
+
+Requirements:
+
+- Use browser date and time APIs.
+- Handle invalid dates correctly.
+- Account for leap years.
+- Use the selected time zone when performing time-zone conversions.
+- Do not promise background notifications or alarms when the browser or device may suspend the page.
+
+### CATEGORY 11: RANDOM GENERATORS
+
+Implement:
+
+1. Random Number Generator.
+2. Random Name Generator using a local dataset.
+3. Random Username Generator.
+4. Random Password Generator.
+5. Random PIN Generator.
+6. Random Color Generator.
+7. Random Hex Code Generator.
+8. Random Letter Generator.
+9. Random Word Generator using a local dataset.
+10. Random Team Generator.
+11. Random Group Generator.
+12. Random Choice Picker.
+13. Random List Generator.
+14. Random Date Generator.
+15. Random Time Generator.
+16. UUID Generator.
+17. Random Token Generator.
+18. Coin Flip Simulator.
+19. Dice Roller.
+20. Yes or No Generator.
+21. Wheel of Names.
+22. Random Emoji Generator.
+23. Random Number List Generator.
+24. Random Hexadecimal Generator.
+25. Secure Random Number Generator.
+
+Requirements:
+
+- Use browser-native cryptographic randomness where security matters.
+- Clearly distinguish ordinary random selection from cryptographically secure random generation.
+- Provide validation for minimum and maximum values.
+- Prevent invalid ranges.
+- Allow users to copy or download generated results.
+- Use local datasets instead of external APIs.
+
+### CATEGORY 12: FILE TOOLS
+
+Implement:
+
+1. File Size Converter.
+2. File Information Viewer.
+3. File Extension Checker.
+4. File Name Cleaner.
+5. Bulk File Renamer by generating downloadable renamed copies.
+6. File List Generator.
+7. Text File Viewer.
+8. CSV Viewer.
+9. CSV to JSON Converter.
+10. JSON to CSV Converter.
+11. CSV Formatter.
+12. TSV to CSV Converter.
+13. XML to JSON Converter.
+14. JSON to XML Converter.
+15. Markdown to HTML Converter.
+16. HTML to Markdown Converter.
+17. Text to PDF Converter.
+18. ZIP File Creator.
+19. ZIP File Extractor.
+20. Multiple Files to ZIP.
+21. File Checksum Calculator.
+22. File Encoding Inspector.
+23. File Preview Tool.
+24. Text to TXT Downloader.
+25. Data URI Generator.
+
+Requirements:
+
+- Process files locally whenever possible.
+- Validate input before processing.
+- Display clear errors for unsupported formats.
+- Allow downloads of processed files.
+- Support multiple files when appropriate.
+- Avoid uploading user files to external services.
+- Handle memory limitations for large files.
+- Never claim to detect every possible file format from a filename alone.
+
+## 8. TOOL PAGE TEMPLATE
+
+Every tool must have a consistent, professional page layout.
+
+Each page must include:
+
+1. Breadcrumb navigation.
+2. Tool name.
+3. Short introduction.
+4. Main tool interface.
+5. Input controls.
+6. Output or live preview.
+7. Process button when needed.
+8. Copy button when appropriate.
+9. Download button when appropriate.
+10. Clear or Reset button.
+11. Instructions explaining how to use the tool.
+12. Supported formats or limitations.
+13. Privacy explanation.
+14. Relevant related tools.
+15. FAQ section where useful.
+
+Keep the actual tool interface near the top of the page.
+
+Do not force users to scroll through long articles before reaching the tool.
+
+Use reusable React components to maintain consistent styling and behavior.
+
+Do not duplicate entire implementations unnecessarily.
+
+## 9. FUNCTIONALITY REQUIREMENTS
+
+This is a functional utility website, not a visual-only template.
+
+For every tool:
+
+- Implement its actual processing logic.
+- Validate user input.
+- Handle errors without crashing the application.
+- Show success and error messages.
+- Provide accessible labels.
+- Support keyboard navigation.
+- Ensure mobile touch controls work.
+- Add Copy, Download, Clear, or Reset actions when appropriate.
+- Show useful empty states.
+- Avoid fake progress indicators.
+- Never display fabricated output.
+- Never leave buttons without working actions.
+
+If a tool cannot be implemented reliably, do not falsely advertise it as fully functional.
+
+Instead, either implement a clearly documented limited version or omit it from the public directory.
+
+All displayed tool counts must match the number of implemented tools.
+
+## 10. PRIVACY AND SECURITY
+
+All tools should process user data locally in the browser whenever possible.
+
+Do not transmit user files or text to an external service.
+
+Do not add:
+- Analytics that send data externally.
+- Advertising scripts.
+- Tracking pixels.
+- Hidden network requests.
+- External file uploads.
+- User accounts.
+- Unnecessary cookies.
+- Unnecessary local storage.
+- Secret collection forms.
+
+Do not save sensitive input in browser storage.
+
+Use local storage only for harmless preferences if genuinely necessary.
+
+For any feature that loads a third-party library, explain the relevant dependency and avoid sending user content to that library's external services.
+
+For HTML previews, use sandboxed iframes and appropriate security restrictions.
+
+For password generation, use crypto.getRandomValues().
+
+For hashing, use Web Crypto API where supported.
+
+For file processing, validate input and manage memory responsibly.
+
+## 11. SEARCH AND FILTER SYSTEM
+
+Create a fast client-side search engine for the tool directory.
+
+The search system must search:
+- Tool names.
+- Tool descriptions.
+- Categories.
+- Relevant keywords.
+
+Features:
+
+- Instant search.
+- Category filtering.
+- Alphabetical sorting.
+- Popular tools.
+- Search result counts.
+- Clear search button.
+- No-results message.
+- Mobile-friendly interface.
+
+Use a local JavaScript data structure to store tool metadata.
+
+Do not use a database or external search API.
+
+## 12. RESPONSIVE DESIGN
+
+The website must work correctly on:
+
+- Android phones.
+- iPhones.
+- Tablets.
+- Laptops.
+- Desktop computers.
+
+Requirements:
+
+- Mobile-first CSS.
+- Responsive navigation.
+- Flexible card layouts.
+- Readable text.
+- Adequate spacing.
+- Touch-friendly buttons.
+- No horizontal overflow.
+- Proper image scaling.
+- Responsive tool interfaces.
+- Appropriate input sizing.
+- Mobile-friendly file upload controls.
+
+On mobile, display two category or tool cards per row when the screen width allows it without making the cards difficult to use.
+
+On very narrow screens, adapt the layout automatically.
+
+Do not make the design dependent on hover effects.
+
+## 13. SEO REQUIREMENTS
+
+Implement basic technical SEO correctly.
+
+Include:
+
+- Unique page titles.
+- Unique meta descriptions.
+- Canonical URL support.
+- Semantic HTML.
+- Logical heading hierarchy.
+- Descriptive internal links.
+- Appropriate image alt attributes.
+- Open Graph metadata.
+- Social sharing metadata.
+- A robots.txt file.
+- A sitemap.xml file for actual public routes.
+- A custom 404 page.
+- Favicon.
+- Web app theme color metadata where appropriate.
+
+Use descriptive page titles, for example:
+
+"Free Image Resizer Online | TS Tools Hub"
+
+"Free PDF Merger Online | TS Tools Hub"
+
+"Online Word Counter | TS Tools Hub"
+
+"Free JSON Formatter and Validator | TS Tools Hub"
+
+Do not create duplicate titles for all tool pages.
+
+Do not insert misleading keywords.
+
+Do not claim that structured data guarantees search ranking or rich results.
+
+Generate valid JSON-LD only when the markup accurately describes the page.
+
+Because this is a client-side React application, do not assume that client-rendered metadata alone guarantees optimal indexing.
+
+Prefer a static multi-page architecture or a compatible static prerendering approach when it can be implemented reliably without introducing a backend.
+
+At minimum, ensure that each public route has a meaningful title, description, canonical URL, and useful content.
+
+If using a static single-page application, configure direct route navigation and Vercel rewrites correctly.
+
+Do not generate a sitemap containing nonexistent URLs.
+
+## 14. PERFORMANCE REQUIREMENTS
+
+Optimize the website for fast loading.
+
+Requirements:
+
+- Lazy-load tool-specific dependencies.
+- Avoid loading PDF libraries on pages that do not use them.
+- Minimize unnecessary re-renders.
+- Use efficient image processing.
+- Avoid excessive DOM elements.
+- Avoid unnecessary external requests.
+- Use responsive images where appropriate.
+- Display clear processing states.
+- Prevent large files from freezing the interface whenever reasonably possible.
+- Use Web Workers for expensive client-side tasks when practical.
+- Release object URLs and other temporary resources when no longer needed.
+
+The homepage must remain lightweight even when the project contains many tools.
+
+## 15. ACCESSIBILITY
+
+Follow practical WCAG accessibility principles.
+
+Include:
+- Semantic HTML.
+- Visible keyboard focus.
+- Appropriate labels.
+- Sufficient color contrast.
+- Accessible buttons.
+- Accessible error messages.
+- Proper form associations.
+- Screen-reader-friendly status messages.
+- Keyboard-accessible navigation.
+- Reduced-motion support when animations are used.
+
+Do not use icons without accessible labels.
+
+Do not communicate errors using color alone.
+
+## 16. REQUIRED PROJECT FILES
+
+Create a complete project that can be deployed to Vercel through GitHub.
+
+Provide all required source files.
+
+A suitable structure is:
+
+ts-tools-hub/
+├── index.html
+├── package.json
+├── vite.config.js
+├── vercel.json
+├── public/
+│   ├── favicon.svg
+│   ├── robots.txt
+│   └── sitemap.xml
+├── src/
+│   ├── main.jsx
+│   ├── App.jsx
+│   ├── index.css
+│   ├── data/
+│   │   ├── tools.js
+│   │   └── categories.js
+│   ├── components/
+│   │   ├── Header.jsx
+│   │   ├── Footer.jsx
+│   │   ├── SearchBar.jsx
+│   │   ├── ToolCard.jsx
+│   │   ├── CategoryCard.jsx
+│   │   ├── Breadcrumbs.jsx
+│   │   └── ErrorMessage.jsx
+│   ├── pages/
+│   │   ├── Home.jsx
+│   │   ├── AllTools.jsx
+│   │   ├── CategoryPage.jsx
+│   │   ├── ToolPage.jsx
+│   │   ├── About.jsx
+│   │   ├── PrivacyPolicy.jsx
+│   │   ├── Terms.jsx
+│   │   ├── Contact.jsx
+│   │   └── NotFound.jsx
+│   ├── tools/
+│   │   ├── image/
+│   │   ├── pdf/
+│   │   ├── text/
+│   │   ├── calculators/
+│   │   ├── converters/
+│   │   ├── developer/
+│   │   ├── seo/
+│   │   ├── design/
+│   │   ├── social/
+│   │   ├── datetime/
+│   │   ├── random/
+│   │   └── files/
+│   └── utils/
+│       ├── validation.js
+│       ├── downloads.js
+│       ├── formatting.js
+│       └── fileHelpers.js
+
+You may improve this structure if necessary, but preserve a clear separation between components, tool logic, and utility functions.
+
+Do not create empty files simply to match the example.
+
+Every imported file must exist.
+
+Every import path must be correct.
+
+Every required dependency must be listed in package.json.
+
+## 17. VERCEL DEPLOYMENT REQUIREMENTS
+
+The application must build and deploy successfully on Vercel.
+
+Configure the project for a standard Vite build.
+
+Use:
+
+Build command:
+npm run build
+
+Output directory:
+dist
+
+Install command:
+npm install
+
+Include a valid package.json with the necessary scripts and dependencies.
+
+Ensure the project has:
+- A working development script.
+- A working production build script.
+- Correct Vite configuration.
+- Correct Vercel routing configuration.
+- No missing imports.
+- No references to nonexistent assets.
+- No undeclared dependencies.
+- No server-only imports in browser code.
+- No requirement for API keys.
+- No required environment variables.
+- No broken direct navigation to tool pages.
+
+If a Vercel rewrite is required for client-side routing, configure it carefully without overriding static assets or causing routing loops.
+
+Do not use unsupported or unnecessary configuration options.
+
+Do not assume that a successful local preview guarantees a successful production build.
+
+## 18. TESTING AND QUALITY ASSURANCE
+
+Before considering the project complete:
+
+1. Install all dependencies.
+2. Run the production build.
+3. Fix all compilation errors.
+4. Fix all missing imports.
+5. Fix invalid JSX.
+6. Fix dependency issues.
+7. Test the homepage.
+8. Test category navigation.
+9. Test tool search.
+10. Test every implemented tool.
+11. Test file upload and download flows.
+12. Test invalid input handling.
+13. Test mobile layouts.
+14. Test direct navigation to individual tool URLs.
+15. Test the 404 page.
+16. Check browser console errors.
+17. Check for horizontal overflow.
+18. Check that no API keys are required.
+19. Check that no backend server is required.
+20. Verify that all listed tools actually work.
+
+Do not claim that testing was completed unless the relevant tests were actually performed.
+
+Fix all known errors before returning the final project.
+
+## 19. IMPLEMENTATION STRATEGY
+
+Build the application in manageable stages.
+
+Stage 1:
+Create the project structure, navigation, design system, homepage, category directory, search, and routing.
+
+Stage 2:
+Implement Text Tools, Calculator Tools, Unit Converters, Random Generators, Color Tools, and basic Developer Tools.
+
+Stage 3:
+Implement Image Tools and File Tools.
+
+Stage 4:
+Implement PDF Tools using appropriate browser-compatible libraries.
+
+Stage 5:
+Implement SEO Tools, Social Media Tools, and Date and Time Tools.
+
+Stage 6:
+Create informational pages, metadata, accessibility improvements, and responsive layouts.
+
+Stage 7:
+Run the production build, test routes, fix errors, and verify deployment readiness.
+
+Prioritize working functionality over the number of tools advertised.
+
+Do not replace actual implementations with placeholder cards merely to claim a large tool count.
+
+If the environment cannot support the complete project in one generation, finish a smaller, working, production-buildable application first, then continue adding tools without breaking existing functionality.
+
+## 20. FINAL DELIVERY REQUIREMENTS
+
+When the implementation is complete, provide:
+
+1. The complete source code.
+2. Every required project file.
+3. A working package.json.
+4. A valid Vercel configuration.
+5. A list of implemented tools.
+6. A list of any intentionally omitted tools.
+7. Clear deployment instructions for GitHub and Vercel.
+8. Confirmation of whether the production build was actually tested.
+9. A concise explanation of how to add more tools later.
+
+If file export is supported, package the complete project into a ZIP file.
+
+Do not provide incomplete snippets when a complete project is requested.
+
+Do not omit important files.
+
+Do not use pseudocode in place of working implementations.
+
+Do not insert API key fields anywhere in the website.
+
+Do not require the user to configure a backend, database, or secret environment variable.
+
+The final result must be a professional, lightweight, responsive, functional, browser-based tools platform that is ready to deploy to Vercel through GitHub.
+
+BEGIN IMPLEMENTATION NOW.

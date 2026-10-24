@@ -1,0 +1,161 @@
+import React, { useState, useEffect } from 'react';
+import { Header } from './components/Header';
+import { Footer } from './components/Footer';
+import { Home } from './pages/Home';
+import { AllTools } from './pages/AllTools';
+import { CategoryPage } from './pages/CategoryPage';
+import { ToolPage } from './pages/ToolPage';
+import { About } from './pages/About';
+import { PrivacyPolicy } from './pages/PrivacyPolicy';
+import { Terms } from './pages/Terms';
+import { Contact } from './pages/Contact';
+import { NotFound } from './pages/NotFound';
+import { TOOLS } from './data/tools';
+import { CATEGORIES } from './data/categories';
+
+export default function App() {
+  const [currentPath, setCurrentPath] = useState<string>(() => {
+    return window.location.pathname || '/';
+  });
+
+  const [searchParam, setSearchParam] = useState<string>(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('q') || '';
+  });
+
+  // Handle browser back and forward button
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentPath(window.location.pathname || '/');
+      const params = new URLSearchParams(window.location.search);
+      setSearchParam(params.get('q') || '');
+      window.scrollTo(0, 0);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const navigate = (path: string) => {
+    let cleanPath = path;
+    let query = '';
+
+    if (path.includes('?')) {
+      const parts = path.split('?');
+      cleanPath = parts[0];
+      query = '?' + parts[1];
+      const params = new URLSearchParams(parts[1]);
+      setSearchParam(params.get('q') || '');
+    } else {
+      setSearchParam('');
+    }
+
+    window.history.pushState({}, '', cleanPath + query);
+    setCurrentPath(cleanPath);
+    window.scrollTo(0, 0);
+
+    // Update document title dynamically based on route
+    if (cleanPath === '/') {
+      document.title = 'Zynovexa – Free All-in-One Online Tools & Automation';
+    } else if (cleanPath === '/all-tools') {
+      document.title = 'All Tools Directory – Zynovexa';
+    } else if (cleanPath === '/about') {
+      document.title = 'About Us – Zynovexa';
+    } else if (cleanPath === '/privacy') {
+      document.title = 'Privacy Policy – Zynovexa';
+    } else if (cleanPath === '/terms') {
+      document.title = 'Terms & Conditions – Zynovexa';
+    } else if (cleanPath === '/contact') {
+      document.title = 'Contact Us – Zynovexa';
+    }
+  };
+
+  // Route matching
+  const renderCurrentView = () => {
+    if (currentPath === '/' || currentPath === '') {
+      return (
+        <Home
+          onNavigate={navigate}
+          onSelectTool={(toolId) => navigate(`/tools/${toolId}`)}
+        />
+      );
+    }
+
+    if (currentPath === '/all-tools') {
+      return (
+        <AllTools
+          initialSearch={searchParam}
+          onNavigateHome={() => navigate('/')}
+          onSelectTool={(toolId) => navigate(`/tools/${toolId}`)}
+        />
+      );
+    }
+
+    if (currentPath.startsWith('/categories/')) {
+      const categorySlug = currentPath.replace('/categories/', '').split('/')[0];
+      return (
+        <CategoryPage
+          categorySlug={categorySlug}
+          onNavigateHome={() => navigate('/')}
+          onNavigateAllTools={() => navigate('/all-tools')}
+          onNavigateCategory={(slug) => navigate(`/categories/${slug}`)}
+          onSelectTool={(toolId) => navigate(`/tools/${toolId}`)}
+        />
+      );
+    }
+
+    if (currentPath.startsWith('/tools/')) {
+      const toolSlug = currentPath.replace('/tools/', '').split('/')[0];
+      return (
+        <ToolPage
+          toolSlug={toolSlug}
+          onNavigateHome={() => navigate('/')}
+          onNavigateCategory={(catSlug) => navigate(`/categories/${catSlug}`)}
+          onSelectTool={(slug) => navigate(`/tools/${slug}`)}
+        />
+      );
+    }
+
+    if (currentPath === '/about') {
+      return (
+        <About
+          onNavigateHome={() => navigate('/')}
+          onNavigateAllTools={() => navigate('/all-tools')}
+        />
+      );
+    }
+
+    if (currentPath === '/privacy') {
+      return <PrivacyPolicy onNavigateHome={() => navigate('/')} />;
+    }
+
+    if (currentPath === '/terms') {
+      return <Terms onNavigateHome={() => navigate('/')} />;
+    }
+
+    if (currentPath === '/contact') {
+      return <Contact onNavigateHome={() => navigate('/')} />;
+    }
+
+    return (
+      <NotFound
+        onNavigateHome={() => navigate('/')}
+        onNavigateAllTools={() => navigate('/all-tools')}
+      />
+    );
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col bg-white text-slate-900 font-sans antialiased selection:bg-blue-600 selection:text-white">
+      <Header
+        currentPath={currentPath}
+        onNavigate={navigate}
+        onOpenSearch={() => navigate('/all-tools')}
+      />
+      <main className="flex-1">
+        {renderCurrentView()}
+      </main>
+      <Footer onNavigate={navigate} />
+    </div>
+  );
+}
