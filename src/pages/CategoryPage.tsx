@@ -5,6 +5,7 @@ import { ToolCard } from '../components/ToolCard';
 import { Breadcrumbs } from '../components/Breadcrumbs';
 import { ArrowLeft, ArrowRight, ShieldCheck, Zap } from 'lucide-react';
 import { applyCategorySeo } from '../utils/seo';
+import { AdBanner, AD_KEYS } from '../components/AdBanner';
 
 interface CategoryPageProps {
   categorySlug: string;
@@ -91,6 +92,17 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
             />
           ))}
         </div>
+      </div>
+
+      {/* Sponsored Ad Unit (300x250) */}
+      <div className="flex justify-center py-2">
+        <AdBanner
+          adKey={AD_KEYS.CONTENT_RECTANGLE}
+          width={300}
+          height={250}
+          label={true}
+          className="bg-white shadow-2xs"
+        />
       </div>
 
       {/* Explore other categories */}

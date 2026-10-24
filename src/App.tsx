@@ -13,6 +13,8 @@ import { NotFound } from './pages/NotFound';
 import { TOOLS } from './data/tools';
 import { CATEGORIES } from './data/categories';
 import { applyStaticPageSeo } from './utils/seo';
+import { AdBanner, AD_KEYS } from './components/AdBanner';
+import { SideAdRails } from './components/SideAdRails';
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState<string>(() => {
@@ -140,12 +142,30 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white text-slate-900 font-sans antialiased selection:bg-blue-600 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-white text-slate-900 font-sans antialiased selection:bg-blue-600 selection:text-white relative">
+      {/* Desktop-Only Left & Right Side Skyscrapers (160x600) - Strictly hidden on mobile */}
+      <SideAdRails />
+
       <Header
         currentPath={currentPath}
         onNavigate={navigate}
         onOpenSearch={() => navigate('/all-tools')}
       />
+
+      {/* Website Top Banner (468x60) */}
+      <div className="w-full bg-slate-50/80 border-b border-slate-200/80 py-2.5 px-3 flex justify-center items-center overflow-hidden">
+        <div className="max-w-full overflow-x-auto flex justify-center py-0.5">
+          <AdBanner
+            adKey={AD_KEYS.TOP_HEADER_BANNER}
+            width={468}
+            height={60}
+            label={false}
+            wrapperClassName="!my-0 scale-90 sm:scale-100 origin-center"
+            className="shadow-2xs bg-white"
+          />
+        </div>
+      </div>
+
       <main className="flex-1">
         {renderCurrentView()}
       </main>

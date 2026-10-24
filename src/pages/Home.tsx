@@ -4,6 +4,7 @@ import { TOOLS } from '../data/tools';
 import { CategoryCard } from '../components/CategoryCard';
 import { ToolCard } from '../components/ToolCard';
 import { SearchBar } from '../components/SearchBar';
+import { AdBanner, AD_KEYS } from '../components/AdBanner';
 import {
   ShieldCheck,
   Zap,
@@ -171,6 +172,17 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSelectTool }) => {
             );
           })}
         </div>
+      </section>
+
+      {/* Sponsored Ad Unit (300x250) - Cleanly integrated */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center py-2">
+        <AdBanner
+          adKey={AD_KEYS.CONTENT_RECTANGLE}
+          width={300}
+          height={250}
+          label={true}
+          className="bg-white shadow-2xs"
+        />
       </section>
 
       {/* Why Choose Zynovexa Section */}
