@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { TOOLS, ToolItem } from '../data/tools';
 import { CATEGORIES } from '../data/categories';
 import { ToolWrapper } from '../components/ToolWrapper';
+import { applyToolSeo } from '../utils/seo';
 
 interface ToolPageProps {
   toolSlug: string;
@@ -17,12 +18,13 @@ export const ToolPage: React.FC<ToolPageProps> = ({
   onSelectTool
 }) => {
   const tool = TOOLS.find((t) => t.slug === toolSlug || t.id === toolSlug);
+  const category = CATEGORIES.find((c) => c.id === tool?.category) || CATEGORIES[0];
 
   useEffect(() => {
     if (tool) {
-      document.title = `${tool.name} – Free Online Tool | Zynovexa`;
+      applyToolSeo(tool, category.name);
     }
-  }, [tool]);
+  }, [tool, category]);
 
   if (!tool) {
     return (
@@ -39,7 +41,6 @@ export const ToolPage: React.FC<ToolPageProps> = ({
     );
   }
 
-  const category = CATEGORIES.find((c) => c.id === tool.category) || CATEGORIES[0];
   const ToolComponent = tool.component;
 
   // Related tools in same category

@@ -86,6 +86,8 @@ export interface ToolItem {
   instructions: string[];
   limitations: string[];
   faqs: { q: string; a: string }[];
+  seoTitle?: string;
+  metaDescription?: string;
 }
 
 export const TOOLS: ToolItem[] = [
@@ -96,8 +98,10 @@ export const TOOLS: ToolItem[] = [
     slug: 'image-resizer',
     category: 'image-tools',
     popular: true,
+    seoTitle: 'Zynovexa - Free Online Image Resizer Not Sign In Only Free',
+    metaDescription: '100% free online image resizer without sign in. Change dimensions in pixels or percentages while preserving aspect ratios with zero server uploads.',
     description: 'Resize image dimensions in pixels or percentages while preserving aspect ratios and format.',
-    keywords: ['resize image', 'photo scale', 'reduce resolution', 'aspect ratio', 'dimension changer'],
+    keywords: ['resize image', 'photo scale', 'reduce resolution', 'aspect ratio', 'dimension changer', 'free image resizer no sign in'],
     component: ImageResizer,
     instructions: [
       'Click or drag an image into the upload box.',
@@ -120,8 +124,10 @@ export const TOOLS: ToolItem[] = [
     slug: 'image-compressor',
     category: 'image-tools',
     popular: true,
+    seoTitle: 'Zynovexa - Free Online Image Compressor Not Sign In Only Free',
+    metaDescription: '100% free online image compressor without sign in. Compress JPG, PNG, and WebP images by up to 85% with instant visual preview and zero quality loss.',
     description: 'Reduce image file size significantly with real-time quality slider and visual comparison.',
-    keywords: ['compress image', 'shrink jpg', 'reduce mb', 'optimize photo', 'lossy compression'],
+    keywords: ['compress image', 'shrink jpg', 'reduce mb', 'optimize photo', 'lossy compression', 'free image compressor no sign in'],
     component: ImageCompressor,
     instructions: [
       'Select an image from your computer or phone.',
@@ -143,8 +149,10 @@ export const TOOLS: ToolItem[] = [
     slug: 'image-converter',
     category: 'image-tools',
     popular: true,
+    seoTitle: 'Zynovexa - Free Online Image Converter Not Sign In Only Free',
+    metaDescription: '100% free online image format converter without sign in. Convert images between JPG, PNG, and WebP instantly with zero data uploads to any server.',
     description: 'Convert images between JPG, PNG, and WebP with customizable background colors for transparency.',
-    keywords: ['convert jpg to png', 'png to jpg', 'webp converter', 'photo format', 'transparent background'],
+    keywords: ['convert jpg to png', 'png to jpg', 'webp converter', 'photo format', 'transparent background', 'free image converter online'],
     component: ImageFormatConverter,
     instructions: [
       'Select an image to convert.',
@@ -270,8 +278,10 @@ export const TOOLS: ToolItem[] = [
     slug: 'pdf-merger',
     category: 'pdf-tools',
     popular: true,
+    seoTitle: 'Zynovexa - Free Online PDF Merger Not Sign In Only Free',
+    metaDescription: '100% free online PDF merger without sign in or registration. Combine multiple PDF files into one clean document with 100% client-side privacy.',
     description: 'Combine multiple PDF documents into a single organized file in your chosen order.',
-    keywords: ['merge pdf', 'combine pdfs', 'join pdf documents', 'pdf binder', 'concatenate pdf'],
+    keywords: ['merge pdf', 'combine pdfs', 'join pdf documents', 'pdf binder', 'concatenate pdf', 'free pdf merger not sign in', 'merge pdf free online'],
     component: PdfMerger,
     instructions: [
       'Select two or more PDF files from your device.',
@@ -293,8 +303,10 @@ export const TOOLS: ToolItem[] = [
     slug: 'images-to-pdf',
     category: 'pdf-tools',
     popular: true,
+    seoTitle: 'Zynovexa - Free Online Images to PDF Converter Not Sign In Only Free',
+    metaDescription: '100% free online JPG & PNG to PDF converter without sign in. Convert images into a single multi-page PDF document locally without uploading files.',
     description: 'Convert JPG, PNG, and WebP images into a single multi-page PDF with custom page size and orientation.',
-    keywords: ['jpg to pdf', 'png to pdf', 'convert photo to pdf', 'multi page pdf', 'image document'],
+    keywords: ['jpg to pdf', 'png to pdf', 'convert photo to pdf', 'multi page pdf', 'image document', 'free images to pdf no sign in'],
     component: ImagesToPdf,
     instructions: [
       'Upload one or more photos or scans.',
@@ -314,8 +326,10 @@ export const TOOLS: ToolItem[] = [
     name: 'PDF Splitter & Page Extractor',
     slug: 'pdf-splitter',
     category: 'pdf-tools',
+    seoTitle: 'Zynovexa - Free Online PDF Splitter Not Sign In Only Free',
+    metaDescription: '100% free online PDF splitter and page extractor without sign in. Extract custom page ranges or remove unwanted pages directly in your browser.',
     description: 'Extract specific pages or delete unwanted pages from a PDF document into a new PDF.',
-    keywords: ['split pdf', 'extract pdf pages', 'remove pages from pdf', 'cut pdf document'],
+    keywords: ['split pdf', 'extract pdf pages', 'remove pages from pdf', 'cut pdf document', 'free pdf splitter online'],
     component: PdfSplitter,
     instructions: [
       'Upload your PDF file.',
@@ -335,8 +349,10 @@ export const TOOLS: ToolItem[] = [
     name: 'PDF Page Rotator',
     slug: 'pdf-rotator',
     category: 'pdf-tools',
+    seoTitle: 'Zynovexa - Free Online PDF Page Rotator Not Sign In Only Free',
+    metaDescription: '100% free online PDF page rotator without sign in. Permanently rotate PDF pages by 90, 180, or 270 degrees locally without account registration.',
     description: 'Permanently rotate PDF pages by 90°, 180°, or 270° across all pages or custom ranges.',
-    keywords: ['rotate pdf', 'turn pdf pages', 'fix upside down pdf', 'pdf orientation'],
+    keywords: ['rotate pdf', 'turn pdf pages', 'fix upside down pdf', 'pdf orientation', 'free pdf rotator no sign in'],
     component: PdfRotator,
     instructions: [
       'Select your PDF document.',
@@ -356,8 +372,10 @@ export const TOOLS: ToolItem[] = [
     name: 'Text to PDF Converter',
     slug: 'text-to-pdf',
     category: 'pdf-tools',
+    seoTitle: 'Zynovexa - Free Online Text to PDF Converter Not Sign In Only Free',
+    metaDescription: '100% free online text to PDF converter without sign in. Turn plain text notes and documents into formatted PDF files instantly with zero data collection.',
     description: 'Convert plain text, notes, or articles into a clean, formatted multi-page PDF document.',
-    keywords: ['text to pdf', 'convert txt to pdf', 'generate pdf from text', 'notes to pdf'],
+    keywords: ['text to pdf', 'convert txt to pdf', 'generate pdf from text', 'notes to pdf', 'free text to pdf online'],
     component: TextToPdf,
     instructions: [
       'Enter document title and paste your text.',
@@ -380,8 +398,10 @@ export const TOOLS: ToolItem[] = [
     slug: 'word-counter',
     category: 'text-tools',
     popular: true,
+    seoTitle: 'Zynovexa - Free Online Word Counter Not Sign In Only Free',
+    metaDescription: '100% free online word counter and text analyzer without sign in. Calculate word count, characters, sentences, paragraphs, and reading time instantly in your browser.',
     description: 'Count words, characters, sentences, paragraphs, reading time, speaking time, and keyword density.',
-    keywords: ['word counter', 'character counter', 'reading time', 'keyword frequency', 'text analysis'],
+    keywords: ['word counter', 'character counter', 'reading time', 'keyword frequency', 'text analysis', 'free word counter no sign in'],
     component: WordCounter,
     instructions: [
       'Type or paste your text into the box.',
@@ -484,8 +504,10 @@ export const TOOLS: ToolItem[] = [
     slug: 'scientific-calculator',
     category: 'calculator-tools',
     popular: true,
+    seoTitle: 'Zynovexa - Free Online Scientific Calculator Not Sign In Only Free',
+    metaDescription: '100% free online scientific calculator without sign in or registration. Calculate trigonometry, logarithms, square roots, and math equations with complete privacy.',
     description: 'Full scientific calculator supporting trigonometry, logarithms, powers, factorials, and standard math.',
-    keywords: ['scientific calculator', 'math calculator', 'sin cos tan', 'log calculator', 'online calculator'],
+    keywords: ['scientific calculator', 'math calculator', 'sin cos tan', 'log calculator', 'online calculator', 'free scientific calculator no sign in'],
     component: ScientificCalculator,
     instructions: [
       'Click keypad buttons or type equations.',
@@ -505,8 +527,10 @@ export const TOOLS: ToolItem[] = [
     slug: 'percentage-calculator',
     category: 'calculator-tools',
     popular: true,
+    seoTitle: 'Zynovexa - Free Online Percentage Calculator Not Sign In Only Free',
+    metaDescription: '100% free online percentage calculator without sign in. Calculate percentage increase, decrease, discounts, and differences instantly in your browser.',
     description: 'Calculate percentage values, proportions, and percentage increase or decrease instantly.',
-    keywords: ['percentage calculator', 'percent increase', 'percent decrease', 'discount math', 'percent of'],
+    keywords: ['percentage calculator', 'percent increase', 'percent decrease', 'discount math', 'percent of', 'free percentage calculator no sign in'],
     component: PercentageCalculator,
     instructions: [
       'Select one of three calculation formulas.',
@@ -525,8 +549,10 @@ export const TOOLS: ToolItem[] = [
     name: 'Loan & EMI Calculator',
     slug: 'loan-emi-calculator',
     category: 'calculator-tools',
+    seoTitle: 'Zynovexa - Free Online Loan EMI Calculator Not Sign In Only Free',
+    metaDescription: '100% free online loan EMI calculator without sign in. Compute monthly EMI payments, total interest payable, and amortization schedule with zero sign up.',
     description: 'Calculate monthly loan EMI payments, total interest payable, and principal-to-interest ratios.',
-    keywords: ['emi calculator', 'loan calculator', 'mortgage payment', 'interest calculator', 'car loan emi'],
+    keywords: ['emi calculator', 'loan calculator', 'mortgage payment', 'interest calculator', 'car loan emi', 'free emi calculator no sign in'],
     component: LoanEmiCalculator,
     instructions: [
       'Enter loan principal amount.',
@@ -611,8 +637,10 @@ export const TOOLS: ToolItem[] = [
     slug: 'unit-converter',
     category: 'unit-converters',
     popular: true,
+    seoTitle: 'Zynovexa - Free Online Unit Converter Not Sign In Only Free',
+    metaDescription: '100% free online unit converter without sign in. Convert length, weight, temperature, data storage, and volume instantly with complete accuracy.',
     description: 'Convert between units of length, weight, temperature, data storage, volume, speed, and time.',
-    keywords: ['unit converter', 'metric to imperial', 'length converter', 'kg to lbs', 'celsius to fahrenheit'],
+    keywords: ['unit converter', 'metric to imperial', 'length converter', 'kg to lbs', 'celsius to fahrenheit', 'free unit converter no sign in'],
     component: UniversalUnitConverter,
     instructions: [
       'Select unit category (Length, Weight, Temp, Data, Volume, etc.).',
@@ -634,8 +662,10 @@ export const TOOLS: ToolItem[] = [
     slug: 'json-formatter',
     category: 'developer-tools',
     popular: true,
+    seoTitle: 'Zynovexa - Free Online JSON Formatter Not Sign In Only Free',
+    metaDescription: '100% free online JSON formatter and validator without sign in. Format, beautify, minify, and inspect JSON with syntax error detection.',
     description: 'Format, beautify, minify, and validate JSON data with syntax error detection and download.',
-    keywords: ['json formatter', 'beautify json', 'json validator', 'minify json', 'json prettifier'],
+    keywords: ['json formatter', 'beautify json', 'json validator', 'minify json', 'json prettifier', 'free json formatter no sign in'],
     component: JsonFormatter,
     instructions: [
       'Paste your raw JSON into the editor.',

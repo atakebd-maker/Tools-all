@@ -21,8 +21,8 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate, onOpenS
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Brand Logo - Image only without duplicate text */}
+        <div className="flex items-center justify-between h-17 sm:h-18">
+          {/* Brand Logo - Slightly enlarged with seamless background blending */}
           <button
             onClick={() => handleNav('/')}
             className="flex items-center text-left group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 rounded-lg py-1 px-1 transition-transform hover:opacity-90 cursor-pointer"
@@ -31,7 +31,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate, onOpenS
             <img
               src="/assets/aistudio/image_9c2f50e3.png"
               alt="Zynovexa"
-              className="h-8 sm:h-9 md:h-10 w-auto max-w-[190px] sm:max-w-[220px] object-contain"
+              className="h-10 sm:h-11 md:h-12 w-auto max-w-[220px] sm:max-w-[260px] md:max-w-[300px] object-contain mix-blend-multiply"
             />
           </button>
 

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CATEGORIES, Category } from '../data/categories';
 import { TOOLS } from '../data/tools';
 import { ToolCard } from '../components/ToolCard';
 import { Breadcrumbs } from '../components/Breadcrumbs';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ShieldCheck, Zap } from 'lucide-react';
+import { applyCategorySeo } from '../utils/seo';
 
 interface CategoryPageProps {
   categorySlug: string;
@@ -24,6 +25,12 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
   const categoryTools = TOOLS.filter((t) => t.category === category.id);
   const otherCategories = CATEGORIES.filter((c) => c.id !== category.id).slice(0, 4);
 
+  useEffect(() => {
+    if (category) {
+      applyCategorySeo(category, categoryTools.length);
+    }
+  }, [category, categoryTools.length]);
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
       {/* Breadcrumb */}
@@ -38,9 +45,19 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
       {/* Category Hero */}
       <div className="bg-slate-50 border border-slate-200 rounded-3xl p-6 sm:p-10">
         <div className="max-w-3xl space-y-3">
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
-            {categoryTools.length} {categoryTools.length === 1 ? 'Tool' : 'Tools'} Available
-          </span>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
+              {categoryTools.length} {categoryTools.length === 1 ? 'Tool' : 'Tools'} Available
+            </span>
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+              <ShieldCheck className="w-3.5 h-3.5 mr-1" />
+              No Sign In Required
+            </span>
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-800">
+              <Zap className="w-3.5 h-3.5 mr-1" />
+              100% Free Client-Side
+            </span>
+          </div>
           <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
             {category.name}
           </h1>

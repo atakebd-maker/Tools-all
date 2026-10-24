@@ -18,13 +18,13 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <div>
               <button
                 onClick={() => onNavigate('/')}
-                className="inline-block bg-white px-3.5 py-1.5 rounded-xl shadow-xs hover:opacity-90 transition-opacity cursor-pointer text-left"
+                className="inline-block bg-white px-4 py-2 rounded-xl shadow-xs hover:opacity-90 transition-opacity cursor-pointer text-left"
                 aria-label="Zynovexa Home"
               >
                 <img
                   src="/assets/aistudio/image_9c2f50e3.png"
                   alt="Zynovexa"
-                  className="h-8 sm:h-9 w-auto max-w-[210px] object-contain"
+                  className="h-9 sm:h-10 w-auto max-w-[230px] object-contain"
                 />
               </button>
             </div>

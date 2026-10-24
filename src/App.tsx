@@ -12,6 +12,7 @@ import { Contact } from './pages/Contact';
 import { NotFound } from './pages/NotFound';
 import { TOOLS } from './data/tools';
 import { CATEGORIES } from './data/categories';
+import { applyStaticPageSeo } from './utils/seo';
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState<string>(() => {
@@ -23,10 +24,11 @@ export default function App() {
     return params.get('q') || '';
   });
 
-  // Handle browser back and forward button
+  // Handle browser back and forward button and route SEO
   useEffect(() => {
     const handlePopState = () => {
-      setCurrentPath(window.location.pathname || '/');
+      const path = window.location.pathname || '/';
+      setCurrentPath(path);
       const params = new URLSearchParams(window.location.search);
       setSearchParam(params.get('q') || '');
       window.scrollTo(0, 0);
@@ -35,6 +37,13 @@ export default function App() {
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
+
+  // Update static page SEO on route changes
+  useEffect(() => {
+    if (!currentPath.startsWith('/categories/') && !currentPath.startsWith('/tools/')) {
+      applyStaticPageSeo(currentPath);
+    }
+  }, [currentPath]);
 
   const navigate = (path: string) => {
     let cleanPath = path;
@@ -53,21 +62,6 @@ export default function App() {
     window.history.pushState({}, '', cleanPath + query);
     setCurrentPath(cleanPath);
     window.scrollTo(0, 0);
-
-    // Update document title dynamically based on route
-    if (cleanPath === '/') {
-      document.title = 'Zynovexa – Free All-in-One Online Tools & Automation';
-    } else if (cleanPath === '/all-tools') {
-      document.title = 'All Tools Directory – Zynovexa';
-    } else if (cleanPath === '/about') {
-      document.title = 'About Us – Zynovexa';
-    } else if (cleanPath === '/privacy') {
-      document.title = 'Privacy Policy – Zynovexa';
-    } else if (cleanPath === '/terms') {
-      document.title = 'Terms & Conditions – Zynovexa';
-    } else if (cleanPath === '/contact') {
-      document.title = 'Contact Us – Zynovexa';
-    }
   };
 
   // Route matching
