@@ -111,24 +111,44 @@ export const AdBanner: React.FC<AdBannerProps> = ({
   </div>
 
   <script type="text/javascript">
-    // Client-side creative analyzer
-    // Runs inside the sandboxed environment without transmitting visitor data to external APIs
+    // Gemini AI Creative & Image Inspector
     (function() {
       try {
-        var scannedImages = new Set();
+        var inspectedUrls = new Set();
+
+        function callGeminiAdInspector(imageUrl, adText) {
+          if (!imageUrl && !adText) return;
+          if (imageUrl && inspectedUrls.has(imageUrl)) return;
+          if (imageUrl) inspectedUrls.add(imageUrl);
+
+          fetch('/api/inspect-ad-image', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              imageUrl: imageUrl,
+              adText: adText,
+              adKey: '${adKey}'
+            })
+          })
+          .then(function(res) { return res.json(); })
+          .then(function(data) {
+            if (data && data.hasFemale === true) {
+              window.parent.postMessage({ type: 'AD_FILTER_FEMALE_DETECTED', key: '${adKey}' }, '*');
+            }
+          })
+          .catch(function() {});
+        }
 
         function checkImageForPerson(img) {
-          if (!img || scannedImages.has(img)) return;
-          scannedImages.add(img);
-
+          if (!img) return;
           try {
-            // Check image source and attributes for female/dating targeting tags
             var src = (img.src || '').toLowerCase();
             var alt = (img.alt || '').toLowerCase();
             var title = (img.title || '').toLowerCase();
             var combined = src + ' ' + alt + ' ' + title;
 
-            var femaleKeywords = ['girl', 'woman', 'female', 'dating', 'bride', 'model', 'lady', 'single', 'romance'];
+            // Direct keywords detection
+            var femaleKeywords = ['girl', 'woman', 'female', 'dating', 'bride', 'model', 'lady', 'single', 'romance', 'beauty', 'asian', 'russian'];
             for (var i = 0; i < femaleKeywords.length; i++) {
               if (combined.indexOf(femaleKeywords[i]) !== -1) {
                 window.parent.postMessage({ type: 'AD_FILTER_FEMALE_DETECTED', key: '${adKey}' }, '*');
@@ -136,7 +156,12 @@ export const AdBanner: React.FC<AdBannerProps> = ({
               }
             }
 
-            // If image is same-origin or CORS permits canvas pixel reading:
+            // Send image or image URL to server-side Google Gemini AI Vision
+            if (img.src && img.src.indexOf('http') === 0) {
+              callGeminiAdInspector(img.src, combined);
+            }
+
+            // Same-origin canvas pixel biometric check (if accessible)
             if (img.complete && img.naturalWidth > 20) {
               try {
                 var canvas = document.createElement('canvas');
@@ -145,38 +170,29 @@ export const AdBanner: React.FC<AdBannerProps> = ({
                 var ctx = canvas.getContext('2d');
                 if (ctx) {
                   ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                  var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-                  var skinPixels = 0;
-                  var totalPixels = imgData.length / 4;
-
-                  for (var p = 0; p < imgData.length; p += 4) {
-                    var r = imgData[p];
-                    var g = imgData[p+1];
-                    var b = imgData[p+2];
-                    // Standard biometric skin tone color space approximation
-                    if (r > 95 && g > 40 && b > 20 &&
-                        (Math.max(r, g, b) - Math.min(r, g, b) > 15) &&
-                        Math.abs(r - g) > 15 && r > g && r > b) {
-                      skinPixels++;
+                  var base64 = canvas.toDataURL('image/jpeg', 0.7);
+                  fetch('/api/inspect-ad-image', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      imageBase64: base64,
+                      adKey: '${adKey}'
+                    })
+                  })
+                  .then(function(r) { return r.json(); })
+                  .then(function(d) {
+                    if (d && d.hasFemale === true) {
+                      window.parent.postMessage({ type: 'AD_FILTER_FEMALE_DETECTED', key: '${adKey}' }, '*');
                     }
-                  }
-
-                  // If high percentage of skin tone portrait detected in ad creative:
-                  if (skinPixels / totalPixels > 0.28) {
-                    window.parent.postMessage({ type: 'AD_FILTER_FEMALE_DETECTED', key: '${adKey}' }, '*');
-                  }
+                  })
+                  .catch(function() {});
                 }
-              } catch (corsErr) {
-                // Browser cross-origin protection prevents reading foreign pixels.
-                // Handled gracefully without error.
-              }
+              } catch (corsErr) {}
             }
-          } catch (e) {
-            // Respect security boundaries
-          }
+          } catch (e) {}
         }
 
-        // MutationObserver to inspect dynamically inserted ad images
+        // MutationObserver to inspect dynamically inserted ad elements
         if (window.MutationObserver) {
           var observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(m) {
@@ -196,9 +212,7 @@ export const AdBanner: React.FC<AdBannerProps> = ({
           });
           observer.observe(document.body, { childList: true, subtree: true });
         }
-      } catch (err) {
-        // Safe exit
-      }
+      } catch (err) {}
     })();
   </script>
 </body>
@@ -229,9 +243,26 @@ export const AdBanner: React.FC<AdBannerProps> = ({
     );
   }
 
+  // Double-click discreet fallback: In case an ad is inside a cross-origin iframe blocking pixel reading,
+  // the user or admin can double click the ad box to instantly turn it 100% white (#FFFFFF) permanently.
+  const handleDiscreetWhiteout = () => {
+    setIsFiltered(true);
+    try {
+      const stored = localStorage.getItem('zynovexa_flagged_ads');
+      const list = stored ? JSON.parse(stored) : [];
+      if (!list.includes(adKey)) {
+        list.push(adKey);
+        localStorage.setItem('zynovexa_flagged_ads', JSON.stringify(list));
+      }
+    } catch (e) {}
+  };
+
   // Normal Advertisement Render (Preserved for Halal/Appropriate Ads)
   return (
-    <div className={`ad-container flex flex-col items-center justify-center my-3 select-none ${wrapperClassName}`}>
+    <div
+      className={`ad-container flex flex-col items-center justify-center my-3 select-none ${wrapperClassName}`}
+      onDoubleClick={handleDiscreetWhiteout}
+    >
       {label && (
         <span className="text-[10px] tracking-wider text-slate-400 font-semibold uppercase mb-1">
           Advertisement
