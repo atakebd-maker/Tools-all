@@ -162,6 +162,7 @@ export default function App() {
         <div className="max-w-full overflow-x-auto flex justify-center py-0.5">
           <AdBanner
             adKey={AD_KEYS.TOP_HEADER_BANNER}
+            slotType="topBanner"
             width={468}
             height={60}
             label={false}

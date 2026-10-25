@@ -219,6 +219,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSelectTool }) => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center py-2">
         <AdBanner
           adKey={AD_KEYS.CONTENT_RECTANGLE}
+          slotType="contentRectangle"
           width={300}
           height={250}
           label={true}

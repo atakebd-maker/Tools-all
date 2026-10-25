@@ -45,6 +45,7 @@ export const ToolWrapper: React.FC<ToolWrapperProps> = ({
         <div className="max-w-full overflow-x-auto flex justify-center py-1">
           <AdBanner
             adKey={AD_KEYS.TOOL_TOP_LEADERBOARD}
+            slotType="toolLeaderboard"
             width={728}
             height={90}
             label={true}
@@ -77,6 +78,7 @@ export const ToolWrapper: React.FC<ToolWrapperProps> = ({
       <div className="w-full flex justify-center my-6">
         <AdBanner
           adKey={AD_KEYS.CONTENT_RECTANGLE}
+          slotType="contentRectangle"
           width={300}
           height={250}
           label={true}
@@ -178,6 +180,7 @@ export const ToolWrapper: React.FC<ToolWrapperProps> = ({
             <div className="w-full lg:w-auto flex flex-col items-center justify-center p-2 rounded-2xl bg-slate-50/70 border border-slate-200/80 shrink-0 self-center lg:self-start">
               <AdBanner
                 adKey={AD_KEYS.SECONDARY_VERTICAL}
+                slotType="secondaryVertical"
                 width={160}
                 height={300}
                 label={true}

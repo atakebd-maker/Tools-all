@@ -16,6 +16,7 @@ export const SideAdRails: React.FC = () => {
       >
         <AdBanner
           adKey={AD_KEYS.SIDE_SKYSCRAPER}
+          slotType="sideSkyscrapers"
           width={160}
           height={600}
           label={true}
@@ -31,6 +32,7 @@ export const SideAdRails: React.FC = () => {
       >
         <AdBanner
           adKey={AD_KEYS.SIDE_SKYSCRAPER}
+          slotType="sideSkyscrapers"
           width={160}
           height={600}
           label={true}

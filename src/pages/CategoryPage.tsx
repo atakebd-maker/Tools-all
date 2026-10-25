@@ -98,6 +98,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
       <div className="flex justify-center py-2">
         <AdBanner
           adKey={AD_KEYS.CONTENT_RECTANGLE}
+          slotType="contentRectangle"
           width={300}
           height={250}
           label={true}
