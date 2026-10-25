@@ -55,7 +55,8 @@ async function startServer() {
         return res.status(400).json({ error: 'Prompt exceeds maximum allowed length (32,000 characters).' });
       }
 
-      const modelsToTry = ['gemini-2.5-flash', 'gemini-3.8-flash', 'gemini-flash-latest'];
+      // gemini-3.1-flash-lite is the fastest, high-availability model (sub-second latency)
+      const modelsToTry = ['gemini-3.1-flash-lite', 'gemini-3.8-flash', 'gemini-flash-latest'];
       let outputText = '';
       let lastError: any = null;
 
