@@ -28,6 +28,8 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSelectTool }) => {
 
   // Popular tools selection
   const popularTools = TOOLS.filter((t) => t.popular);
+  // Recently added tools
+  const recentTools = TOOLS.filter((t) => !t.popular).slice(0, 4);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -138,6 +140,45 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSelectTool }) => {
                 description={tool.description}
                 categoryName={cat?.name || 'Tool'}
                 isPopular={tool.popular}
+                onSelect={() => onSelectTool(tool.id)}
+              />
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Recently Added Tools Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-bold text-blue-600 uppercase tracking-wider mb-1">
+              <Zap className="w-4 h-4" />
+              <span>New Additions</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+              Recently Added Tools
+            </h2>
+          </div>
+          <button
+            onClick={() => onNavigate('/all-tools')}
+            className="text-sm font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1.5 group cursor-pointer self-start sm:self-auto"
+          >
+            <span>Explore all tools</span>
+            <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+          {recentTools.map((tool) => {
+            const cat = CATEGORIES.find((c) => c.id === tool.category);
+            return (
+              <ToolCard
+                key={tool.id}
+                id={tool.id}
+                name={tool.name}
+                description={tool.description}
+                categoryName={cat?.name || 'Tool'}
+                isPopular={false}
                 onSelect={() => onSelectTool(tool.id)}
               />
             );

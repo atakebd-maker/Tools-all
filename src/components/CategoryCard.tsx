@@ -12,7 +12,9 @@ import {
   Clock,
   Shuffle,
   FolderArchive,
-  ArrowRight
+  ArrowRight,
+  Sparkles,
+  GraduationCap
 } from 'lucide-react';
 import { Category } from '../data/categories';
 
@@ -30,6 +32,8 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
   const getIcon = (name: string) => {
     const props = { className: 'w-6 h-6' };
     switch (name) {
+      case 'Sparkles': return <Sparkles {...props} />;
+      case 'GraduationCap': return <GraduationCap {...props} />;
       case 'Image': return <Image {...props} />;
       case 'FileText': return <FileText {...props} />;
       case 'Type': return <Type {...props} />;

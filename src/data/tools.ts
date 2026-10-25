@@ -90,7 +90,7 @@ export interface ToolItem {
   metaDescription?: string;
 }
 
-export const TOOLS: ToolItem[] = [
+const BASE_TOOLS: ToolItem[] = [
   // --- IMAGE TOOLS ---
   {
     id: 'image-resizer',
@@ -1176,3 +1176,7 @@ export const TOOLS: ToolItem[] = [
     ]
   }
 ];
+
+import { EXTRA_TOOLS } from './extraTools';
+
+export const TOOLS: ToolItem[] = [...EXTRA_TOOLS, ...BASE_TOOLS];

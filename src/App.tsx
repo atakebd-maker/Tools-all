@@ -9,6 +9,7 @@ import { About } from './pages/About';
 import { PrivacyPolicy } from './pages/PrivacyPolicy';
 import { Terms } from './pages/Terms';
 import { Contact } from './pages/Contact';
+import { Disclaimer } from './pages/Disclaimer';
 import { NotFound } from './pages/NotFound';
 import { TOOLS } from './data/tools';
 import { CATEGORIES } from './data/categories';
@@ -131,6 +132,10 @@ export default function App() {
 
     if (currentPath === '/contact') {
       return <Contact onNavigateHome={() => navigate('/')} />;
+    }
+
+    if (currentPath === '/disclaimer') {
+      return <Disclaimer onNavigateHome={() => navigate('/')} />;
     }
 
     return (
