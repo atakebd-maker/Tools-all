@@ -1,5 +1,27 @@
 # Zynovexa Robots.txt
+# https://zynovexa.com
+# Optimized for Google Search Console & Search Engine Rankers
+
 User-agent: *
 Allow: /
 
+# Googlebot crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Googlebot-Mobile
+Allow: /
+
+# Microsoft Bing
+User-agent: Bingbot
+Allow: /
+
+# Disallow transient query strings or private assets if any
+Disallow: /api/gemini
+Disallow: /api/inspect-ad-image
+
+# Canonical XML Sitemap
 Sitemap: https://zynovexa.com/sitemap.xml

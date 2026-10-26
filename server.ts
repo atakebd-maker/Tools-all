@@ -219,11 +219,15 @@ Output strictly valid JSON format only without markdown blocks.`;
 
   // Sitemap.xml endpoint (dynamic & SEO ready)
   app.get('/sitemap.xml', (req, res) => {
+    res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
     res.sendFile(path.resolve(__dirname, 'public', 'sitemap.xml'));
   });
 
   // Robots.txt endpoint
   app.get('/robots.txt', (req, res) => {
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
     res.sendFile(path.resolve(__dirname, 'public', 'robots.txt'));
   });
 

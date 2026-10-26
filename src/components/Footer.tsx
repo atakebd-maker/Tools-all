@@ -147,6 +147,26 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   Contact Us
                 </button>
               </li>
+              <li>
+                <a
+                  href="/sitemap.xml"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-slate-400 hover:text-white transition-colors cursor-pointer inline-flex items-center gap-1.5"
+                >
+                  Sitemap (XML)
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/robots.txt"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-slate-400 hover:text-white transition-colors cursor-pointer inline-flex items-center gap-1.5"
+                >
+                  Robots.txt
+                </a>
+              </li>
             </ul>
           </div>
         </div>
