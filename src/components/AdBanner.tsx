@@ -28,6 +28,7 @@ export const AdBanner: React.FC<AdBannerProps> = ({
   wrapperClassName = ''
 }) => {
   const uniqueId = useId();
+  const [isRevealed, setIsRevealed] = useState<boolean>(false);
   const [isFiltered, setIsFiltered] = useState<boolean>(() => {
     // Check config-level slot override
     if (!AD_FILTER_CONFIG.filteringEnabled) return false;
@@ -49,6 +50,16 @@ export const AdBanner: React.FC<AdBannerProps> = ({
     return false;
   });
 
+  // Pre-inspection timer: Keep ad completely invisible (100% pure white) until
+  // Gemini AI and scanner have checked the creative for visible women / girls.
+  useEffect(() => {
+    if (isFiltered) return;
+    const timer = setTimeout(() => {
+      setIsRevealed(true);
+    }, 1200);
+    return () => clearTimeout(timer);
+  }, [isFiltered]);
+
   // Listen for image inspection messages from inside the sandbox
   useEffect(() => {
     if (!AD_FILTER_CONFIG.filteringEnabled) return;
@@ -56,6 +67,7 @@ export const AdBanner: React.FC<AdBannerProps> = ({
     const handleMessage = (event: MessageEvent) => {
       if (event.data?.type === 'AD_FILTER_FEMALE_DETECTED' && event.data?.key === adKey) {
         setIsFiltered(true);
+        setIsRevealed(false);
         try {
           const stored = localStorage.getItem('zynovexa_flagged_ads');
           const list = stored ? JSON.parse(stored) : [];
@@ -269,11 +281,13 @@ export const AdBanner: React.FC<AdBannerProps> = ({
         </span>
       )}
       <div
-        className={`relative flex items-center justify-center bg-slate-50/70 border border-slate-200/80 rounded-lg overflow-hidden transition-all duration-200 ${className}`}
+        className={`relative flex items-center justify-center bg-white border border-slate-200/80 rounded-lg overflow-hidden transition-opacity duration-300 ${className}`}
         style={{
           width: `${width}px`,
           maxWidth: '100%',
-          minHeight: `${height}px`
+          minHeight: `${height}px`,
+          backgroundColor: '#FFFFFF',
+          opacity: isRevealed ? 1 : 0
         }}
       >
         <iframe
@@ -286,7 +300,8 @@ export const AdBanner: React.FC<AdBannerProps> = ({
             border: 0,
             overflow: 'hidden',
             width: `${width}px`,
-            height: `${height}px`
+            height: `${height}px`,
+            backgroundColor: '#FFFFFF'
           }}
           scrolling="no"
           loading="lazy"
