@@ -123,107 +123,108 @@ export const AdBanner: React.FC<AdBannerProps> = ({
   </div>
 
   <script type="text/javascript">
-    // Gemini AI Creative & Image Inspector
+    // Comprehensive Islamic & Modesty Ad Analyzer
     (function() {
       try {
         var inspectedUrls = new Set();
+        var forbiddenKeywords = [
+          // Female & Dating keywords
+          'girl', 'woman', 'female', 'dating', 'bride', 'model', 'lady', 'single', 'romance',
+          'beauty', 'asian', 'russian', 'bikini', 'underwear', 'hot', 'sexy', 'cleavage',
+          // Gambling & Casino keywords (1win, Melbet, 1xbet use female models)
+          '1win', 'melbet', '1xbet', 'casino', 'betting', 'poker', 'roulette', 'jackpot',
+          'parimatch', 'mostbet', 'pin-up', 'gambl', 'super bonus', 'odds', 'payout',
+          'bonus', 'deposit', 'sportsbook', 'free spin', 'slot'
+        ];
 
-        function callGeminiAdInspector(imageUrl, adText) {
-          if (!imageUrl && !adText) return;
-          if (imageUrl && inspectedUrls.has(imageUrl)) return;
-          if (imageUrl) inspectedUrls.add(imageUrl);
-
-          fetch('/api/inspect-ad-image', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              imageUrl: imageUrl,
-              adText: adText,
-              adKey: '${adKey}'
-            })
-          })
-          .then(function(res) { return res.json(); })
-          .then(function(data) {
-            if (data && data.hasFemale === true) {
-              window.parent.postMessage({ type: 'AD_FILTER_FEMALE_DETECTED', key: '${adKey}' }, '*');
-            }
-          })
-          .catch(function() {});
+        function flagAd() {
+          window.parent.postMessage({ type: 'AD_FILTER_FEMALE_DETECTED', key: '${adKey}' }, '*');
         }
 
-        function checkImageForPerson(img) {
-          if (!img) return;
-          try {
-            var src = (img.src || '').toLowerCase();
-            var alt = (img.alt || '').toLowerCase();
-            var title = (img.title || '').toLowerCase();
-            var combined = src + ' ' + alt + ' ' + title;
+        function checkTextForForbidden(text) {
+          if (!text) return false;
+          var lower = text.toLowerCase();
+          for (var i = 0; i < forbiddenKeywords.length; i++) {
+            if (lower.indexOf(forbiddenKeywords[i]) !== -1) {
+              flagAd();
+              return true;
+            }
+          }
+          return false;
+        }
 
-            // Direct keywords detection
-            var femaleKeywords = ['girl', 'woman', 'female', 'dating', 'bride', 'model', 'lady', 'single', 'romance', 'beauty', 'asian', 'russian'];
-            for (var i = 0; i < femaleKeywords.length; i++) {
-              if (combined.indexOf(femaleKeywords[i]) !== -1) {
-                window.parent.postMessage({ type: 'AD_FILTER_FEMALE_DETECTED', key: '${adKey}' }, '*');
-                return;
+        function inspectNode(node) {
+          if (!node) return;
+          try {
+            var text = (node.innerText || node.textContent || '');
+            var src = (node.src || '');
+            var href = (node.href || '');
+            var alt = (node.alt || '');
+            var title = (node.title || '');
+            var id = (node.id || '');
+            var cls = (node.className || '');
+            var all = text + ' ' + src + ' ' + href + ' ' + alt + ' ' + title + ' ' + id + ' ' + cls;
+
+            if (checkTextForForbidden(all)) return;
+
+            // If image element, check canvas and call Gemini AI
+            if (node.tagName === 'IMG') {
+              var imgSrc = (node.src || '').toLowerCase();
+              if (checkTextForForbidden(imgSrc)) return;
+
+              if (node.src && node.src.indexOf('http') === 0 && !inspectedUrls.has(node.src)) {
+                inspectedUrls.add(node.src);
+                fetch('/api/inspect-ad-image', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    imageUrl: node.src,
+                    adText: all,
+                    adKey: '${adKey}'
+                  })
+                })
+                .then(function(res) { return res.json(); })
+                .then(function(data) {
+                  if (data && data.hasFemale === true) {
+                    flagAd();
+                  }
+                })
+                .catch(function() {});
               }
             }
 
-            // Send image or image URL to server-side Google Gemini AI Vision
-            if (img.src && img.src.indexOf('http') === 0) {
-              callGeminiAdInspector(img.src, combined);
-            }
-
-            // Same-origin canvas pixel biometric check (if accessible)
-            if (img.complete && img.naturalWidth > 20) {
-              try {
-                var canvas = document.createElement('canvas');
-                canvas.width = Math.min(img.naturalWidth, 120);
-                canvas.height = Math.min(img.naturalHeight, 120);
-                var ctx = canvas.getContext('2d');
-                if (ctx) {
-                  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                  var base64 = canvas.toDataURL('image/jpeg', 0.7);
-                  fetch('/api/inspect-ad-image', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                      imageBase64: base64,
-                      adKey: '${adKey}'
-                    })
-                  })
-                  .then(function(r) { return r.json(); })
-                  .then(function(d) {
-                    if (d && d.hasFemale === true) {
-                      window.parent.postMessage({ type: 'AD_FILTER_FEMALE_DETECTED', key: '${adKey}' }, '*');
-                    }
-                  })
-                  .catch(function() {});
-                }
-              } catch (corsErr) {}
+            // If iframe or anchor, inspect attributes
+            if (node.tagName === 'IFRAME') {
+              if (checkTextForForbidden(node.src || '')) return;
             }
           } catch (e) {}
         }
 
-        // MutationObserver to inspect dynamically inserted ad elements
+        // MutationObserver inspecting all inserted elements and attributes
         if (window.MutationObserver) {
           var observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(m) {
               for (var i = 0; i < m.addedNodes.length; i++) {
                 var node = m.addedNodes[i];
-                if (node.tagName === 'IMG') {
-                  node.onload = function() { checkImageForPerson(node); };
-                  checkImageForPerson(node);
-                } else if (node.querySelectorAll) {
-                  var imgs = node.querySelectorAll('img');
-                  for (var j = 0; j < imgs.length; j++) {
-                    checkImageForPerson(imgs[j]);
+                inspectNode(node);
+                if (node.querySelectorAll) {
+                  var subNodes = node.querySelectorAll('*');
+                  for (var j = 0; j < subNodes.length; j++) {
+                    inspectNode(subNodes[j]);
                   }
                 }
               }
             });
           });
-          observer.observe(document.body, { childList: true, subtree: true });
+          observer.observe(document.body, { childList: true, subtree: true, attributes: true });
         }
+
+        // Periodic deep check of body content
+        setInterval(function() {
+          try {
+            checkTextForForbidden(document.body.innerHTML || '');
+          } catch(err) {}
+        }, 500);
       } catch (err) {}
     })();
   </script>
@@ -276,9 +277,27 @@ export const AdBanner: React.FC<AdBannerProps> = ({
       onDoubleClick={handleDiscreetWhiteout}
     >
       {label && (
-        <span className="text-[10px] tracking-wider text-slate-400 font-semibold uppercase mb-1">
-          Advertisement
-        </span>
+        <div
+          className="flex items-center justify-between px-1 mb-1"
+          style={{ width: `${Math.min(width, 728)}px`, maxWidth: '100%' }}
+        >
+          <span
+            onClick={handleDiscreetWhiteout}
+            className="text-[10px] tracking-wider text-slate-400 font-semibold uppercase cursor-pointer select-none"
+            title="Tap to whiteout ad"
+          >
+            Advertisement
+          </span>
+          <button
+            type="button"
+            onClick={handleDiscreetWhiteout}
+            className="text-[11px] text-slate-400 hover:text-slate-600 active:text-red-600 px-1.5 py-0.5 rounded cursor-pointer transition-colors"
+            title="Whiteout ad (#FFFFFF)"
+            aria-label="Whiteout ad"
+          >
+            ✕
+          </button>
+        </div>
       )}
       <div
         className={`relative flex items-center justify-center bg-white border border-slate-200/80 rounded-lg overflow-hidden transition-opacity duration-300 ${className}`}
