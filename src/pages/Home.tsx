@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CATEGORIES } from '../data/categories';
 import { TOOLS } from '../data/tools';
 import { CategoryCard } from '../components/CategoryCard';
@@ -17,6 +17,29 @@ import {
   Sparkles,
   CheckCircle2
 } from 'lucide-react';
+
+export const HOME_FAQS = [
+  {
+    q: 'Are all the tools on Zynovexa free?',
+    a: 'Yes, 100% of the tools on Zynovexa are completely free to use with no hidden fees, subscriptions, or feature paywalls.'
+  },
+  {
+    q: 'Are my files or images uploaded to a remote server?',
+    a: 'No. Zynovexa operates entirely on the client side. Your images, PDF documents, text, and files are manipulated locally using your browser\'s HTML5 Canvas, Web Cryptography, and local Web APIs. Nothing is uploaded to any remote server.'
+  },
+  {
+    q: 'Do I need to sign up or create an account?',
+    a: 'No registration or account creation is required. You can use every tool immediately without providing an email, password, or credit card.'
+  },
+  {
+    q: 'Which web browsers are supported?',
+    a: 'All modern standards-compliant web browsers are fully supported, including Google Chrome, Mozilla Firefox, Apple Safari, Microsoft Edge, and mobile browser equivalents on iOS and Android.'
+  },
+  {
+    q: 'Why do very large files sometimes take a few moments to process?',
+    a: 'Because all image and PDF decoding is performed directly on your device rather than a cloud server farm, very large files (e.g. 50+ megapixel photos or hundreds of PDF pages) rely on your device\'s local CPU and RAM.'
+  }
+];
 
 interface HomeProps {
   onNavigate: (path: string) => void;
@@ -39,6 +62,36 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSelectTool }) => {
       onNavigate('/all-tools');
     }
   };
+
+  // Inject & synchronize Schema.org FAQPage JSON-LD structured data in document.head
+  useEffect(() => {
+    const faqSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: HOME_FAQS.map((faq) => ({
+        '@type': 'Question',
+        name: faq.q,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: faq.a
+        }
+      }))
+    };
+
+    let scriptTag = document.getElementById('home-faq-jsonld') as HTMLScriptElement | null;
+    if (!scriptTag) {
+      scriptTag = document.createElement('script');
+      scriptTag.id = 'home-faq-jsonld';
+      scriptTag.type = 'application/ld+json';
+      document.head.appendChild(scriptTag);
+    }
+    scriptTag.textContent = JSON.stringify(faqSchema);
+
+    return () => {
+      const el = document.getElementById('home-faq-jsonld');
+      if (el) el.remove();
+    };
+  }, []);
 
   return (
     <div className="space-y-16 lg:space-y-24 pb-16">
@@ -300,6 +353,25 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSelectTool }) => {
 
       {/* Frequently Asked Questions */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* JSON-LD FAQ Schema Markup Component Output for Search Engines */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'FAQPage',
+              mainEntity: HOME_FAQS.map((faq) => ({
+                '@type': 'Question',
+                name: faq.q,
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: faq.a
+                }
+              }))
+            })
+          }}
+        />
+
         <div className="text-center mb-10 space-y-2">
           <div className="flex items-center justify-center gap-1.5 text-xs font-bold text-blue-600 uppercase tracking-wider">
             <HelpCircle className="w-4 h-4" />
@@ -311,40 +383,15 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSelectTool }) => {
         </div>
 
         <div className="space-y-4">
-          <div className="p-6 bg-white border border-slate-200 rounded-2xl shadow-2xs space-y-2">
-            <h3 className="font-bold text-slate-900 text-base">Are all the tools on Zynovexa free?</h3>
-            <p className="text-slate-600 text-sm leading-relaxed">
-              Yes, 100% of the tools are completely free to use with no hidden fees, subscriptions, or feature paywalls.
-            </p>
-          </div>
-
-          <div className="p-6 bg-white border border-slate-200 rounded-2xl shadow-2xs space-y-2">
-            <h3 className="font-bold text-slate-900 text-base">Are my files or images uploaded to a remote server?</h3>
-            <p className="text-slate-600 text-sm leading-relaxed">
-              No. Zynovexa operates entirely on the client side. Your images, PDF documents, text, and files are manipulated locally using your browser's HTML5 Canvas, Web Cryptography, and local Web APIs.
-            </p>
-          </div>
-
-          <div className="p-6 bg-white border border-slate-200 rounded-2xl shadow-2xs space-y-2">
-            <h3 className="font-bold text-slate-900 text-base">Do I need to sign up or create an account?</h3>
-            <p className="text-slate-600 text-sm leading-relaxed">
-              No registration or account creation is required. You can jump directly into any tool whenever you need it.
-            </p>
-          </div>
-
-          <div className="p-6 bg-white border border-slate-200 rounded-2xl shadow-2xs space-y-2">
-            <h3 className="font-bold text-slate-900 text-base">Which web browsers are supported?</h3>
-            <p className="text-slate-600 text-sm leading-relaxed">
-              All modern standards-compliant web browsers are fully supported, including Google Chrome, Mozilla Firefox, Apple Safari, Microsoft Edge, and mobile browser equivalents on iOS and Android.
-            </p>
-          </div>
-
-          <div className="p-6 bg-white border border-slate-200 rounded-2xl shadow-2xs space-y-2">
-            <h3 className="font-bold text-slate-900 text-base">Why do very large files sometimes take a few moments to process?</h3>
-            <p className="text-slate-600 text-sm leading-relaxed">
-              Because all image and PDF decoding is performed directly on your device rather than a cloud server farm, very large files (e.g. 50+ megapixel photos or hundreds of PDF pages) rely on your device's local CPU and RAM.
-            </p>
-          </div>
+          {HOME_FAQS.map((faq, index) => (
+            <div
+              key={index}
+              className="p-6 bg-white border border-slate-200 rounded-2xl shadow-2xs space-y-2 hover:border-blue-200 transition-colors"
+            >
+              <h3 className="font-bold text-slate-900 text-base">{faq.q}</h3>
+              <p className="text-slate-600 text-sm leading-relaxed">{faq.a}</p>
+            </div>
+          ))}
         </div>
       </section>
     </div>

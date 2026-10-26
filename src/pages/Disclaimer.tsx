@@ -33,21 +33,6 @@ export const Disclaimer: React.FC<DisclaimerProps> = ({ onNavigateHome }) => {
           </div>
         </div>
 
-        {/* AI Content Disclaimer */}
-        <section className="space-y-3">
-          <div className="flex items-center gap-2">
-            <Cpu className="w-5 h-5 text-blue-600" />
-            <h2 className="text-xl font-bold text-slate-900 m-0">AI-Powered Features Disclaimer</h2>
-          </div>
-          <p>
-            Certain tools on Zynovexa utilize the Google Gemini API to generate text, code, translations, and educational content. 
-            AI-generated content may occasionally produce inaccurate, incomplete, or biased information. Users must review, test, and verify any generated code, financial calculations, or written text before deploying it in production or relying on it for official matters.
-          </p>
-          <p>
-            Zynovexa and its operators do not claim that generated code has been compiled, unit-tested, or security-audited on your behalf.
-          </p>
-        </section>
-
         {/* Financial Calculators Disclaimer */}
         <section className="space-y-3">
           <div className="flex items-center gap-2">
@@ -69,7 +54,7 @@ export const Disclaimer: React.FC<DisclaimerProps> = ({ onNavigateHome }) => {
             <h2 className="text-xl font-bold text-slate-900 m-0">File Handling & Local Privacy</h2>
           </div>
           <p>
-            All non-AI file operations (including image resizing, cropping, compression, PDF merging, and text manipulations) are processed locally within your web browser using HTML5 Canvas, Web Cryptography, and client-side JavaScript. None of your source files are uploaded to or stored on our servers.
+            All file operations, conversions, calculations, and data processing (including image resizing, cropping, compression, PDF merging, format conversions, and text manipulations) are processed 100% locally within your web browser using HTML5 Canvas, Web Cryptography, and client-side JavaScript. None of your source files or private input data are ever uploaded to or stored on any server.
           </p>
         </section>
 
