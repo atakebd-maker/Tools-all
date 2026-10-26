@@ -12,58 +12,6 @@ export interface Category {
 
 export const CATEGORIES: Category[] = [
   {
-    id: 'ai-writing',
-    name: 'AI Writing Tools',
-    slug: 'ai-writing',
-    description: 'Generate blog posts, essays, stories, emails, summaries, and copy powered by Google Gemini AI.',
-    icon: 'Sparkles',
-    color: 'text-violet-600 bg-violet-50 border-violet-200',
-    seoTitle: 'Zynovexa - Free AI Writing Tools with Google Gemini',
-    metaDescription: 'Free online AI writing tools powered by Google Gemini. Write blog posts, essays, emails, social captions, summaries, and product copy instantly.',
-    keywords: [
-      'free ai writer online',
-      'google gemini writing tools',
-      'ai essay writer free',
-      'ai blog generator',
-      'ai email writer',
-      'zynovexa ai tools'
-    ]
-  },
-  {
-    id: 'ai-developer',
-    name: 'AI Developer Tools',
-    slug: 'ai-developer',
-    description: 'Intelligent code generation, bug fixing, SQL query building, regex generator, and syntax explanation.',
-    icon: 'Code2',
-    color: 'text-blue-600 bg-blue-50 border-blue-200',
-    seoTitle: 'Zynovexa - Free AI Developer Tools & Code Generator',
-    metaDescription: 'Free AI code generator, debugger, SQL builder, regex tester, and programming tutor powered by Google Gemini.',
-    keywords: [
-      'ai code generator online',
-      'ai sql generator free',
-      'ai code debugger',
-      'ai regex generator',
-      'programming tutor ai'
-    ]
-  },
-  {
-    id: 'ai-education',
-    name: 'AI Chat & Education',
-    slug: 'ai-education',
-    description: 'Interactive AI assistant, quiz maker, flashcard generator, study planner, and interview question prep.',
-    icon: 'GraduationCap',
-    color: 'text-emerald-600 bg-emerald-50 border-emerald-200',
-    seoTitle: 'Zynovexa - Free AI Education & Interactive Learning Tools',
-    metaDescription: 'Free AI learning tools powered by Gemini. Generate quizzes, active-recall flashcards, personalized study schedules, and interview questions.',
-    keywords: [
-      'ai quiz generator online',
-      'ai flashcards free',
-      'ai study plan generator',
-      'ai chatbot free',
-      'interview prep ai'
-    ]
-  },
-  {
     id: 'image-tools',
     name: 'Image Tools',
     slug: 'image-tools',
