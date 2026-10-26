@@ -40,23 +40,23 @@ export const ToolWrapper: React.FC<ToolWrapperProps> = ({
         ]}
       />
 
-      {/* Tool Top Leaderboard Ad (728x90) - Appears at the very top of each tool */}
-      <div className="w-full flex justify-center my-4 overflow-hidden">
-        <div className="max-w-full overflow-x-auto flex justify-center py-1">
+      {/* Tool Top Banner (468x60) - Opens at top of each tool */}
+      <div className="w-full flex justify-center my-3 overflow-hidden">
+        <div className="max-w-full overflow-x-auto flex justify-center">
           <AdBanner
-            adKey={AD_KEYS.TOOL_TOP_LEADERBOARD}
-            slotType="toolLeaderboard"
-            width={728}
-            height={90}
+            adKey={AD_KEYS.TOOL_HEADER_AND_MID}
+            slotType="toolTop"
+            width={468}
+            height={60}
             label={true}
-            wrapperClassName="!my-0 scale-[0.82] sm:scale-95 md:scale-100 origin-center"
+            wrapperClassName="!my-0 scale-90 sm:scale-100 origin-center"
             className="bg-white shadow-2xs"
           />
         </div>
       </div>
 
       {/* Header */}
-      <div className="mb-8">
+      <div className="mb-8 mt-2">
         <div className="flex items-center gap-3 mb-2 flex-wrap">
           <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">{name}</h1>
           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
@@ -74,16 +74,19 @@ export const ToolWrapper: React.FC<ToolWrapperProps> = ({
         {children}
       </div>
 
-      {/* Content Rectangle Ad (300x250) - Clean placement right below tool output */}
-      <div className="w-full flex justify-center my-6">
-        <AdBanner
-          adKey={AD_KEYS.CONTENT_RECTANGLE}
-          slotType="contentRectangle"
-          width={300}
-          height={250}
-          label={true}
-          className="bg-white shadow-2xs"
-        />
+      {/* Tool Middle Ad Banner (468x60) - Inside middle space */}
+      <div className="w-full flex justify-center my-6 overflow-hidden">
+        <div className="max-w-full overflow-x-auto flex justify-center">
+          <AdBanner
+            adKey={AD_KEYS.TOOL_HEADER_AND_MID}
+            slotType="toolMiddle"
+            width={468}
+            height={60}
+            label={true}
+            wrapperClassName="!my-0 scale-90 sm:scale-100 origin-center"
+            className="bg-white shadow-2xs"
+          />
+        </div>
       </div>
 
       {/* Privacy Banner */}
@@ -155,36 +158,33 @@ export const ToolWrapper: React.FC<ToolWrapperProps> = ({
       {/* Related Tools & Sponsored Vertical Ad Unit */}
       {relatedTools && relatedTools.length > 0 && (
         <div className="mt-8 pt-8 border-t border-slate-200">
-          <div className="flex flex-col lg:flex-row gap-6 items-start">
-            <div className="flex-1 w-full">
-              <h2 className="text-xl font-bold text-slate-900 mb-4">Related Tools</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {relatedTools.map((tool) => (
-                  <button
-                    key={tool.id}
-                    onClick={tool.onSelect}
-                    className="text-left p-4 rounded-xl border border-slate-200 bg-white hover:border-blue-300 hover:shadow-md transition-all group cursor-pointer"
-                  >
-                    <h3 className="font-semibold text-slate-900 group-hover:text-blue-600 transition-colors text-base mb-1">
-                      {tool.name}
-                    </h3>
-                    <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
-                      {tool.description}
-                    </p>
-                  </button>
-                ))}
-              </div>
+          <div>
+            <h2 className="text-xl font-bold text-slate-900 mb-4">Related Tools</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {relatedTools.map((tool) => (
+                <button
+                  key={tool.id}
+                  onClick={tool.onSelect}
+                  className="text-left p-4 rounded-xl border border-slate-200 bg-white hover:border-blue-300 hover:shadow-md transition-all group cursor-pointer"
+                >
+                  <h3 className="font-semibold text-slate-900 group-hover:text-blue-600 transition-colors text-base mb-1">
+                    {tool.name}
+                  </h3>
+                  <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                    {tool.description}
+                  </p>
+                </button>
+              ))}
             </div>
 
-            {/* Secondary 160x300 Vertical Ad */}
-            <div className="w-full lg:w-auto flex flex-col items-center justify-center p-2 rounded-2xl bg-slate-50/70 border border-slate-200/80 shrink-0 self-center lg:self-start">
+            {/* Multi-Placement Ad Unit (320x50) */}
+            <div className="w-full flex justify-center mt-6">
               <AdBanner
-                adKey={AD_KEYS.SECONDARY_VERTICAL}
-                slotType="secondaryVertical"
-                width={160}
-                height={300}
+                adKey={AD_KEYS.MULTI_PLACEMENT_BANNER}
+                slotType="multiPlacement"
+                width={320}
+                height={50}
                 label={true}
-                wrapperClassName="!my-0"
                 className="bg-white shadow-2xs"
               />
             </div>

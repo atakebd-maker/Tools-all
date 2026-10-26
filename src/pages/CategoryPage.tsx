@@ -92,18 +92,18 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({
             />
           ))}
         </div>
-      </div>
 
-      {/* Sponsored Ad Unit (300x250) */}
-      <div className="flex justify-center py-2">
-        <AdBanner
-          adKey={AD_KEYS.CONTENT_RECTANGLE}
-          slotType="contentRectangle"
-          width={300}
-          height={250}
-          label={true}
-          className="bg-white shadow-2xs"
-        />
+        {/* Multi-Placement Ad Unit (320x50) */}
+        <div className="flex justify-center mt-8">
+          <AdBanner
+            adKey={AD_KEYS.MULTI_PLACEMENT_BANNER}
+            slotType="multiPlacement"
+            width={320}
+            height={50}
+            label={true}
+            className="bg-white shadow-2xs"
+          />
+        </div>
       </div>
 
       {/* Explore other categories */}

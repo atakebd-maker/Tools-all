@@ -106,6 +106,18 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSelectTool }) => {
             </span>
           </div>
         </div>
+
+        {/* Multi-Placement Ad Banner (320x50) */}
+        <div className="flex justify-center mt-6">
+          <AdBanner
+            adKey={AD_KEYS.MULTI_PLACEMENT_BANNER}
+            slotType="multiPlacement"
+            width={320}
+            height={50}
+            label={true}
+            className="bg-white shadow-2xs"
+          />
+        </div>
       </section>
 
       {/* Popular Tools Section */}
@@ -213,18 +225,18 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSelectTool }) => {
             );
           })}
         </div>
-      </section>
 
-      {/* Sponsored Ad Unit (300x250) - Cleanly integrated */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center py-2">
-        <AdBanner
-          adKey={AD_KEYS.CONTENT_RECTANGLE}
-          slotType="contentRectangle"
-          width={300}
-          height={250}
-          label={true}
-          className="bg-white shadow-2xs"
-        />
+        {/* Multi-Placement Ad Banner (320x50) */}
+        <div className="flex justify-center mt-8">
+          <AdBanner
+            adKey={AD_KEYS.MULTI_PLACEMENT_BANNER}
+            slotType="multiPlacement"
+            width={320}
+            height={50}
+            label={true}
+            className="bg-white shadow-2xs"
+          />
+        </div>
       </section>
 
       {/* Why Choose Zynovexa Section */}

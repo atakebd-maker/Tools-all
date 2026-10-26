@@ -2,11 +2,10 @@ import React, { useId, useState, useEffect } from 'react';
 import { AD_FILTER_CONFIG } from '../config/adFilterConfig';
 
 export type AdSlotType =
-  | 'topBanner'
-  | 'sideSkyscrapers'
-  | 'toolLeaderboard'
-  | 'contentRectangle'
-  | 'secondaryVertical';
+  | 'websiteTop'
+  | 'toolTop'
+  | 'toolMiddle'
+  | 'multiPlacement';
 
 interface AdBannerProps {
   adKey: string;
@@ -23,20 +22,19 @@ export const AdBanner: React.FC<AdBannerProps> = ({
   width,
   height,
   slotType,
-  label = true,
+  label = false,
   className = '',
   wrapperClassName = ''
 }) => {
   const uniqueId = useId();
   const [isRevealed, setIsRevealed] = useState<boolean>(false);
   const [isFiltered, setIsFiltered] = useState<boolean>(() => {
-    // Check config-level slot override
     if (!AD_FILTER_CONFIG.filteringEnabled) return false;
-    if (slotType && AD_FILTER_CONFIG.slots[slotType]?.forceWhiteout) {
-      return true;
-    }
-    // Check localStorage cache for flagged ad keys
+    if (AD_FILTER_CONFIG.masterWhiteout) return true;
     try {
+      if (localStorage.getItem('zynovexa_master_whiteout') === 'true') {
+        return true;
+      }
       const stored = localStorage.getItem('zynovexa_flagged_ads');
       if (stored) {
         const flaggedList = JSON.parse(stored);
@@ -44,19 +42,16 @@ export const AdBanner: React.FC<AdBannerProps> = ({
           return true;
         }
       }
-    } catch (e) {
-      // Ignore storage errors
-    }
+    } catch (e) {}
     return false;
   });
 
-  // Pre-inspection timer: Keep ad completely invisible (100% pure white) until
-  // Gemini AI and scanner have checked the creative for visible women / girls.
+  // Zero-flash pre-inspection buffer: hold white until scanner inspects content
   useEffect(() => {
     if (isFiltered) return;
     const timer = setTimeout(() => {
       setIsRevealed(true);
-    }, 1200);
+    }, 1100);
     return () => clearTimeout(timer);
   }, [isFiltered]);
 
@@ -75,9 +70,7 @@ export const AdBanner: React.FC<AdBannerProps> = ({
             list.push(adKey);
             localStorage.setItem('zynovexa_flagged_ads', JSON.stringify(list));
           }
-        } catch (e) {
-          // Ignore
-        }
+        } catch (e) {}
       }
     };
 
@@ -85,9 +78,6 @@ export const AdBanner: React.FC<AdBannerProps> = ({
     return () => window.removeEventListener('message', handleMessage);
   }, [adKey]);
 
-  // Sandboxed iframe content with isolated script execution and privacy-safe image scanning
-  // When cross-origin security permits, inspects loaded images.
-  // If a female person / model photo is detected, reports back to replace ad with pure white (#FFFFFF).
   const adHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -123,15 +113,12 @@ export const AdBanner: React.FC<AdBannerProps> = ({
   </div>
 
   <script type="text/javascript">
-    // Comprehensive Islamic & Modesty Ad Analyzer
     (function() {
       try {
         var inspectedUrls = new Set();
         var forbiddenKeywords = [
-          // Female & Dating keywords
           'girl', 'woman', 'female', 'dating', 'bride', 'model', 'lady', 'single', 'romance',
           'beauty', 'asian', 'russian', 'bikini', 'underwear', 'hot', 'sexy', 'cleavage',
-          // Gambling & Casino keywords (1win, Melbet, 1xbet use female models)
           '1win', 'melbet', '1xbet', 'casino', 'betting', 'poker', 'roulette', 'jackpot',
           'parimatch', 'mostbet', 'pin-up', 'gambl', 'super bonus', 'odds', 'payout',
           'bonus', 'deposit', 'sportsbook', 'free spin', 'slot'
@@ -141,7 +128,7 @@ export const AdBanner: React.FC<AdBannerProps> = ({
           window.parent.postMessage({ type: 'AD_FILTER_FEMALE_DETECTED', key: '${adKey}' }, '*');
         }
 
-        function checkTextForForbidden(text) {
+        function checkText(text) {
           if (!text) return false;
           var lower = text.toLowerCase();
           for (var i = 0; i < forbiddenKeywords.length; i++) {
@@ -156,51 +143,31 @@ export const AdBanner: React.FC<AdBannerProps> = ({
         function inspectNode(node) {
           if (!node) return;
           try {
-            var text = (node.innerText || node.textContent || '');
-            var src = (node.src || '');
-            var href = (node.href || '');
-            var alt = (node.alt || '');
-            var title = (node.title || '');
-            var id = (node.id || '');
-            var cls = (node.className || '');
-            var all = text + ' ' + src + ' ' + href + ' ' + alt + ' ' + title + ' ' + id + ' ' + cls;
+            var all = (node.innerText || '') + ' ' + (node.src || '') + ' ' + (node.href || '') + ' ' + (node.alt || '') + ' ' + (node.title || '');
+            if (checkText(all)) return;
 
-            if (checkTextForForbidden(all)) return;
-
-            // If image element, check canvas and call Gemini AI
-            if (node.tagName === 'IMG') {
-              var imgSrc = (node.src || '').toLowerCase();
-              if (checkTextForForbidden(imgSrc)) return;
-
-              if (node.src && node.src.indexOf('http') === 0 && !inspectedUrls.has(node.src)) {
-                inspectedUrls.add(node.src);
-                fetch('/api/inspect-ad-image', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    imageUrl: node.src,
-                    adText: all,
-                    adKey: '${adKey}'
-                  })
+            if (node.tagName === 'IMG' && node.src && node.src.indexOf('http') === 0 && !inspectedUrls.has(node.src)) {
+              inspectedUrls.add(node.src);
+              fetch('/api/inspect-ad-image', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  imageUrl: node.src,
+                  adText: all,
+                  adKey: '${adKey}'
                 })
-                .then(function(res) { return res.json(); })
-                .then(function(data) {
-                  if (data && data.hasFemale === true) {
-                    flagAd();
-                  }
-                })
-                .catch(function() {});
-              }
+              })
+              .then(function(res) { return res.json(); })
+              .then(function(data) {
+                if (data && data.hasFemale === true) {
+                  flagAd();
+                }
+              })
+              .catch(function() {});
             }
-
-            // If iframe or anchor, inspect attributes
-            if (node.tagName === 'IFRAME') {
-              if (checkTextForForbidden(node.src || '')) return;
-            }
-          } catch (e) {}
+          } catch(e) {}
         }
 
-        // MutationObserver inspecting all inserted elements and attributes
         if (window.MutationObserver) {
           var observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(m) {
@@ -219,25 +186,22 @@ export const AdBanner: React.FC<AdBannerProps> = ({
           observer.observe(document.body, { childList: true, subtree: true, attributes: true });
         }
 
-        // Periodic deep check of body content
         setInterval(function() {
           try {
-            checkTextForForbidden(document.body.innerHTML || '');
-          } catch(err) {}
-        }, 500);
-      } catch (err) {}
+            checkText(document.body.innerHTML || '');
+          } catch(e) {}
+        }, 600);
+      } catch(err) {}
     })();
   </script>
 </body>
 </html>`;
 
-  // REQUIREMENT 2 & 3:
-  // If filtered, replace the entire visible area with a completely plain white background (#FFFFFF).
-  // Do NOT display any text, warning, icon, image, or placeholder inside the white replacement area.
+  // If filtered by AI or user tap, replace with pure white #FFFFFF with NO text/icon/placeholder
   if (isFiltered) {
     return (
       <div
-        className={`ad-container flex flex-col items-center justify-center my-3 select-none ${wrapperClassName}`}
+        className={`ad-container flex flex-col items-center justify-center my-2 select-none ${wrapperClassName}`}
         aria-hidden="true"
       >
         <div
@@ -256,10 +220,9 @@ export const AdBanner: React.FC<AdBannerProps> = ({
     );
   }
 
-  // Double-click discreet fallback: In case an ad is inside a cross-origin iframe blocking pixel reading,
-  // the user or admin can double click the ad box to instantly turn it 100% white (#FFFFFF) permanently.
   const handleDiscreetWhiteout = () => {
     setIsFiltered(true);
+    setIsRevealed(false);
     try {
       const stored = localStorage.getItem('zynovexa_flagged_ads');
       const list = stored ? JSON.parse(stored) : [];
@@ -270,10 +233,9 @@ export const AdBanner: React.FC<AdBannerProps> = ({
     } catch (e) {}
   };
 
-  // Normal Advertisement Render (Preserved for Halal/Appropriate Ads)
   return (
     <div
-      className={`ad-container flex flex-col items-center justify-center my-3 select-none ${wrapperClassName}`}
+      className={`ad-container flex flex-col items-center justify-center my-2 select-none ${wrapperClassName}`}
       onDoubleClick={handleDiscreetWhiteout}
     >
       {label && (
@@ -283,15 +245,15 @@ export const AdBanner: React.FC<AdBannerProps> = ({
         >
           <span
             onClick={handleDiscreetWhiteout}
-            className="text-[10px] tracking-wider text-slate-400 font-semibold uppercase cursor-pointer select-none"
-            title="Tap to whiteout ad"
+            className="text-[9px] tracking-wider text-slate-400 font-semibold uppercase cursor-pointer select-none"
+            title="Tap to whiteout"
           >
             Advertisement
           </span>
           <button
             type="button"
             onClick={handleDiscreetWhiteout}
-            className="text-[11px] text-slate-400 hover:text-slate-600 active:text-red-600 px-1.5 py-0.5 rounded cursor-pointer transition-colors"
+            className="text-[10px] text-slate-400 hover:text-slate-600 active:text-red-600 px-1 py-0.5 rounded cursor-pointer"
             title="Whiteout ad (#FFFFFF)"
             aria-label="Whiteout ad"
           >
@@ -331,9 +293,12 @@ export const AdBanner: React.FC<AdBannerProps> = ({
 };
 
 export const AD_KEYS = {
-  TOP_HEADER_BANNER: 'd4a0dd5823f5121e667cf9a7db60373c', // 468x60
-  SIDE_SKYSCRAPER: 'b6516069053294f5e45552338ccc87b2',   // 160x600 (Desktop only, Left & Right)
-  TOOL_TOP_LEADERBOARD: 'c5a47f434eaf064a55016f46337c9a59', // 728x90
-  CONTENT_RECTANGLE: '1dcfc2496638e93a3483ea714433088f',   // 300x250
-  SECONDARY_VERTICAL: 'a2a3eb7a2532179d99d419ed143743fa',  // 160x300
+  // 728x90 - At the very top of the website
+  WEBSITE_TOP_LEADERBOARD: 'c5a47f434eaf064a55016f46337c9a59',
+
+  // 468x60 - Top of tools and inside tools
+  TOOL_HEADER_AND_MID: 'd4a0dd5823f5121e667cf9a7db60373c',
+
+  // 320x50 - Placed in various places across the website
+  MULTI_PLACEMENT_BANNER: '44887e01e1d95e8418f17cdcc5bf61aa',
 };

@@ -1,6 +1,7 @@
 import React from 'react';
 import { CATEGORIES } from '../data/categories';
 import { Shield, Zap, Lock } from 'lucide-react';
+import { AdBanner, AD_KEYS } from './AdBanner';
 
 interface FooterProps {
   onNavigate: (path: string) => void;
@@ -11,6 +12,18 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
   return (
     <footer className="bg-slate-900 text-slate-300 border-t border-slate-800">
+      {/* Footer Top Multi-Placement Ad (320x50) */}
+      <div className="w-full py-4 border-b border-slate-800/80 flex justify-center bg-slate-950/40">
+        <AdBanner
+          adKey={AD_KEYS.MULTI_PLACEMENT_BANNER}
+          slotType="multiPlacement"
+          width={320}
+          height={50}
+          label={true}
+          className="bg-white shadow-2xs"
+        />
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Brand Col */}
