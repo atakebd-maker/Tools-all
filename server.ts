@@ -10,6 +10,8 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+import { generateSitemapXml } from './src/data/sitemapData';
+
 async function startServer() {
   const app = express();
   const PORT = parseInt(process.env.PORT || '3000', 10);
@@ -22,23 +24,19 @@ async function startServer() {
       status: 'ok',
       app: 'Zynovexa',
       architecture: '100% Client-Side Browser Utilities',
-      totalTools: 78
+      totalTools: 160
     });
   });
 
-  // Sitemap.xml endpoint (dynamic & SEO ready)
+  // Sitemap.xml endpoint (dynamic & SEO ready - matches requested host perfectly)
   app.get('/sitemap.xml', (req, res) => {
     try {
-      const sitemapPath = path.resolve(__dirname, 'public', 'sitemap.xml');
-      let xml = fs.readFileSync(sitemapPath, 'utf8');
-
-      const host = req.get('host');
-      const protocol = req.protocol === 'http' ? 'http' : 'https';
-
-      // If requested from a Cloud Run or preview domain, adapt domain to prevent GSC cross-domain error
-      if (host && !host.includes('localhost') && !host.includes('zynovexa.com')) {
-        xml = xml.replace(/https:\/\/zynovexa\.com/g, `${protocol}://${host}`);
-      }
+      const host = (req.get('x-forwarded-host') || req.get('host') || 'zynovexa.com').split(',')[0].trim();
+      const protoHeader = req.get('x-forwarded-proto');
+      const proto = protoHeader ? protoHeader.split(',')[0].trim() : (host.includes('localhost') ? 'http' : 'https');
+      const origin = `${proto}://${host}`;
+      
+      const xml = generateSitemapXml(origin);
 
       res.setHeader('Content-Type', 'application/xml; charset=utf-8');
       res.setHeader('Cache-Control', 'public, max-age=3600');
@@ -55,12 +53,9 @@ async function startServer() {
       const robotsPath = path.resolve(__dirname, 'public', 'robots.txt');
       let text = fs.readFileSync(robotsPath, 'utf8');
 
-      const host = req.get('host');
-      const protocol = req.protocol === 'http' ? 'http' : 'https';
-
-      if (host && !host.includes('localhost') && !host.includes('zynovexa.com')) {
-        text = text.replace(/https:\/\/zynovexa\.com/g, `${protocol}://${host}`);
-      }
+      const host = (req.get('x-forwarded-host') || req.get('host') || 'zynovexa.com').split(',')[0].trim();
+      const proto = (req.get('x-forwarded-proto') || req.protocol || 'https').split(',')[0].trim();
+      text = text.replace(/https:\/\/zynovexa\.com/g, `${proto}://${host}`);
 
       res.setHeader('Content-Type', 'text/plain; charset=utf-8');
       res.setHeader('Cache-Control', 'public, max-age=3600');
