@@ -378,5 +378,42 @@ export const CATEGORIES: Category[] = [
       'affiliate link builder',
       'bulk discount codes'
     ]
+  },
+  {
+    id: 'sports-cricket-calculators',
+    name: 'Sports & Cricket Calculators',
+    slug: 'sports-cricket-calculators',
+    description: 'Calculate cricket batting averages with not-outs, strike rate, bowling average, economy rates, and run chase equations.',
+    icon: 'Trophy',
+    color: 'text-blue-600 bg-blue-50 border-blue-200',
+    seoTitle: 'Zynovexa - Free Online Cricket & Sports Calculators Not Sign In',
+    metaDescription: '100% free online cricket calculators without sign in. Calculate batting average, bowling strike rate, economy rate, required run rate, and run chases directly in your browser.',
+    keywords: [
+      'cricket batting average calculator',
+      'cricket strike rate calculator',
+      'bowling economy rate calculator',
+      'required run rate calculator',
+      'run chase calculator',
+      'zynovexa cricket tools'
+    ]
+  },
+  {
+    id: 'health-fitness-calculators',
+    name: 'Health & Fitness Calculators',
+    slug: 'health-fitness-calculators',
+    description: 'Calculate BMI, Mifflin-St Jeor BMR, Daily Caloric Expenditure (TDEE), ideal body weight, and daily water hydration.',
+    icon: 'Activity',
+    color: 'text-emerald-600 bg-emerald-50 border-emerald-200',
+    seoTitle: 'Zynovexa - Free Online Health & Fitness Calculators Not Sign In',
+    metaDescription: '100% free online health calculators without sign in. Accurate BMI, BMR, daily calorie needs, ideal weight comparison, and water intake estimator with total privacy.',
+    keywords: [
+      'bmi calculator free',
+      'bmr calculator',
+      'daily calorie calculator',
+      'ideal weight estimator',
+      'water intake calculator',
+      'zynovexa health tools'
+    ]
   }
 ];
+

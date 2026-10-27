@@ -19,7 +19,9 @@ import {
   Binary,
   Shield,
   CreditCard,
-  Tag
+  Tag,
+  Trophy,
+  Activity
 } from 'lucide-react';
 import { Category } from '../data/categories';
 
@@ -57,9 +59,12 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
       case 'Shield': return <Shield {...props} />;
       case 'CreditCard': return <CreditCard {...props} />;
       case 'Tag': return <Tag {...props} />;
+      case 'Trophy': return <Trophy {...props} />;
+      case 'Activity': return <Activity {...props} />;
       default: return <FileText {...props} />;
     }
   };
+
 
   return (
     <div

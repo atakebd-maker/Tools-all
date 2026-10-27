@@ -169,24 +169,24 @@ export function applyStaticPageSeo(path: string) {
     case '/':
     case '':
       updateMetaTags({
-        title: 'Zynovexa - Free Online Tools Not Sign In Only Free',
-        description: '100% free online PDF, image, developer, text, calculator, and unit converter tools. No sign in, no registration, no installation, completely free and private.',
+        title: 'Zynovexa — All-in-One Online Tools & Free Calculators',
+        description: 'Zynovexa is an all-in-one free online tools platform with 100+ calculators, image tools, PDF utilities, converters, and developer tools. 100% free, private, and browser-based.',
         keywords: [
+          'Zynovexa',
+          'zynovexa tools',
+          'zynovexa online tools',
+          'zynovexa calculators',
           'free online tools',
-          'tools not sign in',
-          'free online pdf tools not sign in only free',
-          'image tools not sign in',
-          'free developer tools no account',
-          '100% free browser tools',
-          'zynovexa'
+          'free calculators online',
+          '100% free browser tools'
         ],
         canonicalPath: '/',
         jsonLd: {
           '@context': 'https://schema.org',
           '@type': 'WebSite',
           'name': 'Zynovexa',
-          'alternateName': 'Zynovexa Free Online Tools',
-          'url': 'https://zynovexa.com',
+          'alternateName': ['Zynovexa Tools', 'Zynovexa Online Tools', 'Zynovexa Platform'],
+          'url': 'https://zynovexa.com/',
           'description': 'Free online browser tools with zero sign in or file uploads.',
           'potentialAction': {
             '@type': 'SearchAction',

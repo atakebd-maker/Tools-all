@@ -1179,5 +1179,14 @@ const BASE_TOOLS: ToolItem[] = [
 
 import { EXTRA_TOOLS } from './extraTools';
 import { SUITE_TOOLS } from './suiteTools';
+import { CALCULATOR_TOOLS } from './calculatorTools';
 
-export const TOOLS: ToolItem[] = [...EXTRA_TOOLS, ...SUITE_TOOLS, ...BASE_TOOLS];
+// Deduplicate tools prioritizing the updated 60 calculator tools
+const ALL_RAW_TOOLS = [...CALCULATOR_TOOLS, ...EXTRA_TOOLS, ...SUITE_TOOLS, ...BASE_TOOLS];
+const seenToolIds = new Set<string>();
+export const TOOLS: ToolItem[] = ALL_RAW_TOOLS.filter((t) => {
+  if (seenToolIds.has(t.id)) return false;
+  seenToolIds.add(t.id);
+  return true;
+});
+

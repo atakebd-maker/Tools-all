@@ -104,11 +104,11 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSelectTool }) => {
           </div>
 
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-tight max-w-4xl mx-auto">
-            Free Online Tools for <span className="text-blue-600">Everyday Tasks</span>
+            <span className="text-blue-600">Zynovexa</span> — All-in-One Free Online Tools & Calculators
           </h1>
 
-          <p className="text-slate-600 text-base sm:text-xl max-w-2xl mx-auto leading-relaxed">
-            Resize images, manage PDF files, calculate numbers, convert units, format code, and use powerful browser-based tools — all in one place.
+          <p className="text-slate-600 text-base sm:text-xl max-w-3xl mx-auto leading-relaxed">
+            Welcome to <strong>Zynovexa</strong> — your fast, private, and 100% free browser platform with 100+ calculators, image tools, PDF utilities, converters, and developer tools with zero registration.
           </p>
 
           {/* Hero Search Box */}
