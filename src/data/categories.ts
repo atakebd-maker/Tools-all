@@ -236,5 +236,147 @@ export const CATEGORIES: Category[] = [
       'file checksum hash free',
       'zynovexa file tools'
     ]
+  },
+  {
+    id: 'qr-code-generators',
+    name: 'QR Code Generators',
+    slug: 'qr-code-generators',
+    description: 'Generate customizable scannable QR codes for Wi-Fi, URLs, plain text, contacts, emails, WhatsApp, and events.',
+    icon: 'QrCode',
+    color: 'text-blue-600 bg-blue-50 border-blue-200',
+    seoTitle: 'Zynovexa - Free Online QR Code Generators Not Sign In Only Free',
+    metaDescription: '100% free online QR code generators without sign in. Generate custom QR codes for Wi-Fi, URLs, vCards, SMS, emails, WhatsApp, and locations with PNG & SVG downloads.',
+    keywords: [
+      'qr code generator',
+      'wifi qr code',
+      'url qr code',
+      'vcard qr generator',
+      'whatsapp qr code',
+      'free qr code no sign in'
+    ]
+  },
+  {
+    id: 'barcode-generators',
+    name: 'Barcode & Product Codes',
+    slug: 'barcode-generators',
+    description: 'Generate Code 128, Code 39, EAN-13, UPC-A, ITF barcodes, product SKUs, and batch product codes.',
+    icon: 'Barcode',
+    color: 'text-cyan-600 bg-cyan-50 border-cyan-200',
+    seoTitle: 'Zynovexa - Free Online Barcode & Product Code Generators Not Sign In',
+    metaDescription: '100% free online barcode generator. Create Code 128, EAN-13, Code 39, UPC-A, ITF barcodes, and batch product SKUs with SVG & PNG downloads and CSV export.',
+    keywords: [
+      'barcode generator',
+      'code 128 generator',
+      'ean 13 barcode',
+      'upc generator',
+      'sku generator',
+      'batch barcode generator'
+    ]
+  },
+  {
+    id: 'seo-keyword-generators',
+    name: 'Keyword & SEO Generators',
+    slug: 'seo-keyword-generators',
+    description: 'Generate SEO slugs, meta tags, SERP snippets, robots.txt, XML sitemaps, UTM links, and format keyword lists.',
+    icon: 'Search',
+    color: 'text-emerald-600 bg-emerald-50 border-emerald-200',
+    seoTitle: 'Zynovexa - Free Online Keyword & SEO Generators Not Sign In Only Free',
+    metaDescription: '100% free online SEO & keyword generators. Generate URL slugs, robots.txt, sitemaps, UTM tracking links, meta tags, and clean keyword lists locally.',
+    keywords: [
+      'seo keyword slug generator',
+      'robots txt generator',
+      'xml sitemap generator',
+      'utm builder',
+      'meta tag generator',
+      'keyword deduplication'
+    ]
+  },
+  {
+    id: 'text-encoders-decoders',
+    name: 'Text Encoders & Decoders',
+    slug: 'text-encoders-decoders',
+    description: 'Encode and decode Base64, URL percent-encoding, HTML entities, Binary, Hex, ASCII, Unicode, ROT13, and Morse code.',
+    icon: 'Binary',
+    color: 'text-indigo-600 bg-indigo-50 border-indigo-200',
+    seoTitle: 'Zynovexa - Free Online Text Encoders & Decoders Not Sign In Only Free',
+    metaDescription: '100% free online encoders and decoders. Convert Base64, URL percent encoding, HTML entities, Binary, Hex, ASCII, Unicode, ROT13, and Morse code with audio.',
+    keywords: [
+      'url encoder decoder',
+      'base64 encode decode',
+      'html entity encoder',
+      'binary to text',
+      'hex encoder decoder',
+      'morse code translator'
+    ]
+  },
+  {
+    id: 'security-random-generators',
+    name: 'Security & Cryptography',
+    slug: 'security-random-generators',
+    description: 'Generate cryptographically strong passwords, random numbers, strings, UUID v4, SHA hashes, and test OTP codes.',
+    icon: 'Shield',
+    color: 'text-purple-600 bg-purple-50 border-purple-200',
+    seoTitle: 'Zynovexa - Free Online Security & Hash Generators Not Sign In Only Free',
+    metaDescription: '100% free client-side security tools. Cryptographic password generator, SHA-256/SHA-512 hashes, UUID v4, random strings, and demo OTP codes with complete privacy.',
+    keywords: [
+      'secure password generator',
+      'uuid v4 generator',
+      'sha256 hash generator',
+      'sha512 generator',
+      'random string generator',
+      'demo otp generator'
+    ]
+  },
+  {
+    id: 'payment-utilities',
+    name: 'Card & Payment Utilities',
+    slug: 'payment-utilities',
+    description: 'Validate bank card formats using the Luhn algorithm, calculate check digits, and generate payment information QR codes.',
+    icon: 'CreditCard',
+    color: 'text-rose-600 bg-rose-50 border-rose-200',
+    seoTitle: 'Zynovexa - Free Online Payment & Luhn Checksum Utilities Not Sign In',
+    metaDescription: '100% free client-side card format validation with Luhn algorithm, ISO/IEC 7812 check digit calculator, and payment information QR code generator. Zero backend storage.',
+    keywords: [
+      'card format validator',
+      'luhn algorithm calculator',
+      'luhn check digit',
+      'payment info qr generator',
+      'demo payment reference'
+    ]
+  },
+  {
+    id: 'developer-generators',
+    name: 'Developer & Code Generators',
+    slug: 'developer-generators',
+    description: 'Generate HTML boilerplates, HTML tables, CSS buttons, gradients, box shadows, flexbox layouts, and convert JSON to CSV.',
+    icon: 'Code2',
+    color: 'text-teal-600 bg-teal-50 border-teal-200',
+    seoTitle: 'Zynovexa - Free Online Developer & Code Generators Not Sign In Only Free',
+    metaDescription: '100% free online developer generators. HTML boilerplate, HTML table, CSS button generator, CSS gradient & shadow builder, JSON to CSV converter, and regex tester.',
+    keywords: [
+      'html boilerplate generator',
+      'html table generator',
+      'css button generator',
+      'css gradient generator',
+      'json to csv converter',
+      'regex tester online'
+    ]
+  },
+  {
+    id: 'business-marketing-generators',
+    name: 'Business & Marketing Tools',
+    slug: 'business-marketing-generators',
+    description: 'Generate e-commerce coupon codes, promo codes, sequential invoice numbers, and trackable affiliate marketing links.',
+    icon: 'Tag',
+    color: 'text-amber-600 bg-amber-50 border-amber-200',
+    seoTitle: 'Zynovexa - Free Online Business & Marketing Code Generators Not Sign In',
+    metaDescription: '100% free online business & marketing tools. Generate bulk coupon codes, promo codes, invoice numbers, and affiliate tracking URLs with CSV/TXT export.',
+    keywords: [
+      'coupon code generator',
+      'promo code generator',
+      'invoice number generator',
+      'affiliate link builder',
+      'bulk discount codes'
+    ]
   }
 ];

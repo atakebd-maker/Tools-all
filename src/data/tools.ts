@@ -1178,5 +1178,6 @@ const BASE_TOOLS: ToolItem[] = [
 ];
 
 import { EXTRA_TOOLS } from './extraTools';
+import { SUITE_TOOLS } from './suiteTools';
 
-export const TOOLS: ToolItem[] = [...EXTRA_TOOLS, ...BASE_TOOLS];
+export const TOOLS: ToolItem[] = [...EXTRA_TOOLS, ...SUITE_TOOLS, ...BASE_TOOLS];

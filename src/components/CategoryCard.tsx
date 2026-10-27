@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Image,
   FileText,
@@ -14,7 +13,13 @@ import {
   FolderArchive,
   ArrowRight,
   Sparkles,
-  GraduationCap
+  GraduationCap,
+  QrCode,
+  Barcode,
+  Binary,
+  Shield,
+  CreditCard,
+  Tag
 } from 'lucide-react';
 import { Category } from '../data/categories';
 
@@ -46,6 +51,12 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
       case 'Clock': return <Clock {...props} />;
       case 'Shuffle': return <Shuffle {...props} />;
       case 'FolderArchive': return <FolderArchive {...props} />;
+      case 'QrCode': return <QrCode {...props} />;
+      case 'Barcode': return <Barcode {...props} />;
+      case 'Binary': return <Binary {...props} />;
+      case 'Shield': return <Shield {...props} />;
+      case 'CreditCard': return <CreditCard {...props} />;
+      case 'Tag': return <Tag {...props} />;
       default: return <FileText {...props} />;
     }
   };
