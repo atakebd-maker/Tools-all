@@ -22,7 +22,7 @@ export const ToolPage: React.FC<ToolPageProps> = ({
 
   useEffect(() => {
     if (tool) {
-      applyToolSeo(tool, category.name);
+      applyToolSeo(tool, category.name, category.slug);
     }
   }, [tool, category]);
 
