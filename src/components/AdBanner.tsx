@@ -7,24 +7,30 @@ export type AdSlotType =
   | 'multiPlacement';
 
 interface AdBannerProps {
-  adKey: string;
-  width: number;
-  height: number;
+  adKey?: string;
+  width?: number;
+  height?: number;
   slotType?: AdSlotType;
   label?: boolean;
   className?: string;
   wrapperClassName?: string;
 }
 
+export const TARGET_AD_KEY = '44887e01e1d95e8418f17cdcc5bf61aa';
+
 export const AdBanner: React.FC<AdBannerProps> = ({
-  adKey,
-  width,
-  height,
+  adKey = TARGET_AD_KEY,
+  width = 320,
+  height = 50,
   label = false,
   className = '',
   wrapperClassName = ''
 }) => {
   const uniqueId = useId();
+  // Strictly enforce user-specified ad key and 320x50 dimensions across all placements
+  const activeKey = TARGET_AD_KEY;
+  const activeWidth = width || 320;
+  const activeHeight = height || 50;
 
   const adHtml = `<!DOCTYPE html>
 <html lang="en">
@@ -50,14 +56,14 @@ export const AdBanner: React.FC<AdBannerProps> = ({
   <div id="ad-wrapper">
     <script type="text/javascript">
       atOptions = {
-        'key' : '${adKey}',
+        'key' : '${activeKey}',
         'format' : 'iframe',
-        'height' : ${height},
-        'width' : ${width},
+        'height' : ${activeHeight},
+        'width' : ${activeWidth},
         'params' : {}
       };
     </script>
-    <script type="text/javascript" src="https://bauval.org/22/${adKey}"></script>
+    <script type="text/javascript" src="https://bauval.org/22/${activeKey}"></script>
   </div>
 </body>
 </html>`;
@@ -74,22 +80,22 @@ export const AdBanner: React.FC<AdBannerProps> = ({
       <div
         className={`relative flex items-center justify-center bg-transparent border-0 overflow-hidden ${className}`}
         style={{
-          width: `${width}px`,
+          width: `${activeWidth}px`,
           maxWidth: '100%',
-          minHeight: `${height}px`
+          minHeight: `${activeHeight}px`
         }}
       >
         <iframe
-          key={`${adKey}-${uniqueId}`}
-          title={`Ad ${adKey}`}
+          key={`${activeKey}-${uniqueId}`}
+          title={`Ad ${activeKey}`}
           srcDoc={adHtml}
-          width={width}
-          height={height}
+          width={activeWidth}
+          height={activeHeight}
           style={{
             border: 0,
             overflow: 'hidden',
-            width: `${width}px`,
-            height: `${height}px`
+            width: `${activeWidth}px`,
+            height: `${activeHeight}px`
           }}
           scrolling="no"
           loading="lazy"
@@ -100,12 +106,9 @@ export const AdBanner: React.FC<AdBannerProps> = ({
 };
 
 export const AD_KEYS = {
-  // 728x90 - At the very top of the website
-  WEBSITE_TOP_LEADERBOARD: 'c5a47f434eaf064a55016f46337c9a59',
-
-  // 468x60 - Top of tools and inside tools
-  TOOL_HEADER_AND_MID: 'd4a0dd5823f5121e667cf9a7db60373c',
-
-  // 320x50 - Placed in various places across the website
-  MULTI_PLACEMENT_BANNER: '44887e01e1d95e8418f17cdcc5bf61aa',
+  // All placement slots point strictly to the user-specified 320x50 ad unit
+  WEBSITE_TOP_LEADERBOARD: TARGET_AD_KEY,
+  TOOL_HEADER_AND_MID: TARGET_AD_KEY,
+  MULTI_PLACEMENT_BANNER: TARGET_AD_KEY,
 };
+

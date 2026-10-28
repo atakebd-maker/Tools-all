@@ -67,6 +67,7 @@ export const ToolPage: React.FC<ToolPageProps> = ({
       onNavigateCategory={() => onNavigateCategory(category.slug)}
       onNavigateHome={onNavigateHome}
       relatedTools={relatedTools}
+      toolItem={tool}
     >
       <ToolComponent />
     </ToolWrapper>

@@ -1,5 +1,6 @@
 import { Category, CATEGORIES } from '../data/categories';
 import { ToolItem } from '../data/tools';
+import { getToolGuide } from '../data/toolGuides';
 
 export interface BreadcrumbItem {
   name: string;
@@ -13,6 +14,7 @@ export interface SeoOptions {
   canonicalPath?: string;
   ogType?: 'website' | 'article';
   jsonLd?: Record<string, any>;
+  faqLd?: Record<string, any>;
   breadcrumbs?: BreadcrumbItem[];
 }
 
@@ -145,7 +147,21 @@ export function updateMetaTags(options: SeoOptions) {
     scriptLd.remove();
   }
 
-  // 8. BreadcrumbList Structured Data in <head>
+  // 8. Dynamic FAQPage Structured Data in <head>
+  let scriptFaq = document.getElementById('dynamic-faq-ldjson') as HTMLScriptElement | null;
+  if (options.faqLd) {
+    if (!scriptFaq) {
+      scriptFaq = document.createElement('script');
+      scriptFaq.id = 'dynamic-faq-ldjson';
+      scriptFaq.type = 'application/ld+json';
+      document.head.appendChild(scriptFaq);
+    }
+    scriptFaq.textContent = JSON.stringify(options.faqLd);
+  } else if (scriptFaq) {
+    scriptFaq.remove();
+  }
+
+  // 9. BreadcrumbList Structured Data in <head>
   if (breadcrumbs) {
     updateBreadcrumbLdJson(breadcrumbs);
   }
@@ -202,24 +218,27 @@ export function applyCategorySeo(category: Category, toolCount: number = 0) {
 /**
  * Builds search-engine optimized title, description, keywords, and JSON-LD for any individual tool.
  * Follows the high-intent query format: "Zynovexa - Free Online [Tool Name] Not Sign In Only Free"
- * Dynamically provides 3-tier BreadcrumbList: Home -> Category -> Tool
+ * Dynamically provides 3-tier BreadcrumbList and FAQPage structured data from the comprehensive guide.
  */
 export function applyToolSeo(tool: ToolItem, categoryName?: string, categorySlug?: string) {
   const cat = CATEGORIES.find((c) => c.id === tool.category || c.slug === categorySlug);
   const resolvedCatName = categoryName || cat?.name || 'Utilities';
   const resolvedCatSlug = categorySlug || cat?.slug || tool.category || 'utilities';
 
-  const title = tool.seoTitle || `Zynovexa - Free Online ${tool.name} Not Sign In Only Free`;
-  const description = tool.metaDescription || `100% free online ${tool.name.toLowerCase()} tool without sign in or registration. Run securely in your browser with zero file uploads on Zynovexa.`;
+  const guide = getToolGuide(tool);
+  const title = tool.seoTitle || guide.seoContent.title || `Zynovexa - Free Online ${tool.name} Not Sign In Only Free`;
+  const description = tool.metaDescription || guide.seoContent.metaDescription || `100% free online ${tool.name.toLowerCase()} tool without sign in or registration. Run securely in your browser with zero file uploads on Zynovexa.`;
 
-  const keywords = [
+  const keywords = Array.from(new Set([
     ...(tool.keywords || []),
+    ...(guide.seoContent.secondaryKeywords || []),
+    ...(guide.seoContent.longTailKeywords || []),
     `free online ${tool.name.toLowerCase()}`,
     `${tool.name.toLowerCase()} not sign in`,
     `${tool.name.toLowerCase()} only free`,
     'no sign up required',
     'zynovexa'
-  ];
+  ]));
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -237,6 +256,19 @@ export function applyToolSeo(tool: ToolItem, categoryName?: string, categorySlug
     'browserRequirements': 'Requires JavaScript. Operates 100% client-side with zero file uploads.'
   };
 
+  const faqLd = guide.faqs && guide.faqs.length > 0 ? {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    'mainEntity': guide.faqs.map((f) => ({
+      '@type': 'Question',
+      'name': f.q,
+      'acceptedAnswer': {
+        '@type': 'Answer',
+        'text': f.a
+      }
+    }))
+  } : undefined;
+
   const breadcrumbs: BreadcrumbItem[] = [
     { name: 'Home', url: 'https://zynovexa.com/' },
     { name: resolvedCatName, url: `https://zynovexa.com/categories/${resolvedCatSlug}` },
@@ -249,6 +281,7 @@ export function applyToolSeo(tool: ToolItem, categoryName?: string, categorySlug
     keywords,
     canonicalPath: `/tools/${tool.slug}`,
     jsonLd,
+    faqLd,
     breadcrumbs
   });
 }
