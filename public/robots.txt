@@ -1,5 +1,5 @@
 # Zynovexa Robots.txt
-# https://zynovexa.com
+# https://zynovexa.vercel.app
 # Optimized for Google Search Console & All Major Search Engines
 
 User-agent: *
@@ -15,4 +15,4 @@ User-agent: Bingbot
 Allow: /
 
 # Canonical XML Sitemap
-Sitemap: https://zynovexa.com/sitemap.xml
+Sitemap: https://zynovexa.vercel.app/sitemap.xml

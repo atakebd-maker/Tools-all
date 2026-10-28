@@ -18,6 +18,13 @@ export interface SeoOptions {
   breadcrumbs?: BreadcrumbItem[];
 }
 
+export function getSiteOrigin(): string {
+  if (typeof window !== 'undefined' && window.location && window.location.origin) {
+    return window.location.origin;
+  }
+  return 'https://zynovexa.vercel.app';
+}
+
 /**
  * Updates or injects the BreadcrumbList Schema.org structured data in index.html <head>.
  * This targets <script id="breadcrumb-ldjson"> for high search-engine visibility.
@@ -25,7 +32,7 @@ export interface SeoOptions {
 export function updateBreadcrumbLdJson(breadcrumbs?: BreadcrumbItem[]) {
   if (typeof document === 'undefined') return;
 
-  const origin = 'https://zynovexa.com';
+  const origin = getSiteOrigin();
   let scriptEl = document.getElementById('breadcrumb-ldjson') as HTMLScriptElement | null;
 
   if (!breadcrumbs || breadcrumbs.length === 0) {
@@ -38,13 +45,13 @@ export function updateBreadcrumbLdJson(breadcrumbs?: BreadcrumbItem[]) {
             '@type': 'ListItem',
             'position': 1,
             'name': 'Home',
-            'item': 'https://zynovexa.com/'
+            'item': `${origin}/`
           },
           {
             '@type': 'ListItem',
             'position': 2,
             'name': 'All Tools',
-            'item': 'https://zynovexa.com/all-tools'
+            'item': `${origin}/all-tools`
           }
         ]
       }, null, 2);
@@ -115,7 +122,7 @@ export function updateMetaTags(options: SeoOptions) {
   setMeta('property', 'og:type', ogType);
   setMeta('property', 'og:site_name', 'Zynovexa');
 
-  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://zynovexa.com';
+  const origin = getSiteOrigin();
   const fullUrl = canonicalPath ? `${origin}${canonicalPath}` : (typeof window !== 'undefined' ? window.location.href : origin);
   setMeta('property', 'og:url', fullUrl);
 
@@ -172,6 +179,7 @@ export function updateMetaTags(options: SeoOptions) {
  * Matches user's exact requested pattern: "Zynovexa - Free Online [Category] Tools Not Sign In Only Free"
  */
 export function applyCategorySeo(category: Category, toolCount: number = 0) {
+  const origin = getSiteOrigin();
   const title = category.seoTitle || `Zynovexa - Free Online ${category.name} Not Sign In Only Free`;
   const description = category.metaDescription || `100% free online ${category.name.toLowerCase()} without sign in or registration. Fast, secure, and runs directly in your browser with complete privacy.`;
 
@@ -190,19 +198,19 @@ export function applyCategorySeo(category: Category, toolCount: number = 0) {
     '@type': 'CollectionPage',
     'name': title,
     'description': description,
-    'url': typeof window !== 'undefined' ? window.location.href : `https://zynovexa.com/categories/${category.slug}`,
+    'url': typeof window !== 'undefined' ? window.location.href : `${origin}/categories/${category.slug}`,
     'numberOfItems': toolCount,
     'publisher': {
       '@type': 'Organization',
       'name': 'Zynovexa',
-      'url': 'https://zynovexa.com'
+      'url': origin
     }
   };
 
   const breadcrumbs: BreadcrumbItem[] = [
-    { name: 'Home', url: 'https://zynovexa.com/' },
-    { name: 'All Tools', url: 'https://zynovexa.com/all-tools' },
-    { name: category.name, url: `https://zynovexa.com/categories/${category.slug}` }
+    { name: 'Home', url: `${origin}/` },
+    { name: 'All Tools', url: `${origin}/all-tools` },
+    { name: category.name, url: `${origin}/categories/${category.slug}` }
   ];
 
   updateMetaTags({
@@ -221,6 +229,7 @@ export function applyCategorySeo(category: Category, toolCount: number = 0) {
  * Dynamically provides 3-tier BreadcrumbList and FAQPage structured data from the comprehensive guide.
  */
 export function applyToolSeo(tool: ToolItem, categoryName?: string, categorySlug?: string) {
+  const origin = getSiteOrigin();
   const cat = CATEGORIES.find((c) => c.id === tool.category || c.slug === categorySlug);
   const resolvedCatName = categoryName || cat?.name || 'Utilities';
   const resolvedCatSlug = categorySlug || cat?.slug || tool.category || 'utilities';
@@ -247,7 +256,7 @@ export function applyToolSeo(tool: ToolItem, categoryName?: string, categorySlug
     'applicationCategory': resolvedCatName,
     'operatingSystem': 'All modern web browsers (Windows, Mac, iOS, Android, Linux)',
     'description': description,
-    'url': typeof window !== 'undefined' ? window.location.href : `https://zynovexa.com/tools/${tool.slug}`,
+    'url': typeof window !== 'undefined' ? window.location.href : `${origin}/tools/${tool.slug}`,
     'offers': {
       '@type': 'Offer',
       'price': '0',
@@ -270,9 +279,9 @@ export function applyToolSeo(tool: ToolItem, categoryName?: string, categorySlug
   } : undefined;
 
   const breadcrumbs: BreadcrumbItem[] = [
-    { name: 'Home', url: 'https://zynovexa.com/' },
-    { name: resolvedCatName, url: `https://zynovexa.com/categories/${resolvedCatSlug}` },
-    { name: tool.name, url: `https://zynovexa.com/tools/${tool.slug}` }
+    { name: 'Home', url: `${origin}/` },
+    { name: resolvedCatName, url: `${origin}/categories/${resolvedCatSlug}` },
+    { name: tool.name, url: `${origin}/tools/${tool.slug}` }
   ];
 
   updateMetaTags({
@@ -291,6 +300,8 @@ export function applyToolSeo(tool: ToolItem, categoryName?: string, categorySlug
  * with appropriate BreadcrumbList structured data.
  */
 export function applyStaticPageSeo(path: string) {
+  const origin = getSiteOrigin();
+
   switch (path) {
     case '/':
     case '':
@@ -312,17 +323,17 @@ export function applyStaticPageSeo(path: string) {
           '@type': 'WebSite',
           'name': 'Zynovexa',
           'alternateName': ['Zynovexa Tools', 'Zynovexa Online Tools', 'Zynovexa Platform'],
-          'url': 'https://zynovexa.com/',
+          'url': `${origin}/`,
           'description': 'Free online browser tools with zero sign in or file uploads.',
           'potentialAction': {
             '@type': 'SearchAction',
-            'target': 'https://zynovexa.com/all-tools?q={search_term_string}',
+            'target': `${origin}/all-tools?q={search_term_string}`,
             'query-input': 'required name=search_term_string'
           }
         },
         breadcrumbs: [
-          { name: 'Home', url: 'https://zynovexa.com/' },
-          { name: 'All Tools', url: 'https://zynovexa.com/all-tools' }
+          { name: 'Home', url: `${origin}/` },
+          { name: 'All Tools', url: `${origin}/all-tools` }
         ]
       });
       break;
@@ -340,8 +351,8 @@ export function applyStaticPageSeo(path: string) {
         ],
         canonicalPath: '/all-tools',
         breadcrumbs: [
-          { name: 'Home', url: 'https://zynovexa.com/' },
-          { name: 'All Tools', url: 'https://zynovexa.com/all-tools' }
+          { name: 'Home', url: `${origin}/` },
+          { name: 'All Tools', url: `${origin}/all-tools` }
         ]
       });
       break;
@@ -353,8 +364,8 @@ export function applyStaticPageSeo(path: string) {
         keywords: ['about zynovexa', 'free online browser tools', 'client side web tools privacy'],
         canonicalPath: '/about',
         breadcrumbs: [
-          { name: 'Home', url: 'https://zynovexa.com/' },
-          { name: 'About Us', url: 'https://zynovexa.com/about' }
+          { name: 'Home', url: `${origin}/` },
+          { name: 'About Us', url: `${origin}/about` }
         ]
       });
       break;
@@ -366,8 +377,8 @@ export function applyStaticPageSeo(path: string) {
         keywords: ['zynovexa privacy policy', 'client side privacy', 'zero data collection web tools'],
         canonicalPath: '/privacy',
         breadcrumbs: [
-          { name: 'Home', url: 'https://zynovexa.com/' },
-          { name: 'Privacy Policy', url: 'https://zynovexa.com/privacy' }
+          { name: 'Home', url: `${origin}/` },
+          { name: 'Privacy Policy', url: `${origin}/privacy` }
         ]
       });
       break;
@@ -379,8 +390,8 @@ export function applyStaticPageSeo(path: string) {
         keywords: ['zynovexa terms of service', 'free tools usage terms'],
         canonicalPath: '/terms',
         breadcrumbs: [
-          { name: 'Home', url: 'https://zynovexa.com/' },
-          { name: 'Terms of Service', url: 'https://zynovexa.com/terms' }
+          { name: 'Home', url: `${origin}/` },
+          { name: 'Terms of Service', url: `${origin}/terms` }
         ]
       });
       break;
@@ -392,8 +403,8 @@ export function applyStaticPageSeo(path: string) {
         keywords: ['contact zynovexa', 'request online tool', 'zynovexa support'],
         canonicalPath: '/contact',
         breadcrumbs: [
-          { name: 'Home', url: 'https://zynovexa.com/' },
-          { name: 'Contact Us', url: 'https://zynovexa.com/contact' }
+          { name: 'Home', url: `${origin}/` },
+          { name: 'Contact Us', url: `${origin}/contact` }
         ]
       });
       break;
@@ -405,8 +416,8 @@ export function applyStaticPageSeo(path: string) {
         keywords: ['zynovexa disclaimer', 'calculator disclaimer'],
         canonicalPath: '/disclaimer',
         breadcrumbs: [
-          { name: 'Home', url: 'https://zynovexa.com/' },
-          { name: 'Disclaimer', url: 'https://zynovexa.com/disclaimer' }
+          { name: 'Home', url: `${origin}/` },
+          { name: 'Disclaimer', url: `${origin}/disclaimer` }
         ]
       });
       break;
@@ -417,7 +428,7 @@ export function applyStaticPageSeo(path: string) {
         description: 'The requested page or tool could not be found on Zynovexa.',
         canonicalPath: path,
         breadcrumbs: [
-          { name: 'Home', url: 'https://zynovexa.com/' }
+          { name: 'Home', url: `${origin}/` }
         ]
       });
       break;

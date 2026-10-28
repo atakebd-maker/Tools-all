@@ -2,7 +2,7 @@ import { generateSitemapXml } from '../src/data/sitemapData';
 
 export default function handler(req: any, res: any) {
   try {
-    const rawHost = req.headers['x-forwarded-host'] || req.headers['host'] || 'zynovexa.com';
+    const rawHost = req.headers['x-forwarded-host'] || req.headers['host'] || 'zynovexa.vercel.app';
     const host = (Array.isArray(rawHost) ? rawHost[0] : String(rawHost)).split(',')[0].trim();
 
     const rawProto = req.headers['x-forwarded-proto'];

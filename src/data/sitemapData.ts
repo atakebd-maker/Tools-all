@@ -11,7 +11,7 @@ export const STATIC_ROUTES = [
   '/contact'
 ];
 
-export function generateSitemapXml(origin: string = 'https://zynovexa.com'): string {
+export function generateSitemapXml(origin: string = 'https://zynovexa.vercel.app'): string {
   // Normalize origin without trailing slash
   const cleanOrigin = origin.replace(/\/+$/, '');
   const today = new Date().toISOString().split('T')[0];
@@ -19,7 +19,7 @@ export function generateSitemapXml(origin: string = 'https://zynovexa.com'): str
   let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
   xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
 
-  // Static pages (homepage root MUST have a trailing slash: e.g. https://zynovexa.com/)
+  // Static pages (homepage root MUST have a trailing slash: e.g. https://zynovexa.vercel.app/)
   for (const route of STATIC_ROUTES) {
     const loc = route === '' ? `${cleanOrigin}/` : `${cleanOrigin}${route}`;
     const priority = route === '' ? '1.0' : '0.8';
