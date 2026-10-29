@@ -93,21 +93,30 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate, onOpenS
             </div>
 
             <button
+              onClick={() => handleNav('/blog')}
+              className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                currentPath.startsWith('/blog') ? 'text-blue-600 bg-blue-50/70 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+              }`}
+            >
+              Blog
+            </button>
+
+            <button
+              onClick={() => handleNav('/faq')}
+              className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                currentPath === '/faq' ? 'text-blue-600 bg-blue-50/70 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+              }`}
+            >
+              FAQ
+            </button>
+
+            <button
               onClick={() => handleNav('/about')}
               className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                 currentPath === '/about' ? 'text-blue-600 bg-blue-50/70 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
               }`}
             >
               About
-            </button>
-
-            <button
-              onClick={() => handleNav('/privacy')}
-              className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                currentPath === '/privacy' ? 'text-blue-600 bg-blue-50/70 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-              }`}
-            >
-              Privacy Policy
             </button>
 
             <button
@@ -161,6 +170,22 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate, onOpenS
             }`}
           >
             All Tools
+          </button>
+          <button
+            onClick={() => handleNav('/blog')}
+            className={`w-full text-left px-3 py-2.5 rounded-lg text-base font-medium ${
+              currentPath.startsWith('/blog') ? 'bg-blue-50 text-blue-600' : 'text-slate-700'
+            }`}
+          >
+            Blog & Tool Guides
+          </button>
+          <button
+            onClick={() => handleNav('/faq')}
+            className={`w-full text-left px-3 py-2.5 rounded-lg text-base font-medium ${
+              currentPath === '/faq' ? 'bg-blue-50 text-blue-600' : 'text-slate-700'
+            }`}
+          >
+            FAQ
           </button>
 
           <div className="pt-2 pb-1">

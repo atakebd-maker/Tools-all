@@ -1,9 +1,12 @@
 import { CATEGORIES } from './categories';
 import { TOOLS } from './tools';
+import { BLOG_POSTS } from './blogPosts';
 
 export const STATIC_ROUTES = [
   '',
   '/all-tools',
+  '/blog',
+  '/faq',
   '/about',
   '/privacy',
   '/terms',
@@ -22,13 +25,23 @@ export function generateSitemapXml(origin: string = 'https://zynovexa.vercel.app
   // Static pages (homepage root MUST have a trailing slash: e.g. https://zynovexa.vercel.app/)
   for (const route of STATIC_ROUTES) {
     const loc = route === '' ? `${cleanOrigin}/` : `${cleanOrigin}${route}`;
-    const priority = route === '' ? '1.0' : '0.8';
-    const changefreq = route === '' ? 'daily' : 'weekly';
+    const priority = route === '' ? '1.0' : route === '/blog' || route === '/faq' ? '0.9' : '0.8';
+    const changefreq = route === '' ? 'daily' : route === '/blog' ? 'daily' : 'weekly';
     xml += '  <url>\n';
     xml += `    <loc>${loc}</loc>\n`;
     xml += `    <lastmod>${today}</lastmod>\n`;
     xml += `    <changefreq>${changefreq}</changefreq>\n`;
     xml += `    <priority>${priority}</priority>\n`;
+    xml += '  </url>\n';
+  }
+
+  // Blog articles
+  for (const post of BLOG_POSTS) {
+    xml += '  <url>\n';
+    xml += `    <loc>${cleanOrigin}/blog/${post.slug}</loc>\n`;
+    xml += `    <lastmod>${post.date || today}</lastmod>\n`;
+    xml += '    <changefreq>weekly</changefreq>\n';
+    xml += '    <priority>0.85</priority>\n';
     xml += '  </url>\n';
   }
 

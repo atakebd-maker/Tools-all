@@ -422,6 +422,48 @@ export function applyStaticPageSeo(path: string) {
       });
       break;
 
+    case '/faq':
+      updateMetaTags({
+        title: 'Frequently Asked Questions (FAQ) — Free Online Tools | Zynovexa',
+        description: 'Find answers to common questions about Zynovexa free online tools, online PDF tool, PDF editor, image resizer, calculators, and 100% client-side privacy.',
+        keywords: [
+          'Zynovexa FAQ',
+          'free online tools FAQ',
+          'online PDF tool questions',
+          'PDF editor free FAQ',
+          'how to use zynovexa',
+          'is zynovexa safe',
+          'zynovexa free tools'
+        ],
+        canonicalPath: '/faq',
+        breadcrumbs: [
+          { name: 'Home', url: `${origin}/` },
+          { name: 'Frequently Asked Questions (FAQ)', url: `${origin}/faq` }
+        ]
+      });
+      break;
+
+    case '/blog':
+      updateMetaTags({
+        title: 'Zynovexa Blog & Tutorials — Complete Guides for Free Online Tools',
+        description: 'Step-by-step tutorials, tips, and guides for Zynovexa free online tools. Learn how to use our online PDF tool, PDF editor, image resizer, calculators, and developer utilities.',
+        keywords: [
+          'Zynovexa blog',
+          'online PDF tool tutorial',
+          'PDF editor guide',
+          'free pdf editor tips',
+          'free online image resizer guide',
+          'online calculator free tutorials',
+          'how to use zynovexa tools'
+        ],
+        canonicalPath: '/blog',
+        breadcrumbs: [
+          { name: 'Home', url: `${origin}/` },
+          { name: 'Blog & Tool Guides', url: `${origin}/blog` }
+        ]
+      });
+      break;
+
     default:
       updateMetaTags({
         title: 'Page Not Found - Zynovexa',

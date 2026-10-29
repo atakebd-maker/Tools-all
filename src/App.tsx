@@ -10,6 +10,9 @@ import { PrivacyPolicy } from './pages/PrivacyPolicy';
 import { Terms } from './pages/Terms';
 import { Contact } from './pages/Contact';
 import { Disclaimer } from './pages/Disclaimer';
+import { Faq } from './pages/Faq';
+import { Blog } from './pages/Blog';
+import { BlogPostPage } from './pages/BlogPostPage';
 import { NotFound } from './pages/NotFound';
 import { TOOLS } from './data/tools';
 import { CATEGORIES } from './data/categories';
@@ -135,6 +138,40 @@ export default function App() {
 
     if (currentPath === '/disclaimer') {
       return <Disclaimer onNavigateHome={() => navigate('/')} />;
+    }
+
+    if (currentPath === '/faq') {
+      return (
+        <Faq
+          onNavigateHome={() => navigate('/')}
+          onNavigateAllTools={() => navigate('/all-tools')}
+          onNavigate={navigate}
+        />
+      );
+    }
+
+    if (currentPath === '/blog') {
+      return (
+        <Blog
+          onNavigateHome={() => navigate('/')}
+          onNavigate={navigate}
+          onSelectPost={(slug) => navigate(`/blog/${slug}`)}
+          onSelectTool={(toolId) => navigate(`/tools/${toolId}`)}
+        />
+      );
+    }
+
+    if (currentPath.startsWith('/blog/')) {
+      const postSlug = currentPath.replace('/blog/', '').split('/')[0];
+      return (
+        <BlogPostPage
+          postSlug={postSlug}
+          onNavigateHome={() => navigate('/')}
+          onNavigateBlog={() => navigate('/blog')}
+          onSelectPost={(slug) => navigate(`/blog/${slug}`)}
+          onSelectTool={(toolId) => navigate(`/tools/${toolId}`)}
+        />
+      );
     }
 
     return (

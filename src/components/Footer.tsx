@@ -122,6 +122,22 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </li>
               <li>
                 <button
+                  onClick={() => onNavigate('/blog')}
+                  className="text-slate-400 hover:text-white transition-colors cursor-pointer"
+                >
+                  Blog & Tool Guides
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => onNavigate('/faq')}
+                  className="text-slate-400 hover:text-white transition-colors cursor-pointer"
+                >
+                  FAQ & Support
+                </button>
+              </li>
+              <li>
+                <button
                   onClick={() => onNavigate('/about')}
                   className="text-slate-400 hover:text-white transition-colors cursor-pointer"
                 >

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { CATEGORIES } from '../data/categories';
 import { TOOLS } from '../data/tools';
+import { BLOG_POSTS } from '../data/blogPosts';
 import { CategoryCard } from '../components/CategoryCard';
 import { ToolCard } from '../components/ToolCard';
 import { SearchBar } from '../components/SearchBar';
@@ -15,29 +16,36 @@ import {
   ArrowRight,
   HelpCircle,
   Sparkles,
-  CheckCircle2
+  CheckCircle2,
+  BookOpen,
+  Clock,
+  Calendar
 } from 'lucide-react';
 
 export const HOME_FAQS = [
   {
-    q: 'Are all the tools on Zynovexa free?',
-    a: 'Yes, 100% of the tools on Zynovexa are completely free to use with no hidden fees, subscriptions, or feature paywalls.'
+    q: 'What is Zynovexa and why is it free?',
+    a: 'Zynovexa is a complete, 100% free online tools platform with 200+ calculators, online PDF tools, PDF editors, image resizers, and developer utilities. All tools process data locally in your browser with zero subscriptions and no account needed.'
   },
   {
-    q: 'Are my files or images uploaded to a remote server?',
+    q: 'How do I use Zynovexa as a free online PDF tool and PDF editor?',
+    a: 'Simply choose any PDF tool (like PDF Merger, PDF Splitter, or Images to PDF), upload your document, configure your desired page ranges or rotations, and download the finished file instantly. It functions as a complete free PDF editor without uploading documents to remote servers.'
+  },
+  {
+    q: 'Are my files, PDFs, or photos uploaded to any remote server?',
     a: 'No. Zynovexa operates entirely on the client side. Your images, PDF documents, text, and files are manipulated locally using your browser\'s HTML5 Canvas, Web Cryptography, and local Web APIs. Nothing is uploaded to any remote server.'
+  },
+  {
+    q: 'Can I resize and compress images without losing quality?',
+    a: 'Yes! The Zynovexa free online image resizer and image compressor let you scale pixel dimensions and shrink file sizes by up to 85% with real-time visual comparisons and zero loss in perceptual clarity.'
   },
   {
     q: 'Do I need to sign up or create an account?',
     a: 'No registration or account creation is required. You can use every tool immediately without providing an email, password, or credit card.'
   },
   {
-    q: 'Which web browsers are supported?',
+    q: 'Which web browsers and devices are supported?',
     a: 'All modern standards-compliant web browsers are fully supported, including Google Chrome, Mozilla Firefox, Apple Safari, Microsoft Edge, and mobile browser equivalents on iOS and Android.'
-  },
-  {
-    q: 'Why do very large files sometimes take a few moments to process?',
-    a: 'Because all image and PDF decoding is performed directly on your device rather than a cloud server farm, very large files (e.g. 50+ megapixel photos or hundreds of PDF pages) rely on your device\'s local CPU and RAM.'
   }
 ];
 
@@ -292,6 +300,81 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSelectTool }) => {
         </div>
       </section>
 
+      {/* Featured Tutorials & Tool Guides (Blog Preview) */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2 text-xs font-bold text-blue-600 uppercase tracking-wider">
+              <BookOpen className="w-4 h-4" />
+              <span>Tutorials & Guides</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+              Master Your Tools with Zynovexa Guides
+            </h2>
+            <p className="text-sm text-slate-600 max-w-xl">
+              Learn how to edit PDFs without subscription fees, resize photos without quality loss, and perform complex math calculations.
+            </p>
+          </div>
+          <button
+            onClick={() => onNavigate('/blog')}
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors cursor-pointer self-start sm:self-auto shrink-0"
+          >
+            <span>Explore All Guides</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {BLOG_POSTS.slice(0, 3).map((post) => (
+            <div
+              key={post.slug}
+              className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-2xs hover:shadow-md hover:border-blue-300 transition-all flex flex-col justify-between group"
+            >
+              <div className={`h-28 bg-gradient-to-br ${post.coverGradient} p-4 flex items-start justify-between text-white`}>
+                <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-black/25 uppercase tracking-wide">
+                  {post.categoryName}
+                </span>
+                <span className="text-xs text-white/90 flex items-center gap-1">
+                  <Clock className="w-3 h-3" />
+                  {post.readTime}
+                </span>
+              </div>
+              <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                <div className="space-y-2">
+                  <h3 className="font-bold text-slate-900 group-hover:text-blue-600 transition-colors text-base line-clamp-2">
+                    <button
+                      onClick={() => onNavigate(`/blog/${post.slug}`)}
+                      className="text-left cursor-pointer focus:outline-none"
+                    >
+                      {post.title}
+                    </button>
+                  </h3>
+                  <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                    {post.excerpt}
+                  </p>
+                </div>
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+                  <button
+                    onClick={() => onNavigate(`/blog/${post.slug}`)}
+                    className="text-xs font-semibold text-blue-600 hover:text-blue-700 inline-flex items-center gap-1 cursor-pointer"
+                  >
+                    Read Guide <ArrowRight className="w-3 h-3" />
+                  </button>
+                  {post.relatedToolIds && post.relatedToolIds.length > 0 && (
+                    <button
+                      onClick={() => onSelectTool(post.relatedToolIds[0])}
+                      className="text-[11px] px-2 py-0.5 rounded bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-colors cursor-pointer"
+                    >
+                      Try Tool
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Why Choose Zynovexa Section */}
       <section className="bg-slate-50 border-y border-slate-200 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -380,6 +463,9 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSelectTool }) => {
           <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
             Frequently Asked Questions
           </h2>
+          <p className="text-slate-600 text-sm">
+            Answers to common questions about Zynovexa online PDF tool, image resizer, calculators, and privacy.
+          </p>
         </div>
 
         <div className="space-y-4">
@@ -392,6 +478,16 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSelectTool }) => {
               <p className="text-slate-600 text-sm leading-relaxed">{faq.a}</p>
             </div>
           ))}
+        </div>
+
+        <div className="text-center mt-8">
+          <button
+            onClick={() => onNavigate('/faq')}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition-colors shadow-2xs cursor-pointer"
+          >
+            <span>View All Frequently Asked Questions (FAQ)</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
         </div>
       </section>
     </div>
