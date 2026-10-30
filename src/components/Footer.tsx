@@ -178,6 +178,15 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </li>
               <li>
                 <a
+                  href="mailto:mdpiyas2737@gmail.com"
+                  className="text-xs text-blue-400 hover:text-blue-300 transition-colors break-all inline-block"
+                  title="Official Support Email"
+                >
+                  mdpiyas2737@gmail.com
+                </a>
+              </li>
+              <li>
+                <a
                   href="/sitemap.xml"
                   target="_blank"
                   rel="noopener noreferrer"
