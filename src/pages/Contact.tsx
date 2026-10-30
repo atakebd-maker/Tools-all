@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Breadcrumbs } from '../components/Breadcrumbs';
 import {
   Send,
@@ -12,7 +12,9 @@ import {
   Sparkles,
   ArrowRight,
   ShieldCheck,
-  AtSign
+  AtSign,
+  Smartphone,
+  Laptop
 } from 'lucide-react';
 import { AdBanner, AD_KEYS } from '../components/AdBanner';
 
@@ -32,11 +34,39 @@ export const Contact: React.FC<ContactProps> = ({ onNavigateHome }) => {
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [preparedGmailUrl, setPreparedGmailUrl] = useState<string>('');
   const [preparedMailtoUrl, setPreparedMailtoUrl] = useState<string>('');
+  const [preparedAndroidIntent, setPreparedAndroidIntent] = useState<string>('');
+  const [preparedIosGmailUrl, setPreparedIosGmailUrl] = useState<string>('');
   const [formattedMessagePreview, setFormattedMessagePreview] = useState<string>('');
   const [copiedEmail, setCopiedEmail] = useState<boolean>(false);
   const [copiedBody, setCopiedBody] = useState<boolean>(false);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
 
-  // Formats the message cleanly and generates both Gmail web URL & mailto URL
+  useEffect(() => {
+    // Detect mobile device
+    const checkMobile = () => {
+      const userAgent = typeof navigator !== 'undefined' ? navigator.userAgent : '';
+      const mobileRegex = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i;
+      const isTouch = typeof window !== 'undefined' && 'ontouchstart' in window;
+      const isNarrow = typeof window !== 'undefined' && window.innerWidth <= 768;
+      setIsMobile(mobileRegex.test(userAgent) || (isTouch && isNarrow));
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  const isAndroidDevice = () => {
+    if (typeof navigator === 'undefined') return false;
+    return /Android/i.test(navigator.userAgent);
+  };
+
+  const isIOSDevice = () => {
+    if (typeof navigator === 'undefined') return false;
+    return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  };
+
+  // Formats the message cleanly and generates both Gmail web URL & mobile App URLs
   const generateMailUrls = () => {
     const trimmedName = name.trim() || 'Website Visitor';
     const trimmedEmail = email.trim() || 'No email provided';
@@ -70,44 +100,131 @@ export const Contact: React.FC<ContactProps> = ({ onNavigateHome }) => {
       .filter((line) => line !== null)
       .join('\n');
 
-    // Gmail Web Compose URL (automatically fills "to", "su", and "body")
+    // 1. Gmail Web Compose URL (for desktop / browser)
     const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
       TARGET_EMAIL
     )}&su=${encodeURIComponent(effectiveSubject)}&body=${encodeURIComponent(
       formattedBody
     )}`;
 
-    // Standard RFC mailto URL for default desktop/mobile mail apps
+    // 2. Standard RFC mailto URL (triggers default email app, including Gmail on mobile)
     const mailtoUrl = `mailto:${encodeURIComponent(
       TARGET_EMAIL
     )}?subject=${encodeURIComponent(effectiveSubject)}&body=${encodeURIComponent(
       formattedBody
     )}`;
 
-    return { gmailUrl, mailtoUrl, formattedBody, effectiveSubject };
+    // 3. Android Intent targeting Gmail app specifically
+    const androidIntent = `intent://co?to=${encodeURIComponent(
+      TARGET_EMAIL
+    )}&subject=${encodeURIComponent(effectiveSubject)}&body=${encodeURIComponent(
+      formattedBody
+    )}#Intent;scheme=googlegmail;package=com.google.android.gm;end`;
+
+    // 4. iOS Gmail app deep-link scheme
+    const iosGmailUrl = `googlegmail:///co?to=${encodeURIComponent(
+      TARGET_EMAIL
+    )}&subject=${encodeURIComponent(effectiveSubject)}&body=${encodeURIComponent(
+      formattedBody
+    )}`;
+
+    return {
+      gmailUrl,
+      mailtoUrl,
+      androidIntent,
+      iosGmailUrl,
+      formattedBody,
+      effectiveSubject
+    };
+  };
+
+  /**
+   * Intelligently launches the Gmail app on mobile or Gmail web on computer
+   */
+  const triggerEmailClient = (
+    mode: 'auto' | 'mobile_app' | 'web' | 'mailto',
+    urls?: {
+      gmailUrl: string;
+      mailtoUrl: string;
+      androidIntent: string;
+      iosGmailUrl: string;
+    }
+  ) => {
+    const activeUrls = urls || {
+      gmailUrl: preparedGmailUrl,
+      mailtoUrl: preparedMailtoUrl,
+      androidIntent: preparedAndroidIntent,
+      iosGmailUrl: preparedIosGmailUrl
+    };
+
+    if (mode === 'web') {
+      window.open(activeUrls.gmailUrl, '_blank', 'noopener,noreferrer');
+      return;
+    }
+
+    if (mode === 'mailto') {
+      window.location.href = activeUrls.mailtoUrl;
+      return;
+    }
+
+    // Mobile specific launcher
+    if (mode === 'mobile_app' || (mode === 'auto' && isMobile)) {
+      if (isAndroidDevice()) {
+        // Try Android Gmail Intent first
+        try {
+          const link = document.createElement('a');
+          link.href = activeUrls.androidIntent;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+
+          // Fallback to standard mailto if intent doesn't trigger within 400ms
+          setTimeout(() => {
+            window.location.href = activeUrls.mailtoUrl;
+          }, 450);
+        } catch {
+          window.location.href = activeUrls.mailtoUrl;
+        }
+      } else if (isIOSDevice()) {
+        // Try iOS Gmail Scheme first
+        window.location.href = activeUrls.iosGmailUrl;
+        setTimeout(() => {
+          window.location.href = activeUrls.mailtoUrl;
+        }, 450);
+      } else {
+        // General mobile: standard mailto universally launches mobile default mail/Gmail
+        window.location.href = activeUrls.mailtoUrl;
+      }
+      return;
+    }
+
+    // Default Desktop / Computer: open Gmail web in a new tab
+    try {
+      const newWin = window.open(activeUrls.gmailUrl, '_blank', 'noopener,noreferrer');
+      if (!newWin || newWin.closed || typeof newWin.closed === 'undefined') {
+        // Popup was blocked, redirect fallback
+        window.location.href = activeUrls.mailtoUrl;
+      }
+    } catch {
+      window.location.href = activeUrls.mailtoUrl;
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !email.trim() || !message.trim()) return;
 
-    const { gmailUrl, mailtoUrl, formattedBody } = generateMailUrls();
+    const urls = generateMailUrls();
 
-    setPreparedGmailUrl(gmailUrl);
-    setPreparedMailtoUrl(mailtoUrl);
-    setFormattedMessagePreview(formattedBody);
+    setPreparedGmailUrl(urls.gmailUrl);
+    setPreparedMailtoUrl(urls.mailtoUrl);
+    setPreparedAndroidIntent(urls.androidIntent);
+    setPreparedIosGmailUrl(urls.iosGmailUrl);
+    setFormattedMessagePreview(urls.formattedBody);
     setSubmitted(true);
 
-    // Open Gmail Compose automatically in a new tab/window
-    try {
-      const newWindow = window.open(gmailUrl, '_blank', 'noopener,noreferrer');
-      // If popup blocker intervened, the user still has prominent action buttons on the confirmation screen
-      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-        // Fallback: the page shows the direct "Open in Gmail" button
-      }
-    } catch {
-      // Fallback handled via UI
-    }
+    // Auto-launch the relevant client (Mobile Gmail App on mobile, Gmail Web on computer)
+    triggerEmailClient('auto', urls);
   };
 
   const copyEmailToClipboard = async () => {
@@ -149,7 +266,7 @@ export const Contact: React.FC<ContactProps> = ({ onNavigateHome }) => {
           Contact Zynovexa
         </h1>
         <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl">
-          Have feedback, a new tool suggestion, or a question? Send a message directly to our official support email. When you click <strong>Send via Gmail</strong>, your message details will open automatically in Gmail ready to send!
+          মোবাইলে থাকলে সরাসরি <strong>Gmail App</strong> ওপেন হবে এবং কম্পিউটারে থাকলে <strong>Gmail Web</strong> ওপেন হবে। প্রাপকের ঘরে <strong className="text-blue-700">{TARGET_EMAIL}</strong> এবং আপনার সব মেসেজ তথ্য স্বয়ংক্রিয়ভাবে বসে যাবে, আপনি শুধু <strong>Send</strong> করবেন!
         </p>
       </div>
 
@@ -211,14 +328,21 @@ export const Contact: React.FC<ContactProps> = ({ onNavigateHome }) => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Support Sidebar Information */}
         <div className="md:col-span-1 space-y-4">
-          <div className="p-5 bg-white border border-slate-200 rounded-2xl shadow-2xs space-y-2">
+          <div className="p-5 bg-white border border-slate-200 rounded-2xl shadow-2xs space-y-3">
             <div className="flex items-center gap-2 text-blue-600 font-bold text-sm">
               <MessageSquare className="w-4 h-4" />
-              <span>How It Works</span>
+              <span>মোবাইল ও কম্পিউটারে কীভাবে কাজ করে?</span>
             </div>
-            <p className="text-slate-600 text-xs leading-relaxed">
-              When you fill out this form and click <strong>Send via Gmail</strong>, your Gmail compose window opens automatically with the recipient (<code className="bg-slate-100 text-blue-700 px-1 py-0.5 rounded text-[11px] font-semibold">{TARGET_EMAIL}</code>), subject, and your formatted message already filled in!
-            </p>
+            <ul className="text-slate-600 text-xs space-y-2 leading-relaxed">
+              <li className="flex items-start gap-1.5">
+                <Smartphone className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+                <span><strong>মোবাইল (Android/iPhone):</strong> বাটনে চাপ দিলে সরাসরি ফোনের জিমেইল অ্যাপ ওপেন হবে এবং To, Subject, Body সবকিছু রেডি থাকবে।</span>
+              </li>
+              <li className="flex items-start gap-1.5">
+                <Laptop className="w-4 h-4 text-indigo-600 shrink-0 mt-0.5" />
+                <span><strong>কম্পিউটার (PC/Laptop):</strong> নতুন ট্যাবে জিমেইল কম্পোজ পেজ ওপেন হবে এবং তথ্যগুলো সুন্দর ফরম্যাটে বসে যাবে।</span>
+              </li>
+            </ul>
           </div>
 
           <div className="p-5 bg-slate-50 border border-slate-200 rounded-2xl space-y-2 text-xs text-slate-600">
@@ -227,20 +351,20 @@ export const Contact: React.FC<ContactProps> = ({ onNavigateHome }) => {
               <span>100% Privacy Guarantee</span>
             </div>
             <p className="leading-relaxed">
-              We never store your contact inquiries on remote tracking servers. Messages go directly from your personal email client to our support inbox.
+              আপনার কোনো ডেটা আমাদের সার্ভারে সংরক্ষণ হয় না। মেসেজ সরাসরি আপনার ব্যক্তিগত ইমেইল থেকে আমাদের অফিশিয়াল ইনবক্সে পৌঁছে যাবে।
             </p>
           </div>
 
           <div className="p-5 bg-white border border-slate-200 rounded-2xl space-y-2 text-xs text-slate-600 shadow-2xs">
             <div className="flex items-center gap-2 text-slate-900 font-bold text-sm">
               <Sparkles className="w-4 h-4 text-amber-500" />
-              <span>Popular Topics</span>
+              <span>জরুরি বিষয়সমূহ</span>
             </div>
             <ul className="space-y-1.5 list-disc list-inside text-slate-600">
-              <li>Requesting a new calculator or converter</li>
-              <li>Reporting unexpected formula results</li>
-              <li>PDF and image tool enhancement ideas</li>
-              <li>General website feedback & praise</li>
+              <li>নতুন ক্যালকুলেটর বা টুল যুক্ত করার অনুরোধ</li>
+              <li>টুলের ফলাফলে কোনো সংশোধন প্রয়োজন হলে</li>
+              <li>PDF এবং ইমেজ টুলের কোনো ফিচার প্রস্তাব</li>
+              <li>যেকোনো মতামত ও শুভেচ্ছা বার্তা</li>
             </ul>
           </div>
         </div>
@@ -254,44 +378,42 @@ export const Contact: React.FC<ContactProps> = ({ onNavigateHome }) => {
                   <CheckCircle2 className="w-8 h-8" />
                 </div>
                 <h2 className="text-2xl font-bold text-emerald-950">
-                  Ready in Gmail!
+                  মেসেজ জিমেইলে যাওয়ার জন্য প্রস্তুত!
                 </h2>
                 <p className="text-slate-700 text-sm max-w-md mx-auto leading-relaxed">
-                  We prepared your message for{' '}
-                  <strong className="text-blue-700 font-mono bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200">
-                    {TARGET_EMAIL}
-                  </strong>
-                  . Click the button below to open your Gmail compose tab and send it:
+                  প্রাপকের ঠিকানা হিসেবে <strong className="text-blue-700 font-mono bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200">{TARGET_EMAIL}</strong> এবং আপনার তথ্যগুলো ফরম্যাট করা হয়েছে। নিচে ক্লিক করে সেন্ড করুন:
                 </p>
               </div>
 
               {/* Action Buttons to Open Gmail or Mail app */}
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                <a
-                  href={preparedGmailUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                {/* Mobile Specific Button: Launches Gmail App */}
+                <button
+                  type="button"
+                  onClick={() => triggerEmailClient('mobile_app')}
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-sm transition-all shadow-md hover:shadow-blue-600/20 cursor-pointer"
                 >
-                  <Mail className="w-4 h-4" />
-                  <span>Open in Gmail (Web)</span>
-                  <ExternalLink className="w-3.5 h-3.5 ml-0.5" />
-                </a>
+                  <Smartphone className="w-4 h-4" />
+                  <span>মোবাইলে জিমেইল অ্যাপে ওপেন করুন</span>
+                </button>
 
-                <a
-                  href={preparedMailtoUrl}
+                {/* Desktop Specific Button: Launches Gmail Web in Browser */}
+                <button
+                  type="button"
+                  onClick={() => triggerEmailClient('web')}
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 bg-white hover:bg-slate-50 text-slate-800 font-semibold rounded-xl text-sm border border-slate-300 transition-colors shadow-2xs cursor-pointer"
                 >
-                  <span>Open Default Email App</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </a>
+                  <Laptop className="w-4 h-4 text-blue-600" />
+                  <span>কম্পিউটারে Gmail Web-এ ওপেন করুন</span>
+                  <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
+                </button>
               </div>
 
               {/* Formatted Message Preview Box */}
               <div className="bg-white border border-emerald-200/90 rounded-xl p-4 sm:p-5 shadow-2xs space-y-3">
                 <div className="flex items-center justify-between gap-2 border-b border-slate-100 pb-2">
                   <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                    Preview of your message in Gmail:
+                    জিমেইলে যেভাবে মেসেজটি সাজানো হয়েছে:
                   </span>
                   <button
                     type="button"
@@ -301,12 +423,12 @@ export const Contact: React.FC<ContactProps> = ({ onNavigateHome }) => {
                     {copiedBody ? (
                       <>
                         <Check className="w-3.5 h-3.5 text-emerald-600" />
-                        <span className="text-emerald-700">Copied!</span>
+                        <span className="text-emerald-700 font-medium">কপি হয়েছে!</span>
                       </>
                     ) : (
                       <>
-                        <Copy className="w-3.5 h-3.5" />
-                        <span>Copy Text</span>
+                        <Copy className="w-3.5 h-3.5 text-slate-400" />
+                        <span>মেসেজ কপি করুন</span>
                       </>
                     )}
                   </button>
@@ -326,7 +448,7 @@ export const Contact: React.FC<ContactProps> = ({ onNavigateHome }) => {
                   }}
                   className="text-xs font-semibold text-slate-600 hover:text-blue-600 transition-colors cursor-pointer underline"
                 >
-                  Need to change anything? Edit message & send again
+                  মেসেজ পরিবর্তন বা আবার নতুন মেসেজ লিখতে চান? এখানে ক্লিক করুন
                 </button>
               </div>
             </div>
@@ -335,10 +457,15 @@ export const Contact: React.FC<ContactProps> = ({ onNavigateHome }) => {
               onSubmit={handleSubmit}
               className="p-6 sm:p-8 bg-white border border-slate-200 rounded-2xl shadow-xs space-y-5"
             >
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                <h2 className="text-lg font-bold text-slate-900">Send Us a Message</h2>
+              <div className="flex items-center justify-between pb-3 border-b border-slate-100 flex-wrap gap-2">
+                <div className="flex items-center gap-2">
+                  <h2 className="text-lg font-bold text-slate-900">মেসেজ পাঠান</h2>
+                  <span className="text-[11px] font-semibold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200">
+                    {isMobile ? '📱 Mobile Device' : '💻 Computer / Desktop'}
+                  </span>
+                </div>
                 <span className="text-xs text-slate-500">
-                  Recipient: <strong className="text-blue-700 font-mono">{TARGET_EMAIL}</strong>
+                  প্রাপক: <strong className="text-blue-700 font-mono">{TARGET_EMAIL}</strong>
                 </span>
               </div>
 
@@ -346,21 +473,21 @@ export const Contact: React.FC<ContactProps> = ({ onNavigateHome }) => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                    Your Name <span className="text-rose-500">*</span>
+                    আপনার নাম (Your Name) <span className="text-rose-500">*</span>
                   </label>
                   <input
                     type="text"
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="Enter your name (e.g. Alex Johnson)"
+                    placeholder="যেমন: মোঃ সাকিব হাসান"
                     className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition-all"
                   />
                 </div>
 
                 <div>
                   <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                    Your Email Address <span className="text-rose-500">*</span>
+                    আপনার ইমেইল (Your Email) <span className="text-rose-500">*</span>
                   </label>
                   <input
                     type="email"
@@ -376,34 +503,34 @@ export const Contact: React.FC<ContactProps> = ({ onNavigateHome }) => {
               {/* Topic Select */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                  Category / Topic
+                  ক্যাটাগরি বা বিষয় (Topic)
                 </label>
                 <select
                   value={topic}
                   onChange={(e) => setTopic(e.target.value)}
                   className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm text-slate-900 bg-white focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition-all cursor-pointer"
                 >
-                  <option value="General Feedback or Suggestion">General Feedback or Suggestion</option>
-                  <option value="Tool Suggestion / Request">Request a New Calculator or Tool</option>
-                  <option value="Calculator Tools">Calculator & Math Tools</option>
-                  <option value="PDF Tools">PDF Utilities (Merger, Splitter, etc.)</option>
-                  <option value="Image Tools">Image Tools (Resizer, Compressor, etc.)</option>
-                  <option value="Developer Tools">Developer & Encoder Tools</option>
-                  <option value="Bug Report">Technical Bug Report / Error</option>
-                  <option value="Partnership / Other">Partnership & Inquiries</option>
+                  <option value="General Feedback or Suggestion">সাধারণ মতামত ও পরামর্শ</option>
+                  <option value="Tool Suggestion / Request">নতুন ক্যালকুলেটর বা টুল যুক্ত করার অনুরোধ</option>
+                  <option value="Calculator Tools">ক্যালকুলেটর ও গণিত টুলস</option>
+                  <option value="PDF Tools">পিডিএফ টুলস (Merger, Splitter ইত্যাদি)</option>
+                  <option value="Image Tools">ইমেজ টুলস (Resizer, Compressor ইত্যাদি)</option>
+                  <option value="Developer Tools">ডেভেলপার ও কোড টুলস</option>
+                  <option value="Bug Report">ত্রুটি বা টেকনিক্যাল সমস্যা রিপোর্ট</option>
+                  <option value="Partnership / Other">অন্যান্য যোগাযোগ</option>
                 </select>
               </div>
 
               {/* Custom Subject (Optional) */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                  Subject Line <span className="text-slate-400 font-normal lowercase">(optional)</span>
+                  ইমেইলের সাবজেক্ট (Subject Line) <span className="text-slate-400 font-normal lowercase">(ঐচ্ছিক)</span>
                 </label>
                 <input
                   type="text"
                   value={customSubject}
                   onChange={(e) => setCustomSubject(e.target.value)}
-                  placeholder="e.g. Please add an Age Difference Calculator"
+                  placeholder="যেমন: অনুগ্রহ করে বয়সের ব্যবধান নির্ণায়ক ক্যালকুলেটর যোগ করুন"
                   className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition-all"
                 />
               </div>
@@ -411,14 +538,14 @@ export const Contact: React.FC<ContactProps> = ({ onNavigateHome }) => {
               {/* Message Area */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                  Your Message <span className="text-rose-500">*</span>
+                  আপনার মেসেজ (Your Message) <span className="text-rose-500">*</span>
                 </label>
                 <textarea
                   rows={5}
                   required
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Write your message here in detail. When you click Send via Gmail, this text will appear neatly formatted in your Gmail compose box..."
+                  placeholder="এখানে বিস্তারিতভাবে আপনার বক্তব্য লিখুন। সেন্ড বাটনে ক্লিক করলেই জিমেইলের কম্পোজ বক্সে এটি সুন্দরভাবে সাজানো থাকবে..."
                   className="w-full p-3.5 border border-slate-200 rounded-xl text-sm text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 focus:outline-none transition-all leading-relaxed"
                 />
               </div>
@@ -429,12 +556,23 @@ export const Contact: React.FC<ContactProps> = ({ onNavigateHome }) => {
                   type="submit"
                   className="w-full sm:w-auto px-7 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-sm flex items-center justify-center gap-2 cursor-pointer shadow-md hover:shadow-blue-600/20 transition-all"
                 >
-                  <Mail className="w-4 h-4" />
-                  <span>Send via Gmail ({TARGET_EMAIL})</span>
+                  {isMobile ? (
+                    <>
+                      <Smartphone className="w-4 h-4" />
+                      <span>জিমেইল অ্যাপে মেসেজ পাঠান ({TARGET_EMAIL})</span>
+                    </>
+                  ) : (
+                    <>
+                      <Mail className="w-4 h-4" />
+                      <span>জিমেইলে মেসেজ পাঠান ({TARGET_EMAIL})</span>
+                    </>
+                  )}
                   <ArrowRight className="w-4 h-4 ml-1" />
                 </button>
                 <p className="text-xs text-slate-500 mt-2">
-                  Clicking will open Gmail with recipient <strong>{TARGET_EMAIL}</strong>, subject, and message pre-filled.
+                  {isMobile
+                    ? `📱 মোবাইলে ক্লিক করলে সরাসরি আপনার Gmail App চালু হবে এবং প্রাপক ${TARGET_EMAIL} ও আপনার মেসেজ স্বয়ংক্রিয়ভাবে বসে যাবে।`
+                    : `💻 কম্পিউটারে ক্লিক করলে ব্রাউজারে Gmail খুলে যাবে এবং প্রাপক ${TARGET_EMAIL} ও মেসেজ স্বয়ংক্রিয়ভাবে বসে যাবে।`}
                 </p>
               </div>
             </form>
