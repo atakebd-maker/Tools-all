@@ -13,10 +13,7 @@ interface FaqProps {
 export const Faq: React.FC<FaqProps> = ({ onNavigateHome, onNavigateAllTools, onNavigate }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [openItems, setOpenItems] = useState<Record<string, boolean>>({
-    'what-is-zynovexa': true,
-    'pdf-tools-free-editor': true
-  });
+  const [openItems, setOpenItems] = useState<Record<string, boolean>>({});
 
   const origin = getSiteOrigin();
 

@@ -58,7 +58,7 @@ interface HomeProps {
 
 export const Home: React.FC<HomeProps> = ({ onNavigate, onSelectTool }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [openFaqs, setOpenFaqs] = useState<Record<number, boolean>>({ 0: true, 1: true });
+  const [openFaqs, setOpenFaqs] = useState<Record<number, boolean>>({});
 
   const toggleFaq = (idx: number) => {
     setOpenFaqs((prev) => ({ ...prev, [idx]: !prev[idx] }));

@@ -32,7 +32,7 @@ export const ComprehensiveToolGuide: React.FC<ComprehensiveToolGuideProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<GuideTab>('steps');
   const [copiedExample, setCopiedExample] = useState(false);
-  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 
   const handleCopyExample = () => {
     if (guide.example?.input) {

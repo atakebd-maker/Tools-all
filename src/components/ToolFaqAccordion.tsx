@@ -40,7 +40,7 @@ export const ToolFaqAccordion: React.FC<ToolFaqAccordionProps> = ({
   categoryName: initialCategoryName,
   faqs: fallbackFaqs,
   onNavigateFaq,
-  defaultExpandedIndex = 0,
+  defaultExpandedIndex = null,
   allowSearch = true,
   className = ''
 }) => {
