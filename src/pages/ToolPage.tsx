@@ -9,13 +9,15 @@ interface ToolPageProps {
   onNavigateHome: () => void;
   onNavigateCategory: (categorySlug: string) => void;
   onSelectTool: (toolSlug: string) => void;
+  onNavigateFaq?: () => void;
 }
 
 export const ToolPage: React.FC<ToolPageProps> = ({
   toolSlug,
   onNavigateHome,
   onNavigateCategory,
-  onSelectTool
+  onSelectTool,
+  onNavigateFaq
 }) => {
   const tool = TOOLS.find((t) => t.slug === toolSlug || t.id === toolSlug);
   const category = CATEGORIES.find((c) => c.id === tool?.category) || CATEGORIES[0];
@@ -66,6 +68,7 @@ export const ToolPage: React.FC<ToolPageProps> = ({
       faqs={tool.faqs}
       onNavigateCategory={() => onNavigateCategory(category.slug)}
       onNavigateHome={onNavigateHome}
+      onNavigateFaq={onNavigateFaq}
       relatedTools={relatedTools}
       toolItem={tool}
     >

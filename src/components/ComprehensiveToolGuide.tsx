@@ -14,7 +14,9 @@ import {
   Info,
   Layers,
   Copy,
-  Check
+  Check,
+  Plus,
+  Minus
 } from 'lucide-react';
 
 interface ComprehensiveToolGuideProps {
@@ -343,20 +345,39 @@ export const ComprehensiveToolGuide: React.FC<ComprehensiveToolGuideProps> = ({
               {guide.faqs.map((faq, idx) => {
                 const isOpen = openFaqIndex === idx;
                 return (
-                  <div key={idx} className="border border-slate-200 rounded-xl overflow-hidden transition-all">
+                  <div
+                    key={idx}
+                    className={`border rounded-xl overflow-hidden transition-all duration-200 ${
+                      isOpen
+                        ? 'border-blue-300 bg-blue-50/20 shadow-2xs'
+                        : 'border-slate-200 bg-white hover:border-slate-300'
+                    }`}
+                  >
                     <button
                       onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
-                      className="w-full text-left p-4 bg-slate-50/60 hover:bg-slate-100/80 flex items-center justify-between gap-4 font-semibold text-sm sm:text-base text-slate-900 cursor-pointer"
+                      className="w-full text-left p-4 sm:p-5 flex items-center justify-between gap-4 font-semibold text-sm sm:text-base text-slate-900 cursor-pointer group"
+                      aria-expanded={isOpen}
                     >
-                      <span>{faq.q}</span>
-                      {isOpen ? (
-                        <ChevronUp className="w-4 h-4 text-blue-600 shrink-0" />
-                      ) : (
-                        <ChevronDown className="w-4 h-4 text-slate-400 shrink-0" />
-                      )}
+                      <span className={`transition-colors ${isOpen ? 'text-blue-700' : 'group-hover:text-blue-600'}`}>
+                        {faq.q}
+                      </span>
+                      <span
+                        className={`w-7 h-7 rounded-full flex items-center justify-center font-bold text-sm shrink-0 transition-all ${
+                          isOpen
+                            ? 'bg-blue-600 text-white shadow-xs'
+                            : 'bg-blue-50 text-blue-600 group-hover:bg-blue-100'
+                        }`}
+                        aria-label={isOpen ? 'Collapse answer' : 'Expand answer'}
+                      >
+                        {isOpen ? (
+                          <Minus className="w-4 h-4" />
+                        ) : (
+                          <Plus className="w-4 h-4" />
+                        )}
+                      </span>
                     </button>
                     {isOpen && (
-                      <div className="p-4 bg-white text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100">
+                      <div className="px-4 pb-5 sm:px-5 sm:pb-5 pt-1 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-blue-100/60 animate-in fade-in duration-150">
                         {faq.a}
                       </div>
                     )}

@@ -5,6 +5,7 @@ import { AdBanner, AD_KEYS } from './AdBanner';
 import { ToolItem } from '../data/tools';
 import { ComprehensiveToolGuide } from './ComprehensiveToolGuide';
 import { getToolGuide } from '../data/toolGuides';
+import { ToolFaqAccordion } from './ToolFaqAccordion';
 
 interface ToolWrapperProps {
   name: string;
@@ -16,6 +17,7 @@ interface ToolWrapperProps {
   faqs?: { q: string; a: string }[];
   onNavigateCategory: () => void;
   onNavigateHome: () => void;
+  onNavigateFaq?: () => void;
   children: React.ReactNode;
   relatedTools?: { id: string; name: string; description: string; onSelect: () => void }[];
   toolItem?: ToolItem;
@@ -31,6 +33,7 @@ export const ToolWrapper: React.FC<ToolWrapperProps> = ({
   faqs,
   onNavigateCategory,
   onNavigateHome,
+  onNavigateFaq,
   children,
   relatedTools,
   toolItem
@@ -132,6 +135,13 @@ export const ToolWrapper: React.FC<ToolWrapperProps> = ({
 
       {/* Comprehensive Dedicated Tool Usage Guide */}
       <ComprehensiveToolGuide guide={guide} categoryName={categoryName} />
+
+      {/* Dedicated Tool-Specific FAQ Section with + and - Toggles */}
+      <ToolFaqAccordion
+        toolName={name}
+        faqs={guide.faqs}
+        onNavigateFaq={onNavigateFaq}
+      />
 
       {/* Related Tools & Sponsored Vertical Ad Unit */}
       {relatedTools && relatedTools.length > 0 && (

@@ -111,6 +111,7 @@ export default function App() {
           onNavigateHome={() => navigate('/')}
           onNavigateCategory={(catSlug) => navigate(`/categories/${catSlug}`)}
           onSelectTool={(slug) => navigate(`/tools/${slug}`)}
+          onNavigateFaq={() => navigate('/faq')}
         />
       );
     }

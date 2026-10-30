@@ -19,7 +19,9 @@ import {
   CheckCircle2,
   BookOpen,
   Clock,
-  Calendar
+  Calendar,
+  Plus,
+  Minus
 } from 'lucide-react';
 
 export const HOME_FAQS = [
@@ -56,8 +58,11 @@ interface HomeProps {
 
 export const Home: React.FC<HomeProps> = ({ onNavigate, onSelectTool }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [openFaqs, setOpenFaqs] = useState<Record<number, boolean>>({ 0: true, 1: true });
 
-  // Popular tools selection
+  const toggleFaq = (idx: number) => {
+    setOpenFaqs((prev) => ({ ...prev, [idx]: !prev[idx] }));
+  };
   const popularTools = TOOLS.filter((t) => t.popular);
   // Recently added tools
   const recentTools = TOOLS.filter((t) => !t.popular).slice(0, 4);
@@ -468,16 +473,44 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSelectTool }) => {
           </p>
         </div>
 
-        <div className="space-y-4">
-          {HOME_FAQS.map((faq, index) => (
-            <div
-              key={index}
-              className="p-6 bg-white border border-slate-200 rounded-2xl shadow-2xs space-y-2 hover:border-blue-200 transition-colors"
-            >
-              <h3 className="font-bold text-slate-900 text-base">{faq.q}</h3>
-              <p className="text-slate-600 text-sm leading-relaxed">{faq.a}</p>
-            </div>
-          ))}
+        <div className="space-y-3">
+          {HOME_FAQS.map((faq, index) => {
+            const isOpen = !!openFaqs[index];
+            return (
+              <div
+                key={index}
+                className={`bg-white border rounded-2xl transition-all duration-200 overflow-hidden ${
+                  isOpen ? 'border-blue-300 shadow-sm' : 'border-slate-200 hover:border-slate-300'
+                }`}
+              >
+                <button
+                  type="button"
+                  onClick={() => toggleFaq(index)}
+                  className="w-full flex items-center justify-between text-left p-5 sm:p-6 gap-4 cursor-pointer select-none"
+                  aria-expanded={isOpen}
+                >
+                  <span className="font-bold text-slate-900 text-base sm:text-lg flex-1 pr-2">
+                    {faq.q}
+                  </span>
+                  <div
+                    className={`w-9 h-9 shrink-0 rounded-full flex items-center justify-center font-bold text-base transition-colors ${
+                      isOpen
+                        ? 'bg-blue-600 text-white shadow-sm'
+                        : 'bg-blue-50 text-blue-700 hover:bg-blue-100'
+                    }`}
+                    title={isOpen ? 'Click to collapse' : 'Click to show answer'}
+                  >
+                    {isOpen ? <Minus className="w-5 h-5 stroke-[2.5]" /> : <Plus className="w-5 h-5 stroke-[2.5]" />}
+                  </div>
+                </button>
+                {isOpen && (
+                  <div className="px-5 sm:px-6 pb-6 pt-1 text-slate-600 text-sm sm:text-base leading-relaxed border-t border-slate-100 animate-fadeIn">
+                    <p>{faq.a}</p>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
 
         <div className="text-center mt-8">

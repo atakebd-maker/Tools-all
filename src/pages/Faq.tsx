@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { FAQS, FAQ_CATEGORIES, FaqItem } from '../data/faqData';
 import { updateMetaTags, getSiteOrigin } from '../utils/seo';
-import { Search, HelpCircle, ChevronDown, ShieldCheck, CheckCircle2, ArrowRight } from 'lucide-react';
+import { Search, HelpCircle, Plus, Minus, ShieldCheck, CheckCircle2, ArrowRight, Sparkles } from 'lucide-react';
 import { AdBanner, AD_KEYS } from '../components/AdBanner';
 
 interface FaqProps {
@@ -167,19 +167,28 @@ export const Faq: React.FC<FaqProps> = ({ onNavigateHome, onNavigateAllTools, on
                 >
                   <button
                     onClick={() => toggleItem(faq.id)}
-                    className="w-full p-4 sm:p-5 text-left flex items-start justify-between gap-4 cursor-pointer hover:bg-slate-50/50 transition-colors"
+                    className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-slate-50/50 transition-colors group"
                     aria-expanded={isOpen}
                   >
-                    <span className="font-semibold text-slate-900 text-sm sm:text-base leading-snug">
+                    <span className={`font-semibold text-sm sm:text-base leading-snug transition-colors ${
+                      isOpen ? 'text-blue-700' : 'text-slate-900 group-hover:text-blue-600'
+                    }`}>
                       {faq.question}
                     </span>
-                    <div
-                      className={`p-1.5 rounded-lg bg-slate-100 text-slate-500 shrink-0 transition-transform duration-200 ${
-                        isOpen ? 'rotate-180 bg-blue-50 text-blue-600' : ''
+                    <span
+                      className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center shrink-0 font-bold transition-all duration-200 ${
+                        isOpen
+                          ? 'bg-blue-600 text-white shadow-xs'
+                          : 'bg-blue-50 text-blue-600 group-hover:bg-blue-100'
                       }`}
+                      aria-label={isOpen ? 'Collapse answer' : 'Expand answer'}
                     >
-                      <ChevronDown className="w-4 h-4" />
-                    </div>
+                      {isOpen ? (
+                        <Minus className="w-4 h-4" />
+                      ) : (
+                        <Plus className="w-4 h-4" />
+                      )}
+                    </span>
                   </button>
 
                   {isOpen && (
