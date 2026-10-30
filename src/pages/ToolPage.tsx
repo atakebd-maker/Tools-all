@@ -59,6 +59,7 @@ export const ToolPage: React.FC<ToolPageProps> = ({
 
   return (
     <ToolWrapper
+      toolId={tool.id}
       name={tool.name}
       categoryName={category.name}
       categorySlug={category.slug}

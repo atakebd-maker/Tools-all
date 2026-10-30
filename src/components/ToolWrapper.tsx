@@ -8,6 +8,7 @@ import { getToolGuide } from '../data/toolGuides';
 import { ToolFaqAccordion } from './ToolFaqAccordion';
 
 interface ToolWrapperProps {
+  toolId?: string;
   name: string;
   categoryName: string;
   categorySlug: string;
@@ -24,6 +25,7 @@ interface ToolWrapperProps {
 }
 
 export const ToolWrapper: React.FC<ToolWrapperProps> = ({
+  toolId,
   name,
   categoryName,
   categorySlug,
@@ -138,7 +140,9 @@ export const ToolWrapper: React.FC<ToolWrapperProps> = ({
 
       {/* Dedicated Tool-Specific FAQ Section with + and - Toggles */}
       <ToolFaqAccordion
+        toolId={toolId || toolItem?.id || guide.id}
         toolName={name}
+        categoryName={categoryName}
         faqs={guide.faqs}
         onNavigateFaq={onNavigateFaq}
       />
