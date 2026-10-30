@@ -3,6 +3,7 @@ import { TOOLS, ToolItem } from '../data/tools';
 import { CATEGORIES } from '../data/categories';
 import { ToolWrapper } from '../components/ToolWrapper';
 import { applyToolSeo } from '../utils/seo';
+import { recordRecentTool } from '../utils/recentTools';
 
 interface ToolPageProps {
   toolSlug: string;
@@ -25,6 +26,7 @@ export const ToolPage: React.FC<ToolPageProps> = ({
   useEffect(() => {
     if (tool) {
       applyToolSeo(tool, category.name, category.slug);
+      recordRecentTool(tool.id);
     }
   }, [tool, category]);
 

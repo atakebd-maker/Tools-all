@@ -18,6 +18,7 @@ import { TOOLS } from './data/tools';
 import { CATEGORIES } from './data/categories';
 import { applyStaticPageSeo } from './utils/seo';
 import { AdBanner, AD_KEYS } from './components/AdBanner';
+import { recordRecentTool } from './utils/recentTools';
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState<string>(() => {
@@ -69,13 +70,19 @@ export default function App() {
     window.scrollTo(0, 0);
   };
 
+  // Helper to record recent tool and navigate
+  const handleSelectTool = (toolIdOrSlug: string) => {
+    recordRecentTool(toolIdOrSlug);
+    navigate(`/tools/${toolIdOrSlug}`);
+  };
+
   // Route matching
   const renderCurrentView = () => {
     if (currentPath === '/' || currentPath === '') {
       return (
         <Home
           onNavigate={navigate}
-          onSelectTool={(toolId) => navigate(`/tools/${toolId}`)}
+          onSelectTool={handleSelectTool}
         />
       );
     }
@@ -85,7 +92,7 @@ export default function App() {
         <AllTools
           initialSearch={searchParam}
           onNavigateHome={() => navigate('/')}
-          onSelectTool={(toolId) => navigate(`/tools/${toolId}`)}
+          onSelectTool={handleSelectTool}
         />
       );
     }
@@ -98,7 +105,7 @@ export default function App() {
           onNavigateHome={() => navigate('/')}
           onNavigateAllTools={() => navigate('/all-tools')}
           onNavigateCategory={(slug) => navigate(`/categories/${slug}`)}
-          onSelectTool={(toolId) => navigate(`/tools/${toolId}`)}
+          onSelectTool={handleSelectTool}
         />
       );
     }
@@ -110,7 +117,7 @@ export default function App() {
           toolSlug={toolSlug}
           onNavigateHome={() => navigate('/')}
           onNavigateCategory={(catSlug) => navigate(`/categories/${catSlug}`)}
-          onSelectTool={(slug) => navigate(`/tools/${slug}`)}
+          onSelectTool={handleSelectTool}
           onNavigateFaq={() => navigate('/faq')}
         />
       );

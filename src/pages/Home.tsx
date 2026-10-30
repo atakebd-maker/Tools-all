@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { CATEGORIES } from '../data/categories';
-import { TOOLS } from '../data/tools';
+import { TOOLS, ToolItem } from '../data/tools';
 import { BLOG_POSTS } from '../data/blogPosts';
 import { CategoryCard } from '../components/CategoryCard';
 import { ToolCard } from '../components/ToolCard';
 import { SearchBar } from '../components/SearchBar';
 import { AdBanner, AD_KEYS } from '../components/AdBanner';
+import { getRecentTools, clearRecentTools } from '../utils/recentTools';
 import {
   ShieldCheck,
   Zap,
@@ -21,7 +22,10 @@ import {
   Clock,
   Calendar,
   Plus,
-  Minus
+  Minus,
+  History,
+  Trash2,
+  ArrowUpRight
 } from 'lucide-react';
 
 export const HOME_FAQS = [
@@ -59,6 +63,28 @@ interface HomeProps {
 export const Home: React.FC<HomeProps> = ({ onNavigate, onSelectTool }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [openFaqs, setOpenFaqs] = useState<Record<number, boolean>>({});
+  const [recentToolsList, setRecentToolsList] = useState<ToolItem[]>([]);
+
+  useEffect(() => {
+    // Initial fetch from localStorage
+    setRecentToolsList(getRecentTools());
+
+    const handleRecentChange = () => {
+      setRecentToolsList(getRecentTools());
+    };
+
+    window.addEventListener('zynovexa_recent_tools_changed', handleRecentChange);
+    window.addEventListener('storage', handleRecentChange);
+    return () => {
+      window.removeEventListener('zynovexa_recent_tools_changed', handleRecentChange);
+      window.removeEventListener('storage', handleRecentChange);
+    };
+  }, []);
+
+  const handleClearRecentTools = () => {
+    clearRecentTools();
+    setRecentToolsList([]);
+  };
 
   const toggleFaq = (idx: number) => {
     setOpenFaqs((prev) => ({ ...prev, [idx]: !prev[idx] }));
@@ -185,6 +211,75 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSelectTool }) => {
           />
         </div>
       </section>
+
+      {/* Recently Used Tools Section (Tracks the last 5 tools interacted with) */}
+      {recentToolsList.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-gradient-to-r from-blue-50/80 via-slate-50 to-indigo-50/60 rounded-2xl border border-blue-200/90 p-5 sm:p-7 shadow-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-blue-100">
+              <div>
+                <div className="flex items-center gap-2 text-xs font-bold text-blue-700 uppercase tracking-wider mb-1">
+                  <History className="w-4 h-4 text-blue-600" />
+                  <span>Quick Access • Last {recentToolsList.length} Used</span>
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                  Recently Used
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-600 mt-0.5">
+                  Jump right back into the tools you've recently interacted with on Zynovexa.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
+                <button
+                  type="button"
+                  onClick={handleClearRecentTools}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-500 hover:text-rose-600 hover:bg-rose-50 border border-slate-200 bg-white transition-colors cursor-pointer shadow-2xs"
+                  title="Clear recent tools history from this browser"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  <span>Clear History</span>
+                </button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+              {recentToolsList.map((tool, index) => {
+                const cat = CATEGORIES.find((c) => c.id === tool.category);
+                return (
+                  <div
+                    key={tool.id}
+                    onClick={() => onSelectTool(tool.id)}
+                    className="group relative bg-white rounded-xl border border-blue-100 p-4 hover:border-blue-400 hover:shadow-md transition-all duration-200 flex flex-col justify-between cursor-pointer h-full"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between gap-1 mb-2">
+                        <span className="text-[10px] font-bold tracking-wide uppercase px-2 py-0.5 rounded bg-blue-50 text-blue-700">
+                          {cat?.name || 'Tool'}
+                        </span>
+                        <span className="text-[10px] font-semibold text-slate-400">
+                          {index === 0 ? 'Latest' : `#${index + 1}`}
+                        </span>
+                      </div>
+                      <h3 className="font-bold text-slate-900 text-sm sm:text-base group-hover:text-blue-600 transition-colors line-clamp-1 mb-1">
+                        {tool.name}
+                      </h3>
+                      <p className="text-slate-500 text-xs line-clamp-2 leading-relaxed">
+                        {tool.description}
+                      </p>
+                    </div>
+
+                    <div className="mt-4 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-blue-600 group-hover:text-blue-700">
+                      <span>Launch Tool</span>
+                      <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Popular Tools Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
