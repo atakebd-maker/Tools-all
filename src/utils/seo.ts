@@ -121,10 +121,18 @@ export function updateMetaTags(options: SeoOptions) {
   setMeta('property', 'og:description', description);
   setMeta('property', 'og:type', ogType);
   setMeta('property', 'og:site_name', 'Zynovexa');
+  setMeta('property', 'og:locale', 'en_US');
 
   const origin = getSiteOrigin();
   const fullUrl = canonicalPath ? `${origin}${canonicalPath}` : (typeof window !== 'undefined' ? window.location.href : origin);
   setMeta('property', 'og:url', fullUrl);
+
+  // USA Target Geolocation & Language Directives
+  setMeta('name', 'geo.region', 'US');
+  setMeta('name', 'geo.placename', 'United States');
+  setMeta('name', 'geo.position', '39.8283;-98.5795');
+  setMeta('name', 'ICBM', '39.8283, -98.5795');
+  setMeta('name', 'coverage', 'United States');
 
   // 5. Twitter Card Tags
   setMeta('name', 'twitter:card', 'summary_large_image');
@@ -139,6 +147,21 @@ export function updateMetaTags(options: SeoOptions) {
     document.head.appendChild(canonicalLink);
   }
   canonicalLink.setAttribute('href', fullUrl);
+
+  // 6b. Alternate Hreflang Tags (US & Global English)
+  const setHreflang = (hreflang: string, url: string) => {
+    let link = document.querySelector(`link[rel="alternate"][hreflang="${hreflang}"]`) as HTMLLinkElement | null;
+    if (!link) {
+      link = document.createElement('link');
+      link.setAttribute('rel', 'alternate');
+      link.setAttribute('hreflang', hreflang);
+      document.head.appendChild(link);
+    }
+    link.setAttribute('href', url);
+  };
+  setHreflang('en-US', fullUrl);
+  setHreflang('en', fullUrl);
+  setHreflang('x-default', fullUrl);
 
   // 7. Schema.org JSON-LD Structured Data
   let scriptLd = document.getElementById('dynamic-seo-ldjson') as HTMLScriptElement | null;
@@ -200,6 +223,18 @@ export function applyCategorySeo(category: Category, toolCount: number = 0) {
     'description': description,
     'url': typeof window !== 'undefined' ? window.location.href : `${origin}/categories/${category.slug}`,
     'numberOfItems': toolCount,
+    'inLanguage': 'en-US',
+    'areaServed': {
+      '@type': 'Country',
+      'name': 'United States'
+    },
+    'audience': {
+      '@type': 'Audience',
+      'geographicArea': {
+        '@type': 'Country',
+        'name': 'United States'
+      }
+    },
     'publisher': {
       '@type': 'Organization',
       'name': 'Zynovexa',
@@ -245,6 +280,8 @@ export function applyToolSeo(tool: ToolItem, categoryName?: string, categorySlug
     `free online ${tool.name.toLowerCase()}`,
     `${tool.name.toLowerCase()} not sign in`,
     `${tool.name.toLowerCase()} only free`,
+    `free online tools USA`,
+    `online ${tool.name.toLowerCase()} US`,
     'no sign up required',
     'zynovexa'
   ]));
@@ -255,8 +292,20 @@ export function applyToolSeo(tool: ToolItem, categoryName?: string, categorySlug
     'name': `${tool.name} - Zynovexa`,
     'applicationCategory': resolvedCatName,
     'operatingSystem': 'All modern web browsers (Windows, Mac, iOS, Android, Linux)',
+    'inLanguage': 'en-US',
     'description': description,
     'url': typeof window !== 'undefined' ? window.location.href : `${origin}/tools/${tool.slug}`,
+    'areaServed': {
+      '@type': 'Country',
+      'name': 'United States'
+    },
+    'audience': {
+      '@type': 'Audience',
+      'geographicArea': {
+        '@type': 'Country',
+        'name': 'United States'
+      }
+    },
     'offers': {
       '@type': 'Offer',
       'price': '0',
@@ -307,10 +356,13 @@ export function applyStaticPageSeo(path: string) {
     case '':
       updateMetaTags({
         title: 'Zynovexa — All-in-One Online Tools & Free Calculators',
-        description: 'Zynovexa is an all-in-one free online tools platform with 100+ calculators, image tools, PDF utilities, converters, and developer tools. 100% free, private, and browser-based.',
+        description: 'Zynovexa is an all-in-one free online tools platform with 100+ calculators, image tools, PDF utilities, converters, and developer tools in the United States and worldwide. 100% free, private, and browser-based.',
         keywords: [
           'Zynovexa',
           'zynovexa tools',
+          'free online tools USA',
+          'online calculators US',
+          'free pdf editor online',
           'zynovexa online tools',
           'zynovexa calculators',
           'free online tools',
@@ -322,9 +374,17 @@ export function applyStaticPageSeo(path: string) {
           '@context': 'https://schema.org',
           '@type': 'WebSite',
           'name': 'Zynovexa',
-          'alternateName': ['Zynovexa Tools', 'Zynovexa Online Tools', 'Zynovexa Platform'],
+          'alternateName': ['Zynovexa Tools', 'Zynovexa Online Tools', 'Zynovexa Platform', 'zynovexa.vercel.app'],
           'url': `${origin}/`,
-          'description': 'Free online browser tools with zero sign in or file uploads.',
+          'inLanguage': 'en-US',
+          'audience': {
+            '@type': 'Audience',
+            'geographicArea': {
+              '@type': 'Country',
+              'name': 'United States'
+            }
+          },
+          'description': 'Free online browser tools with zero sign in or file uploads in the United States.',
           'potentialAction': {
             '@type': 'SearchAction',
             'target': `${origin}/all-tools?q={search_term_string}`,
@@ -341,11 +401,12 @@ export function applyStaticPageSeo(path: string) {
     case '/all-tools':
       updateMetaTags({
         title: 'Zynovexa - Free Online All Tools Directory Not Sign In Only Free',
-        description: 'Browse all 100+ free online browser utilities on Zynovexa. Fast image editors, PDF mergers, code formatters, and math calculators with no account required.',
+        description: 'Browse all 100+ free online browser utilities on Zynovexa in the United States. Fast image editors, PDF mergers, code formatters, and math calculators with no account required.',
         keywords: [
+          'free online tools USA',
           'free online tools directory',
           'all tools not sign in',
-          'web utilities free list',
+          'web utilities free list US',
           'free online software no sign in',
           'zynovexa'
         ],

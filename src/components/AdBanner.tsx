@@ -51,6 +51,12 @@ export const AdBanner: React.FC<AdBannerProps> = ({
       background: transparent;
     }
   </style>
+  <script type="text/javascript">
+    // Anti-Popunder Shield: Completely block any popunders or popup windows
+    window.open = function() { return null; };
+    window.focus = function() { return null; };
+    window.blur = function() { return null; };
+  </script>
 </head>
 <body>
   <div id="ad-wrapper">
@@ -91,6 +97,7 @@ export const AdBanner: React.FC<AdBannerProps> = ({
           srcDoc={adHtml}
           width={activeWidth}
           height={activeHeight}
+          sandbox="allow-scripts allow-same-origin"
           style={{
             border: 0,
             overflow: 'hidden',

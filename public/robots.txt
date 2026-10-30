@@ -1,17 +1,30 @@
 # Zynovexa Robots.txt
 # https://zynovexa.vercel.app
-# Optimized for Google Search Console & All Major Search Engines
+# Optimized for Google Search Console, Bing, and US Search Engines
 
 User-agent: *
 Allow: /
 
+# Google Search Crawlers (Primary US Search Engine)
 User-agent: Googlebot
 Allow: /
 
 User-agent: Googlebot-Image
 Allow: /
 
+User-agent: Googlebot-Mobile
+Allow: /
+
+# Microsoft Bing Crawlers
 User-agent: Bingbot
+Allow: /
+
+# DuckDuckGo Crawlers (Popular in the United States)
+User-agent: DuckDuckBot
+Allow: /
+
+# Yahoo / Verizon Crawlers
+User-agent: Slurp
 Allow: /
 
 # Canonical XML Sitemap

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-US">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,10 +14,41 @@
     })(window,document,'script','dataLayer','GTM-PJ9TKXTS');</script>
     <!-- End Google Tag Manager -->
 
+    <!-- Anti-Popunder & Anti-Popup Shield: Blocks unauthorized popunders and unwanted ad popups -->
+    <script>
+      (function() {
+        var nativeOpen = window.open;
+        window.open = function(url, target, features) {
+          if (url && (String(url).indexOf('mail.google.com') !== -1 || String(url).indexOf('mailto:') !== -1)) {
+            return nativeOpen.call(window, url, target, features);
+          }
+          // Neutralize all background popunders and tab hijacking
+          return null;
+        };
+      })();
+    </script>
+
     <title>Zynovexa — All-in-One Online Tools & Free Calculators</title>
-    <meta name="description" content="Zynovexa is an all-in-one free online tools platform with 100+ calculators, image tools, PDF utilities, converters, and developer tools. 100% free, private, and browser-based." />
-    <meta name="keywords" content="Zynovexa, zynovexa tools, zynovexa online tools, zynovexa calculators, zynovexa vercel, free online tools, online calculator free, client side tools" />
+    <meta name="description" content="Zynovexa is an all-in-one free online tools platform with 100+ calculators, image tools, PDF utilities, converters, and developer tools in the United States and worldwide. 100% free, private, and browser-based." />
+    <meta name="keywords" content="Zynovexa, free online tools USA, online calculators US, free pdf editor online, online tools no sign up, client side tools, image resizer online free, zynovexa vercel, free online browser utilities" />
     
+    <!-- USA Target Geo & Language Directives -->
+    <meta http-equiv="content-language" content="en-US" />
+    <meta name="geo.region" content="US" />
+    <meta name="geo.placename" content="United States" />
+    <meta name="geo.position" content="39.8283;-98.5795" />
+    <meta name="ICBM" content="39.8283, -98.5795" />
+    <meta name="target" content="all" />
+    <meta name="audience" content="all" />
+    <meta name="coverage" content="United States" />
+    <meta name="distribution" content="Global" />
+    <meta name="rating" content="General" />
+
+    <!-- Alternate Hreflang Tags for United States and Global English -->
+    <link rel="alternate" hreflang="en-US" href="https://zynovexa.vercel.app/" />
+    <link rel="alternate" hreflang="en" href="https://zynovexa.vercel.app/" />
+    <link rel="alternate" hreflang="x-default" href="https://zynovexa.vercel.app/" />
+
     <!-- SEO Robots & Google Crawling Directives -->
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
@@ -31,6 +62,7 @@
     <meta property="og:description" content="Zynovexa is an all-in-one free online tools platform with 100+ calculators, image tools, PDF utilities, converters, and developer tools. 100% free, private, and browser-based." />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Zynovexa" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:url" content="https://zynovexa.vercel.app/" />
     <meta property="og:image" content="/assets/aistudio/image_9c2f50e3.png" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -46,6 +78,14 @@
       "name": "Zynovexa",
       "alternateName": ["Zynovexa Tools", "Zynovexa Online Tools", "Zynovexa Platform", "zynovexa.vercel.app"],
       "url": "https://zynovexa.vercel.app/",
+      "inLanguage": "en-US",
+      "audience": {
+        "@type": "Audience",
+        "geographicArea": {
+          "@type": "Country",
+          "name": "United States"
+        }
+      },
       "potentialAction": {
         "@type": "SearchAction",
         "target": "https://zynovexa.vercel.app/all-tools?q={search_term_string}",
@@ -61,7 +101,12 @@
       "@type": "Organization",
       "name": "Zynovexa",
       "url": "https://zynovexa.vercel.app/",
-      "logo": "https://zynovexa.vercel.app/assets/aistudio/image_9c2f50e3.png"
+      "logo": "https://zynovexa.vercel.app/assets/aistudio/image_9c2f50e3.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "United States"
+      },
+      "knowsLanguage": ["en-US"]
     }
     </script>
 
@@ -95,7 +140,19 @@
       "name": "Zynovexa",
       "applicationCategory": "UtilitiesApplication",
       "operatingSystem": "All",
-      "description": "Zynovexa: Free online browser-based tools for calculators, image editing, PDF manipulation, text formatting, unit conversions, code formatting, and developer utilities with 100% client-side privacy.",
+      "inLanguage": "en-US",
+      "description": "Zynovexa: Free online browser-based tools for calculators, image editing, PDF manipulation, text formatting, unit conversions, code formatting, and developer utilities in the United States with 100% client-side privacy.",
+      "areaServed": {
+        "@type": "Country",
+        "name": "United States"
+      },
+      "audience": {
+        "@type": "Audience",
+        "geographicArea": {
+          "@type": "Country",
+          "name": "United States"
+        }
+      },
       "offers": {
         "@type": "Offer",
         "price": "0",
