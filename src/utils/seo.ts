@@ -259,6 +259,88 @@ export function applyCategorySeo(category: Category, toolCount: number = 0) {
 }
 
 /**
+ * Helper to ensure the meta description does not exceed 158-160 characters
+ * while staying grammatically intact.
+ */
+function clampDescription(text: string, maxLen = 158): string {
+  if (text.length <= maxLen) return text;
+  const sub = text.slice(0, maxLen);
+  const lastSpace = sub.lastIndexOf(' ');
+  const clean = lastSpace > 120 ? sub.slice(0, lastSpace) : sub;
+  return clean.endsWith('.') ? clean : clean + '.';
+}
+
+/**
+ * Generates an optimized, search-friendly meta description for any tool.
+ * Loaded with high-intent keywords (online PDF tool, free PDF editor, online calculator,
+ * image resizer, instant formulas, client-side privacy, no sign in) targeting Google 1st-page rankings.
+ */
+export function buildToolSearchMetaDescription(tool: ToolItem, categoryName?: string): string {
+  const name = tool.name;
+  const cat = (categoryName || tool.category || '').toLowerCase();
+  const lowerName = name.toLowerCase();
+
+  // If tool has explicit custom metaDescription with high quality length
+  if (tool.metaDescription && tool.metaDescription.length >= 120 && tool.metaDescription.length <= 165) {
+    return clampDescription(tool.metaDescription);
+  }
+
+  // 1. PDF Tools (Keywords: online PDF tool, free PDF editor, merge/split PDF online)
+  if (cat.includes('pdf') || lowerName.includes('pdf')) {
+    return clampDescription(
+      `Free online ${name} on Zynovexa. Fast, private online PDF tool & free PDF editor for instant document editing with zero file uploads and no sign in required.`
+    );
+  }
+
+  // 2. Image Tools (Keywords: free online image resizer, image compressor, photo editor)
+  if (cat.includes('image') || cat.includes('photo') || lowerName.includes('image') || lowerName.includes('resizer') || lowerName.includes('crop') || lowerName.includes('compress')) {
+    return clampDescription(
+      `Free online ${name} on Zynovexa. Fast image resizer, compressor & converter with HD preview, no watermark, and 100% private client-side browser processing.`
+    );
+  }
+
+  // 3. Calculator & Mathematics (Keywords: free online calculator, calculation formulas, instant results)
+  if (cat.includes('calculator') || cat.includes('math') || lowerName.includes('calculator')) {
+    return clampDescription(
+      `Free online ${name} on Zynovexa. Fast, accurate online calculator with instant formulas, step-by-step breakdown & no sign up. 100% private in your browser.`
+    );
+  }
+
+  // 4. Sports & Cricket (Keywords: free cricket calculator, strike rate, run rate calculator)
+  if (cat.includes('cricket') || cat.includes('sport')) {
+    return clampDescription(
+      `Free online ${name} for cricket & sports on Zynovexa. Calculate run rates, batting averages, and match stats instantly with live formulas and no account needed.`
+    );
+  }
+
+  // 5. Developer & Coding (Keywords: free developer utility, code formatter, encoder decoder)
+  if (cat.includes('developer') || cat.includes('code') || cat.includes('encoder') || cat.includes('json') || cat.includes('jwt') || cat.includes('hash')) {
+    return clampDescription(
+      `Free online ${name} developer utility on Zynovexa. Fast syntax validation, formatting, and conversion directly in your browser with zero data sent to servers.`
+    );
+  }
+
+  // 6. Text & Writing (Keywords: word counter online, free text tool, diff checker)
+  if (cat.includes('text') || cat.includes('word') || lowerName.includes('counter') || lowerName.includes('diff')) {
+    return clampDescription(
+      `Free online ${name} text utility on Zynovexa. Real-time character counts, text formatting, and analysis in your web browser with complete privacy & no login.`
+    );
+  }
+
+  // 7. Converters (Keywords: free unit converter online, metric and imperial conversion)
+  if (cat.includes('converter') || lowerName.includes('converter')) {
+    return clampDescription(
+      `Free online ${name} on Zynovexa. Accurate unit converter with live calculation formulas, metric and imperial conversions, and zero registration needed.`
+    );
+  }
+
+  // 8. General fallback with high-ranking keywords
+  return clampDescription(
+    `Free online ${name} tool on Zynovexa. 100% free, fast browser utility with instant accurate results, local client-side privacy, and zero sign up or file uploads.`
+  );
+}
+
+/**
  * Builds search-engine optimized title, description, keywords, and JSON-LD for any individual tool.
  * Follows the high-intent query format: "Zynovexa - Free Online [Tool Name] Not Sign In Only Free"
  * Dynamically provides 3-tier BreadcrumbList and FAQPage structured data from the comprehensive guide.
@@ -271,7 +353,7 @@ export function applyToolSeo(tool: ToolItem, categoryName?: string, categorySlug
 
   const guide = getToolGuide(tool);
   const title = tool.seoTitle || guide.seoContent.title || `Zynovexa - Free Online ${tool.name} Not Sign In Only Free`;
-  const description = tool.metaDescription || guide.seoContent.metaDescription || `100% free online ${tool.name.toLowerCase()} tool without sign in or registration. Run securely in your browser with zero file uploads on Zynovexa.`;
+  const description = buildToolSearchMetaDescription(tool, resolvedCatName);
 
   const keywords = Array.from(new Set([
     ...(tool.keywords || []),

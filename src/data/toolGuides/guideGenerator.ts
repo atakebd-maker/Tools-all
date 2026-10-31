@@ -247,7 +247,15 @@ function buildDomainSpecificGuide(tool: ToolItem): ToolGuide {
     faqs: faqs.slice(0, 7),
     seoContent: {
       title: tool.seoTitle || `Free ${name} Online — No Sign In Required | Zynovexa`,
-      metaDescription: tool.metaDescription || `100% free online ${lowerName} on Zynovexa. Private, browser-based processing with zero file uploads or account registration.`,
+      metaDescription: tool.metaDescription || (
+        cat.includes('pdf') || lowerName.includes('pdf')
+          ? `Free online ${name} on Zynovexa. Fast, private online PDF tool & free PDF editor for instant document editing with zero file uploads and no sign in required.`
+          : cat.includes('image') || cat.includes('photo') || lowerName.includes('image') || lowerName.includes('resizer')
+          ? `Free online ${name} on Zynovexa. Fast image resizer, compressor & converter with HD preview, no watermark, and 100% private client-side browser processing.`
+          : cat.includes('calculator') || cat.includes('math') || lowerName.includes('calculator')
+          ? `Free online ${name} on Zynovexa. Fast, accurate online calculator with instant formulas, step-by-step breakdown & no sign up. 100% private in your browser.`
+          : `Free online ${name} tool on Zynovexa. 100% free, fast browser utility with instant accurate results, local client-side privacy, and zero sign up or file uploads.`
+      ).slice(0, 160),
       h1: tool.name,
       primaryKeyword,
       secondaryKeywords,
