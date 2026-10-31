@@ -132,7 +132,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate, onOpenS
           {/* Right Action: Search & Mobile Menu Button */}
           <div className="flex items-center gap-2">
             <button
-              onClick={onOpenSearch || (() => handleNav('/all-tools'))}
+              onClick={onOpenSearch || (() => handleNav('/search'))}
               className="flex items-center gap-2 px-3 py-1.5 text-sm text-slate-500 bg-slate-100 hover:bg-slate-200/80 rounded-lg transition-colors border border-slate-200"
               aria-label="Search tools"
             >
@@ -155,6 +155,15 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate, onOpenS
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-1 shadow-lg max-h-[calc(100vh-4rem)] overflow-y-auto">
+          <button
+            onClick={() => handleNav('/search')}
+            className={`w-full text-left px-3 py-2.5 rounded-lg text-base font-medium flex items-center gap-2 ${
+              currentPath === '/search' ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-slate-700 bg-slate-50'
+            }`}
+          >
+            <Search className="w-4 h-4 text-blue-600" />
+            <span>Search Tools</span>
+          </button>
           <button
             onClick={() => handleNav('/')}
             className={`w-full text-left px-3 py-2.5 rounded-lg text-base font-medium ${

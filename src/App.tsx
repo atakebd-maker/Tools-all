@@ -13,6 +13,7 @@ import { Disclaimer } from './pages/Disclaimer';
 import { Faq } from './pages/Faq';
 import { Blog } from './pages/Blog';
 import { BlogPostPage } from './pages/BlogPostPage';
+import { SearchResults } from './pages/SearchResults';
 import { NotFound } from './pages/NotFound';
 import { TOOLS } from './data/tools';
 import { CATEGORIES } from './data/categories';
@@ -92,6 +93,24 @@ export default function App() {
         <AllTools
           initialSearch={searchParam}
           onNavigateHome={() => navigate('/')}
+          onSelectTool={handleSelectTool}
+        />
+      );
+    }
+
+    if (currentPath === '/search') {
+      return (
+        <SearchResults
+          query={searchParam}
+          onUpdateQuery={(newQ) => {
+            const clean = newQ.trim();
+            const newUrl = clean ? `/search?q=${encodeURIComponent(clean)}` : '/search';
+            window.history.replaceState({}, '', newUrl);
+            setSearchParam(clean);
+          }}
+          onNavigateHome={() => navigate('/')}
+          onNavigateAllTools={() => navigate('/all-tools')}
+          onNavigateCategory={(slug) => navigate(`/categories/${slug}`)}
           onSelectTool={handleSelectTool}
         />
       );
@@ -210,7 +229,7 @@ export default function App() {
       <Header
         currentPath={currentPath}
         onNavigate={navigate}
-        onOpenSearch={() => navigate('/all-tools')}
+        onOpenSearch={() => navigate('/search')}
       />
 
       <main className="flex-1">

@@ -96,9 +96,9 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onSelectTool }) => {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      onNavigate(`/all-tools?q=${encodeURIComponent(searchQuery.trim())}`);
+      onNavigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
     } else {
-      onNavigate('/all-tools');
+      onNavigate('/search');
     }
   };
 

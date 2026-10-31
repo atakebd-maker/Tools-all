@@ -469,7 +469,7 @@ export function applyStaticPageSeo(path: string) {
           'description': 'Free online browser tools with zero sign in or file uploads in the United States.',
           'potentialAction': {
             '@type': 'SearchAction',
-            'target': `${origin}/all-tools?q={search_term_string}`,
+            'target': `${origin}/search?q={search_term_string}`,
             'query-input': 'required name=search_term_string'
           }
         },
@@ -607,6 +607,19 @@ export function applyStaticPageSeo(path: string) {
       });
       break;
 
+    case '/search':
+      updateMetaTags({
+        title: 'Search All Free Online Tools | Zynovexa',
+        description: 'Search across 200+ free online browser tools, calculators, PDF editors, image resizers, and developer utilities on Zynovexa with zero sign up.',
+        keywords: ['search tools', 'zynovexa search', 'free online tools', 'pdf tools', 'calculators online'],
+        canonicalPath: '/search',
+        breadcrumbs: [
+          { name: 'Home', url: `${origin}/` },
+          { name: 'Search Tools', url: `${origin}/search` }
+        ]
+      });
+      break;
+
     default:
       updateMetaTags({
         title: 'Page Not Found - Zynovexa',
@@ -617,6 +630,30 @@ export function applyStaticPageSeo(path: string) {
         ]
       });
       break;
+  }
+}
+
+/**
+ * Dynamically updates SEO for the Search Results page based on the current query and result count.
+ */
+export function applySearchSeo(query: string = '', count?: number) {
+  const origin = getSiteOrigin();
+  const cleanQ = query.trim();
+
+  if (cleanQ) {
+    const countText = typeof count === 'number' ? ` (${count} Result${count === 1 ? '' : 's'})` : '';
+    updateMetaTags({
+      title: `Search: "${cleanQ}"${countText} — Zynovexa Free Online Tools`,
+      description: `Explore free online browser tools matching "${cleanQ}" on Zynovexa. Fast, private utilities with zero server uploads and no account required.`,
+      keywords: [cleanQ, `${cleanQ} online tool`, `${cleanQ} free`, 'zynovexa tools search'],
+      canonicalPath: '/search',
+      breadcrumbs: [
+        { name: 'Home', url: `${origin}/` },
+        { name: 'Search', url: `${origin}/search` }
+      ]
+    });
+  } else {
+    applyStaticPageSeo('/search');
   }
 }
 

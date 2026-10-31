@@ -122,6 +122,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </li>
               <li>
                 <button
+                  onClick={() => onNavigate('/search')}
+                  className="text-slate-400 hover:text-white transition-colors cursor-pointer"
+                >
+                  Search Tools
+                </button>
+              </li>
+              <li>
+                <button
                   onClick={() => onNavigate('/blog')}
                   className="text-slate-400 hover:text-white transition-colors cursor-pointer"
                 >
