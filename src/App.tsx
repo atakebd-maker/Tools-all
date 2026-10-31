@@ -210,9 +210,9 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white text-slate-900 font-sans antialiased selection:bg-blue-600 selection:text-white relative">
+    <div className="min-h-screen flex flex-col bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased selection:bg-blue-600 selection:text-white relative transition-colors duration-200">
       {/* Website Very Top Banner (320x50) */}
-      <div className="w-full bg-slate-50/90 border-b border-slate-200 py-1.5 px-2 flex justify-center items-center overflow-hidden">
+      <div className="w-full bg-slate-50/90 dark:bg-slate-900/90 border-b border-slate-200 dark:border-slate-800 py-1.5 px-2 flex justify-center items-center overflow-hidden transition-colors">
         <div className="max-w-full overflow-x-auto flex justify-center">
           <AdBanner
             adKey={AD_KEYS.WEBSITE_TOP_LEADERBOARD}

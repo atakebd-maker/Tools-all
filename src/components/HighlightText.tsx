@@ -22,7 +22,7 @@ export const HighlightText: React.FC<HighlightTextProps> = ({
   text,
   query,
   className = '',
-  highlightClassName = 'bg-amber-100 text-amber-950 font-semibold px-0.5 rounded-xs'
+  highlightClassName = 'bg-amber-100 dark:bg-amber-950/80 text-amber-950 dark:text-amber-200 font-semibold px-0.5 rounded-xs'
 }) => {
   const parts = useMemo(() => {
     if (!text) return [];
